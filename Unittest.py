@@ -1,6 +1,8 @@
 import unittest
 from Gui import BaseStation
 import numpy as np
+import asyncio
+import websockets
 
 
 class TestMethods(unittest.TestCase):
@@ -10,7 +12,7 @@ class TestMethods(unittest.TestCase):
 
     def test_Playground_empty(self):
         test_data = np.zeros((400, 200, 3), dtype=np.uint8)
-        self.assertEqual(self.station.data.all(), test_data.all())
+        self.assertEqual(self.station.draw_playgroung.data.all(), test_data.all())
 
     def test__draw_Playground(self):
 
@@ -22,6 +24,14 @@ class TestMethods(unittest.TestCase):
                 else:
                     test_data[i, j] = [255, 255, 255]
         self.assertEqual(self.station.data.all(), test_data.all())
+
+    async def test_ping(self):
+        async with websockets.connect(
+                'ws://localhost:8765') as websocket:
+            ping = "ping"
+            await websocket.send(ping)
+            pong = await websocket.recv()
+            self.assertEqual(pong, "pong")
 
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
