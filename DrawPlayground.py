@@ -7,6 +7,8 @@ class DrawPlayground:
     def __init__(self, playground_window, position_text):
         self.textImage = playground_window
         self.textField = position_text
+        return_playground = self.draw_playground_empty()
+        self.post_playgroung(return_playground)
 
     def draw_playground_empty(self):
         #idraw = [56, 72, 88, 104, 120, 136, 152, 168, 184, 200, 216, 232, 248, 264, 280, 296, 312, 328, 344]
@@ -17,7 +19,7 @@ class DrawPlayground:
                     self.data[i, j] = [0, 0, 0]
                 else:
                     self.data[i, j] = [255, 255, 255]
-        self.textImage.value = self.data
+        return self.data
 
     def draw_robot(self, i, j):
         self.textField.value = "[ i = %d to %d, j = %d to %d]" % (i, i + 1, j, j + 1)
@@ -26,7 +28,7 @@ class DrawPlayground:
         for k in range(i, i+31):
             for l in range(j, j+31):
                 self.data[k, l] = [255, 20, 147]
-        self.textImage.value = self.data
+        return self.data
 
     def de_draw_robot(self, i, j):
         i = (i * 16) + 57
@@ -37,4 +39,7 @@ class DrawPlayground:
                     self.data[k, l] = [0, 0, 0]
                 else:
                     self.data[k, l] = [255, 255, 255]
-        self.textImage.value = self.data
+        return self.data
+
+    def post_playgroung(self, data):
+        self.textImage.value = data

@@ -1,9 +1,9 @@
 import cv2
-import keyboard
 import threading
 
 
 class CameraMonde:
+    stop = False
 
     def __init__(self, camera_window):
         self.textPlayer = camera_window
@@ -13,10 +13,10 @@ class CameraMonde:
         while True:
             ret, frame = capture.read()
             if ret is True:
+
                 self.textPlayer.frame = frame
 
-                # Press Q on keyboard to stop recording
-                if keyboard.is_pressed('q'):
+                if self.stop is True:
                     break
 
             # Break the loop
@@ -30,3 +30,6 @@ class CameraMonde:
         """Button action event"""
         t = threading.Thread(target=self.start_camera)
         t.start()
+
+    def stop_camera_thread(self):
+        self.stop = True
