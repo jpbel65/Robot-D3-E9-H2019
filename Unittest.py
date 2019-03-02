@@ -3,9 +3,8 @@ from unittest.mock import MagicMock
 from Gui import BaseStation
 from WebSocket import WebSocket
 from CameraMonde import CameraMonde
-from DrawPlayground import DrawPlayground
+from scripts.DrawPlayground import DrawPlayground
 import numpy as np
-import asyncio
 import websockets
 import cv2
 
