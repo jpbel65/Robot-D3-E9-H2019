@@ -4,10 +4,8 @@ from Service import RobotController
 
 class QrCalculator(object):
 	def getShapeOrColor(self):
-		"""@ReturnType String"""
 		pass
 
 	def __init__(self):
-		self. = None
-		# @AssociationType Service.RobotController
+		pass
 

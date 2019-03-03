@@ -1,8 +1,13 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Domain import __abstract___Shape
+from Domain.Shape import Shape
 
-class Square(__abstract___Shape):
+class Square(Shape):
+
+	def __init__(self,coordinate):
+		 pass
+
+
 	def getSurface(self):
 		pass
 

@@ -7,6 +7,5 @@ class TrajectoryMapper(object):
 		pass
 
 	def __init__(self):
-		self. = None
-		# @AssociationType Application.MainController
+		pass
 

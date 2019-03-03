@@ -8,7 +8,4 @@ class PiVisionController(object):
 
 	def __init__(self):
 		self.___image = None
-		"""@AttributeType Image"""
-		self. = None
-		# @AssociationType Service.RobotController
 

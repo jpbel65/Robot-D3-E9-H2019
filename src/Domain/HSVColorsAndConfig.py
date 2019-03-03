@@ -1,0 +1,32 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+# HSV COLOR
+import numpy as np
+
+LOWER_BLACK_HSV = np.array([45, 45, 100])
+UPPER_BLACK_HSV = np.array([80, 255, 255])
+
+LOWER_GREEN_HSV = np.array([140, 20, 70])
+UPPER_GREEN_HSV = np.array([170, 255, 255])
+
+LOWER_BLUE_HSV = np.array([140, 20, 70])
+UPPER_BLUE_HSV = np.array([170, 255, 255])
+
+LOWER_RED_HSV = np.array([140, 20, 70])
+UPPER_RED_HSV = np.array([170, 255, 255])
+
+LOWER_YELLOW_HSV = np.array([140, 20, 70])
+UPPER_YELLOW_HSV = np.array([170, 255, 255])
+
+
+MIN_TABLE_AREA = 600000
+MAX_TABLE_AREA = 800000
+
+MIN_START_ZONE_AREA = 80000
+MAX_START_ZONE_AREA = 130000
+
+MIN_SHAPE_ZONE_AREA =15000
+MAX_SHAPE_ZONE_AREA = 16400
+
+MIN_TARGET_ZONE_ARE =  4000
+MAX_TARGET_ZONE_AREA = 6200

@@ -2,11 +2,10 @@
 # -*- coding: UTF-8 -*-
 from abc import ABCMeta, abstractmethod
 
-class WorldEntityDetector(object):
+class WorldEntityDetector(metaclass=ABCMeta):
 	"""@Interface"""
-	__metaclass__ = ABCMeta
+
 	@abstractmethod
-	def detect(self):
-		"""@ReturnType List"""
+	def detect(self,image):
 		pass
 

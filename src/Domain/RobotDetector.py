@@ -6,10 +6,8 @@ from Domain import WorldEntityDetector
 
 class RobotDetector(WorldEntityDetector):
 	def detect(self):
-		"""@ReturnType Domain.Robot"""
 		pass
 
 	def __init__(self):
-		self. = None
-		# @AssociationType Application.VisionController
+		pass
 

@@ -4,6 +4,5 @@ from Domain import ShapeDetector
 
 class PentagoneDetector(ShapeDetector):
 	def detect(self):
-		"""@ReturnType List"""
 		pass
 

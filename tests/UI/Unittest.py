@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import MagicMock
 from Gui import BaseStation
-from WebSocket import WebSocket
-from CameraMonde import CameraMonde
-from scripts.DrawPlayground import DrawPlayground
+from UI.WebSockeCommunicationt import WebSocket
+from UI.CameraMondeVideoFeed import CameraMonde
+from UI.MapRender import DrawPlayground
 import numpy as np
 import websockets
 import cv2

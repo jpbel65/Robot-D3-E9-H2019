@@ -1,15 +1,29 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
+
 from Service import RobotController
 from Domain import World
-from Application import VisionController
+from Application.VisionController import VisionController
 from Application import TrajectoryMapper
 from Application import TrajectoryCalculator
 from Domain import ScaleConverter
 from Domain import Robot
-from UI import BaseStationUi
 
-class MainController(object):
+class MainController():
+
+	def __init__(self):
+		self._robotController = None
+		self._table = None
+		#self._visionController = VisionController()
+		self._trajectoryMapper = None
+		self._trajectoryCalculator = None
+		self._pieceToTakeInfo = None
+		self._converter = None
+		self._robot = None
+		self._zoneList = None
+		self._shapeList = None
+		self._RobotController_ = None
+		self._TrajectoryMapper_ = None
+		self._ScaleConverter_ = None
+
 	def sendMessageToRobot(self, aString_message):
 		pass
 
@@ -17,40 +31,12 @@ class MainController(object):
 		pass
 
 	def main(self):
-		"""@ReturnType void"""
+		pass
+	def detectWorldElement(self, image):
+
+		world = self.visionController.detectEntities(image)
 		pass
 
-	def __init__(self):
-		self.___robotController = None
-		"""@AttributeType Service.RobotController"""
-		self.___table = None
-		"""@AttributeType Domain.World"""
-		self.___visionController = None
-		"""@AttributeType Application.VisionController"""
-		self.___trajectoryMapper = None
-		"""@AttributeType Application.TrajectoryMapper"""
-		self.___trajectoryCalculator = None
-		"""@AttributeType Application.TrajectoryCalculator"""
-		self.___pieceToTakeInfo = None
-		"""@AttributeType String"""
-		self.___converter = None
-		"""@AttributeType Domain.ScaleConverter"""
-		self.___robot = None
-		"""@AttributeType Domain.Robot"""
-		self.___zoneList = None
-		"""@AttributeType List"""
-		self.___shapeList = None
-		"""@AttributeType List"""
-		self. = None
-		# @AssociationType UI.BaseStationUi
-		self._unnamed_RobotController_ = None
-		# @AssociationType Service.RobotController
-		# @AssociationKind Composition
-		self._unnamed_TrajectoryMapper_ = None
-		# @AssociationType Application.TrajectoryMapper
-		# @AssociationKind Aggregation
-		self._unnamed_ScaleConverter_ = None
-		# @AssociationType Domain.ScaleConverter
-		# @AssociationMultiplicity 1
-		# @AssociationKind Aggregation
+
+
 

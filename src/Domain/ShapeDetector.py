@@ -7,6 +7,5 @@ class ShapeDetector(object):
 	__metaclass__ = ABCMeta
 	@abstractmethod
 	def detect(self):
-		"""@ReturnType List"""
 		pass
 

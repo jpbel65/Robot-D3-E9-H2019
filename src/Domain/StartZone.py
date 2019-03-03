@@ -1,14 +1,13 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from Domain import World
-from Domain import __abstract___Zone
+from Domain.Zone import Zone
+from Domain.Square import Square
 
-class StartZone(__abstract___Zone):
+class StartZone(Zone):
 	def getDimensions(self):
-		"""@ReturnType Tuple(Float,Float)"""
 		pass
 
-	def __init__(self):
-		self._unnamed_World_ = None
-		# @AssociationType Domain.World
+	def __init__(self,square):
+		self.square = square
 
