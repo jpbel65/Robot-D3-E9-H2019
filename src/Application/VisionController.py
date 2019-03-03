@@ -30,8 +30,9 @@ class VisionController():
         try:
             image = cv2.GaussianBlur(image, (5, 5), 0)
             image = cv2.medianBlur(image, ksize=1)
+
             zones = self._zoneDetector_.detect(image)
-            obstacles = self._obstaclesDetector_.detect(image)
+            obstacles = self._obstaclesDetector_.detect(image.copy(), cv2.COLOR_BGR2GRAY)
 
 
         except Exception as e:
