@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from Domain import World
-from Domain import Zone
+from Domain.Zone import Zone
 
 class ShapeZone(Zone):
 	def getDimensions(self):

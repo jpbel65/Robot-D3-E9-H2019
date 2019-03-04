@@ -164,8 +164,8 @@ def detection(big_img):
           center = (int(x), int(y))
           cv2.circle(color_img, center, int(radius), (0, 255, 255), 2)
     #color_img = cv2.drawContours(color_img, contours, 1, (0, 255, 0), 2)
-    cv2.imshow("Contour", color_img)
-    cv2.waitKey()
+    #cv2.imshow("Contour", color_img)
+   # cv2.waitKey()
     return mask ,(x1, y1, w1, h1)
 # contour_length = cv2.arcLength(contours[10], True)
 # polygon_points = cv2.approxPolyDP(contours[10], 0.02 * contour_length, True)
@@ -181,15 +181,53 @@ def detection(big_img):
 # cv2.putText(color_img,'Moth Detected',(centerX+40,centerY+50),0,0.3,(0,255,0))
 # cv2.imshow("Contour", color_img)
 # draw contours onto image
+def detectCircle(crop_img):
+    #gray=cv2.cvtColor(crop_img.copy(), cv2.COLOR_BGR2HSV)
+    gray = cv2.cvtColor(crop_img.copy(), cv2.COLOR_BGR2GRAY)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(3, 3))
+    mask = cv2.morphologyEx(crop_img, cv2.MORPH_OPEN, kernel=kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)
+
+    circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 100,param1 =70, param2 = 20, minRadius = 40, maxRadius = 80)
+
+    print(circles)
+    circles = np.uint16(np.around(circles))
+
+    for i in circles[0, :]:
+       # cv2.circle(crop_img, (i[0] - i[2], i[1] - i[2]), i[2], (0, 255, 0), 2)
+        #cv2.circle(crop_img, (i[0] + i[2], i[1] + i[2]), i[2], (0, 255, 0), 2)
+        cv2.circle(crop_img, (i[0], i[1]), i[2], (0, 255, 0), 2)
+        cv2.circle(crop_img, (i[0], i[1]), 2, (0, 0, 255), 3)
+    cv2.imshow("CERCLE", crop_img)
+    cv2.waitKey()
+
+def _create_obstacles_coord( obstacles):
+        lst = []
+        min_x = obstacles[0] - obstacles[2]
+        min_y = obstacles[1] - obstacles[2]
+        max_x = obstacles[0] + obstacles[2]
+        max_y = obstacles[1] + obstacles[2]
+        lst.append(min_y)
+        lst.append(max_y)
+        lst.append(min_x)
+        lst.append(max_x)
+        return lst
+
+def select_region(self, image, points):
+        image = image[points[0]:points[1], points[2]:points[3]]
+        return image
+
+
 if __name__ == "__main__":
     # execute only if run as a script
-    big_img = cv2.imread("snapshot_1280_720_0.jpg", 1)
+    big_img = cv2.imread("snapshot_1280_720_2.jpg", 1)
     blurred= blur(big_img)
     mask ,coord = detection(big_img)
     x1, y1, w1, h1 = coord[0], coord[1], coord[2], coord[3]
     crop_img = big_img[y1:y1 + h1, x1:x1 + w1]
+    detectCircle(crop_img)
     #pieces( cv2.cvtColor(big_img.copy(), cv2.COLOR_BGR2HSV), coord)
    # pieces(crop_img, coord)
-    canny(crop_img)
+   # canny(crop_img)
 
 

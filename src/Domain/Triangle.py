@@ -2,7 +2,11 @@
 # -*- coding: UTF-8 -*-
 from Domain import Shape
 
-class Triangle(Shape):
-	def getSurface(self):
-		pass
 
+class Triangle(Shape):
+
+    def __init__(self, coordinate):
+        pass
+
+    def getSurface(self):
+        pass
