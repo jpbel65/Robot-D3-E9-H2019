@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from Gui import BaseStation
+from UI.BaseStationUi import BaseStationUi
 from UI.WebSockeCommunicationt import WebSocket
 from UI.CameraMondeVideoFeed import CameraMonde
 from UI.MapRender import DrawPlayground
@@ -13,7 +13,7 @@ import cv2
 class TestMethods(unittest.TestCase):
 
     def setUp(self):
-        self.station = BaseStation
+        self.station = BaseStationUi
         self.web_socket = WebSocket
         self.camera_monde = CameraMonde
         self.draw_playgroung = DrawPlayground(MagicMock, MagicMock)
