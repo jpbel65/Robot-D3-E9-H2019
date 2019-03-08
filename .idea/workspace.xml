@@ -2,21 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c67deb-7996-4ba4-abef-7b3b42905786" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pyramide.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pyramide.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/zone_mondher.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/TrajectoryMapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/TrajectoryMapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/Cercle.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Cercle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/ChargeZone.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ChargeZone.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/CircleDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/CircleDetector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/ArmController.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/ArmController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/PiVisionController.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/PiVisionController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/QrCalculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/QrCalculator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/RobotController.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/RobotController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI/BaseStationUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/BaseStationUi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
@@ -39,10 +27,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
+        <entry file="file://$PROJECT_DIR$/demo/zone_mondher.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+            <state relative-caret-position="243">
+              <caret line="136" column="21" selection-start-line="136" selection-start-column="21" selection-end-line="136" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="78">
+              <caret line="69" column="17" lean-forward="true" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/FormTest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -103,13 +109,16 @@
         <option value="$PROJECT_DIR$/src/Domain/CircleDetector.py" />
         <option value="$PROJECT_DIR$/src/Application/TrajectoryMapper.py" />
         <option value="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" />
+        <option value="$PROJECT_DIR$/demo/zone_mondher.py" />
+        <option value="$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-7" />
+    <option name="x" value="10" />
+    <option name="y" value="6" />
     <option name="width" value="697" />
-    <option name="height" value="735" />
+    <option name="height" value="763" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -123,6 +132,16 @@
               <item name="Robot-D3-E9-H2019" type="b2602c69:ProjectViewProjectNode" />
               <item name="Robot-D3-E9-H2019" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Robot-D3-E9-H2019" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Robot-D3-E9-H2019" type="462c0819:PsiDirectoryNode" />
+              <item name="Photos&amp;Calibration" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Robot-D3-E9-H2019" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Robot-D3-E9-H2019" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -133,6 +152,11 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/demo" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -146,7 +170,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.BaseStationUi">
+  <component name="RunManager" selected="Python.Snapshot">
     <configuration name="BaseStationUi" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pyramide" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -160,6 +184,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/UI/BaseStationUi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Snapshot" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pyramide" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Photos&amp;Calibration" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -210,13 +255,38 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="zone_mondher" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pyramide" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/demo/zone_mondher.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.app" />
       <item itemvalue="Python.Websockets" />
       <item itemvalue="Python.BaseStationUi" />
+      <item itemvalue="Python.zone_mondher" />
+      <item itemvalue="Python.Snapshot" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Snapshot" />
+        <item itemvalue="Python.zone_mondher" />
         <item itemvalue="Python.BaseStationUi" />
       </list>
     </recent_temporary>
@@ -245,13 +315,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-4" width="1600" height="857" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22384274" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22384274" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4857324" visible="true" weight="0.32876712" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4857324" visible="true" weight="0.32876712" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -400,16 +471,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
@@ -417,6 +478,50 @@
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/prendrePhoto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="35" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="9" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="12" selection-start-line="12" selection-end-line="15" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/FormTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/zone_mondher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="136" column="21" selection-start-line="136" selection-start-column="21" selection-end-line="136" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="69" column="17" lean-forward="true" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
         </state>
       </provider>
     </entry>
