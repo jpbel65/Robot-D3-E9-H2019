@@ -19,7 +19,6 @@ class TrajectoryMapper(object):
             self.addObstacle(obstacle.y, obstacle.x, tableMap)
 
 
-
     def createTable(self, x, y):
         table = []
         for i in range(y):

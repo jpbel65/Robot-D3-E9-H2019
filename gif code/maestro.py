@@ -1,5 +1,9 @@
 import serial
 from sys import version_info
+import cv2
+import numpy as np
+from PIL import Image
+import time
 
 PY2 = version_info[0] == 2   #Running Python 2.x?
 
@@ -167,3 +171,27 @@ class Controller:
         cmd = chr(0x24)
         self.sendCmd(cmd)
 
+    def move(self, chan, value):
+        self.setTarget(chan, value)
+        done = False
+        while(done == False):
+            if(self.getPosition(chan) == value):
+                done = True
+        return done        
+
+
+def QRCheck():
+    capture = cv2.VideoCapture(0)
+    ret, frame = capture.read()
+    if(ret != False):
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        image = Image.fromarray(gray)
+        qrDetector=cv2.QRCodeDetector() 
+        retval , points ,straight_qrcode = qrDetector.detectAndDecode(frame)
+        if len(retval)>0:
+            return retval, True
+        else:
+            return "0", False
+    else:
+        return "0", False
+        

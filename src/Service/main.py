@@ -4,7 +4,7 @@ import websockets
 
 async def hello(websocket, path):
     name = await websocket.recv()
-    print(f"< {name}")
+    print("< {name}")
     if name == "go":
         await websocket.send("ok, je vais ou")
         pos = await websocket.recv()

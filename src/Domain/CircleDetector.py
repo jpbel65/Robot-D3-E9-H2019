@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Domain.ShapeDetector import ShapeDetector
-from Domain.Cercle import Cercle
+from src.Domain.ShapeDetector import ShapeDetector
+from src.Domain.Cercle import Cercle
 import cv2
 import imutils
 

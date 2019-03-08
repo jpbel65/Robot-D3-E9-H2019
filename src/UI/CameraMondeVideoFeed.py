@@ -7,10 +7,10 @@ class CameraMonde:
 
     def __init__(self, camera_window):
         self.textPlayer = camera_window
-        self.capture =None
+        self.capture = None
 
     def start_camera(self):
-        self.capture = cv2.VideoCapture(0)
+        self.capture = cv2.VideoCapture(1)
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1200);
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 760);
         self.capture.set(cv2.CAP_PROP_FPS, 15)

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Domain import World
-from Domain import Zone
+from src.Domain import World
+from src.Domain import Zone
 
 class ChargeZone(Zone):
 	def getDimensions(self):

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Service import RobotController
+from src.Service import RobotController
 
 class PiVisionController(object):
 	def takePhoto(self):

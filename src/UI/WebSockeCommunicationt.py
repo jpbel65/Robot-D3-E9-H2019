@@ -22,7 +22,7 @@ class WebSocket:
             ready = await websocket.recv()
             if ready == "ok, je vais ou":
                 self.log_message(ready)
-                print(f"< {ready}")
+                print("< {ready}")
                 while not self.path:
                     self.log_message("WS empty")
                     if keyboard.is_pressed('q'):

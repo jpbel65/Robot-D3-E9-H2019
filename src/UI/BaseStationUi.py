@@ -7,10 +7,9 @@ from pyforms.controls import ControlPlayer
 from pyforms.controls import ControlImage
 from pyforms.controls import ControlButton
 
-from UI.WebSockeCommunicationt import WebSocket
-from UI.CameraMondeVideoFeed import CameraMonde
-from UI.MapRender import DrawPlayground
-from Application.MainController import MainController
+from src.UI.WebSockeCommunicationt import WebSocket
+from src.UI.CameraMondeVideoFeed import CameraMonde
+from src.UI.MapRender import DrawPlayground
 import urllib.request
 
 
@@ -46,7 +45,6 @@ class BaseStationUi(BaseWidget):
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
 
         self.draw_playgroung.draw_robot(8, 3)
-        self._mainController = MainController()
 
     def start(self):
         pass

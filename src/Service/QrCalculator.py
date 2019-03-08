@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
 import numpy as np
 from PIL import Image
 import cv2
