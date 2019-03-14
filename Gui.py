@@ -8,8 +8,10 @@ from pyforms.controls import ControlButton
 
 from WebSocket import WebSocket
 from CameraMonde import CameraMonde
-from DrawPlayground import DrawPlayground
+
 from Communication import Communicate
+from scripts.DrawPlayground import DrawPlayground
+
 
 
 import numpy as np

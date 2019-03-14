@@ -2,11 +2,122 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c67deb-7996-4ba4-abef-7b3b42905786" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DrawPlayground.py" beforeDir="false" afterPath="$PROJECT_DIR$/DrawPlayground.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/ReadMe.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/Snapshot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/VisionDetection/shape.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/calibresult.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/cameraDistortion.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/cameraMatrix.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_16.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_20.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_21.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_22.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_23.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_24.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_25.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_26.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/ZonePieces/snapshot_1280_720_9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/snapshot_1280_720_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/snapshot_1280_720_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/snapshot_1280_720_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/snapshot_1280_720_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/snapshot_1280_720_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/embarque/snapshot_1280_720_5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table4/snapshot_1280_720_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table4/snapshot_1280_720_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table4/snapshot_1280_720_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table5/snapshot_1280_720_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table5/snapshot_1280_720_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table5/snapshot_1280_720_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table5/snapshot_1280_720_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_16.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_20.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_21.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_22.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_23.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_24.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_25.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_26.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Photos&amp;Calibration/table6/snapshot_1280_720_9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoBoot.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/Carree.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/Cercle.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/Pentagon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/ToutesFormes.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/ToutesFormes2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/ToutesFormes3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/Triangle.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/blue.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/couleur.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/multi.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/multi2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/rouge.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/shape.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/snapshot_1280_720_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/snapshot_1280_720_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/snapshot_1280_720_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/vert.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/zone.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gif code/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gif code/maestro.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gif code/pololy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/PathFinding.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DrawPlayground.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/DrawPlayground.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FormTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/FormTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebSocket.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QRTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/QRTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SerialUART.py" beforeDir="false" afterPath="$PROJECT_DIR$/gif code/SerialUART.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unittest.py" beforeDir="false" afterPath="$PROJECT_DIR$/Unittest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Websockets.py" beforeDir="false" afterPath="$PROJECT_DIR$/Websockets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prendrePhoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/prendrePhoto.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,11 +139,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Websockets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+            <state relative-caret-position="561">
+              <caret line="33" column="4" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -55,8 +166,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Unittest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1377">
-              <caret line="90" selection-start-line="90" selection-end-line="90" />
+            <state relative-caret-position="198">
+              <caret line="89" selection-start-line="89" selection-end-line="89" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -67,8 +178,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="102" column="31" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+            <state relative-caret-position="79">
+              <caret line="55" column="47" lean-forward="true" selection-start-line="55" selection-start-column="47" selection-end-line="55" selection-end-column="47" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -100,7 +211,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CameraMonde.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="232">
@@ -108,15 +219,6 @@
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DrawPlayground.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -140,11 +242,11 @@
         <option value="$PROJECT_DIR$/websockets-cli.py" />
         <option value="$PROJECT_DIR$/CameraMonde.py" />
         <option value="$PROJECT_DIR$/Unittest.py" />
-        <option value="$PROJECT_DIR$/Websockets.py" />
         <option value="$PROJECT_DIR$/Communication.py" />
-        <option value="$PROJECT_DIR$/Gui.py" />
         <option value="$PROJECT_DIR$/WebSocket.py" />
         <option value="$PROJECT_DIR$/DrawPlayground.py" />
+        <option value="$PROJECT_DIR$/Gui.py" />
+        <option value="$PROJECT_DIR$/Websockets.py" />
       </list>
     </option>
   </component>
@@ -260,6 +362,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12946428" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -311,36 +414,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unittest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="90" selection-start-line="90" selection-end-line="90" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Websockets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="22" lean-forward="true" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Communication.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="41" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebSocket.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -358,22 +431,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gui.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="102" column="31" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CameraMonde.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="17" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Communication.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="41" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="55" column="47" lean-forward="true" selection-start-line="55" selection-start-column="47" selection-end-line="55" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unittest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="89" selection-start-line="89" selection-end-line="89" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Websockets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="4" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
