@@ -9,18 +9,29 @@ from pyforms.controls import ControlButton
 from WebSocket import WebSocket
 from CameraMonde import CameraMonde
 from DrawPlayground import DrawPlayground
+from Communication import Communicate
 
 
-import urllib.request
+import numpy as np
+from PyQt5 import QtCore, QtGui
+import keyboard
+from time import sleep
+import threading
 
 
-class BaseStation(BaseWidget):
+class BaseStation(BaseWidget, QtCore.QObject):
+    data_log = True
 
     def __init__(self):
         super(BaseStation, self).__init__('Station de base')
 
+        #id = QtCore.QMetaType.type("ControlTextArea")
+        #self.sig = signal.signal(signal.SIGUSR1, self.update_log())
+
+
+
         #Definition of the forms fields
-        self.textArea = ControlTextArea('Log', 'Default value')
+        self.textArea = ControlTextArea('Log')
         self.textState = ControlText('État')
         self.textVolt = ControlText('Voltage')
         self.textPos = ControlText('Position')
@@ -40,27 +51,62 @@ class BaseStation(BaseWidget):
         self.buttonLog.value = self.button_log_action
         self.buttonReset.value = self.button_reset_action
 
-        self.web_socket = WebSocket(self.textArea)
+        # Define communication entre les thread
+        self.thread_com_log = Communicate()
+        self.thread_com_log.speak[str].connect(self.update_log)
+        self.thread_com_state = Communicate()
+        self.thread_com_state.speak[str].connect(self.update_state)
+        self.thread_com_volt = Communicate()
+        self.thread_com_volt.speak[str].connect(self.update_volt)
+        self.thread_com_pos = Communicate()
+        self.thread_com_pos.speak[str].connect(self.update_pos)
+        self.thread_com_piece = Communicate()
+        self.thread_com_piece.speak[str].connect(self.update_piece)
+        self.thread_com_image = Communicate()
+        self.thread_com_image.speak[np.ndarray].connect(self.update_image)
+
+        self.web_socket = WebSocket(self.textArea, self)
         self.camera_monde = CameraMonde(self.textPlayer)
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
 
         self.draw_playgroung.draw_robot(8, 3)
-        #self.textImage = data_return
-        #self.draw_playgroung.de_draw_robot(8, 3)
 
     def button_log_action(self):
         self.web_socket.thread_start_comm_web()
 
     def button_reset_action(self):
         print("reset")
+        return_data = self.draw_playgroung.de_draw_robot(8, 3)
+        self.draw_playgroung.post_playgroung(return_data)
 
-    def callsocket(self):
-        self.res_web = urllib.request.urlopen("http://DESKTOP-5L14B5E:6543").read() + b'\r\n'
-        #self._textArea.value = self.res_web.decode("utf-8")
+    @QtCore.pyqtSlot(str, name='update_log')
+    def update_log(self, text):
+        self.textArea.value = text
+
+    @QtCore.pyqtSlot(str, name='update_state')
+    def update_state(self, text):
+        self.textState.value = text
+
+    @QtCore.pyqtSlot(str, name='update_volt')
+    def update_volt(self, text):
+        self.textVolt.value = text
+
+    @QtCore.pyqtSlot(str, name='update_pos')
+    def update_pos(self, text):
+        self.textPos.value = text
+
+    @QtCore.pyqtSlot(str, name='update_piece')
+    def update_piece(self, text):
+        self.textPiece.value = text
+
+    @QtCore.pyqtSlot(np.ndarray, name='update_image')
+    def update_image(self, image):
+        self.textImage.value = image
 
     def before_close_event(self):
         self.camera_monde.stop_camera_thread()
+        self.data_log = False
 
 
 #Execute the application

@@ -10,6 +10,7 @@ class DrawPlayground:
         return_playground = self.draw_playground_empty()
         self.post_playgroung(return_playground)
 
+
     def draw_playground_empty(self):
         #idraw = [56, 72, 88, 104, 120, 136, 152, 168, 184, 200, 216, 232, 248, 264, 280, 296, 312, 328, 344]
         #jdraw = [36, 52, 68, 84, 100, 116, 132, 148, 164]
