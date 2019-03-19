@@ -33,24 +33,23 @@ class ZoneDetector(WorldEntityDetector):
     def __init__(self):
         self.___zoneList = None
 
-    def detect(self, image):
+    def detect(self, image,table):
+        x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         zones = []
-        mask, image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
-        table = self.detectTable(image_copy)
-        zones.append(table)
-        StartZone = self.detectStartZone(mask)
+        image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
+        StartZone = self.detectStartZone(image_copy )
         zones.append(StartZone)
-        croppedImage = self.CropTableFromImage(image_copy, table)
-        shapeZone = self.detectShapeZone(croppedImage)
+        shapeZone = self.detectShapeZone(image_copy,table,x1,y1,w1,h1)
         zones.append(shapeZone)
         deposit = self.detectTargetZone(image)
         zones.append(deposit)
         return zones
 
     def detectTable(self, image):
-        mask = self._threshold_black(image)
+        image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
+        mask = self._threshold_black(image_copy)
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:5]
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:8]
         table_found = False
         for c in contours:
             contour_length = cv2.arcLength(c, True)
@@ -58,14 +57,14 @@ class ZoneDetector(WorldEntityDetector):
             area = cv2.contourArea(polygon_points)
             if area >= MIN_TABLE_AREA and area < MAX_TABLE_AREA:
                 x, y, w, h = cv2.boundingRect(polygon_points)
-                return mask, TableZone((x, y, w, h))
+                return  TableZone((x, y, w, h))
 
         if table_found == "False":
             raise TableZoneNotFoundError
 
     def detectStartZone(self, image):
         contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:5]
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:8]
         square_found = False
         for c in contours:
             contour_length = cv2.arcLength(c, True)
@@ -78,46 +77,62 @@ class ZoneDetector(WorldEntityDetector):
         if square_found == "False":
             raise StartZoneNotFoundError
 
-    def detectShapeZone(self, image):
+    def detectShapeZone(self, crop_img,x1,y1,w1,h1):
         found = False
-        mask = cv2.GaussianBlur(image.copy(), (7, 7), 0)
-        mask = cv2.GaussianBlur(mask, (7, 7), 0)
+        cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 15)
 
-        mask = cv2.adaptiveThreshold(cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY), 255,
-                                     cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=5)
+        def detectShapeZone(self, crop_img, x1, y1, w1, h1):
+            found = False
+            cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 15)
+            mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 110]))
+            kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(7, 7))
+            mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=1)
+            mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)
+            contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
 
-        contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:15]
+            contours = sorted(contours, key=cv2.contourArea, reverse=True)[:8]
+            for c in contours:
+                contour_length = cv2.arcLength(c, True)
+                polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
+                area = cv2.contourArea(polygon_points)
+                if area >= 5000 and area < 8000 and len(polygon_points) == 4:
+                    x, y, w, h = cv2.boundingRect(polygon_points)
+                    centerX = (x + w) / 2
+                    centerY = (y + h) / 2
+                    return ShapeZone((x, y, w, h))
+            if found == False:
+                raise ShapeZoneNotFoundError
 
-        for c in contours:
-
-            contour_length = cv2.arcLength(c, True)
-            polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
-            area = cv2.contourArea(polygon_points)
-            if area >= 11500 and area <= 14500:
-                x, y, w, h = cv2.boundingRect(polygon_points)
-                return ShapeZone((x, y, w, h))
-        if found == False:
-            raise ShapeZoneNotFoundError
-
-    def detectTargetZone(self, image):
+    def detectTargetZone(self, big_img):
         found = False
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
-        cimage = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel=kernel, iterations=3)
-        cimage = cv2.Canny(cimage, 150, 150)
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
+        cimage = cv2.morphologyEx(big_img, cv2.MORPH_OPEN, kernel=kernel, iterations=3)
+        cimage = cv2.Canny(cimage, 100, 150)
         cimage = cv2.GaussianBlur(cimage, (1, 1), 0)
-        cimage = cv2.Canny(cimage, 150, 150)
+        # cimage = cv2.Canny(cimage, 150, 150)
+        cimage = cv2.dilate(cimage, kernel)
         contours, hierarchy = cv2.findContours(cimage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
+        color_img = cv2.cvtColor(cimage, cv2.COLOR_GRAY2BGR)
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:70]
+        i = -1
         for c in contours:
+            i += 1
             contour_length = cv2.arcLength(c, True)
             polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
             area = cv2.contourArea(polygon_points)
-            if area >= 4000 and area <= 6200 and len(polygon_points) == 4:
+            if area >= 4000 and area <= 8000 and len(polygon_points) == 4:
+                print(i)
+                lol = len(polygon_points)
+                lololo = len(c)
                 x, y, w, h = cv2.boundingRect(polygon_points)
+                cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.putText(color_img, 'zone de depot detecte', (x, y + 27), 0, 0.3, (0, 255, 0))
+                return TargetZone((x, y, w, h))
+            elif area >= 20 and area <= 100 and len(polygon_points) == 4:
+                x, y, w, h = cv2.boundingRect(polygon_points)
+                cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.putText(color_img, 'zone de depot detecte', (x, y + 27), 0, 0.3, (0, 255, 0))
                 return TargetZone((x, y, w, h))
 
         if found == False:
