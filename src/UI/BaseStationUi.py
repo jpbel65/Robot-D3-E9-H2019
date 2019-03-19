@@ -24,6 +24,7 @@ import threading
 
 class BaseStation(BaseWidget, QtCore.QObject):
     data_log = True
+    imagetest = "picture_1280_720_0.jpg"
 
     def __init__(self):
         super(BaseStation, self).__init__('Station de base')
@@ -67,7 +68,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.camera_monde = CameraMonde(self.textPlayer)
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
-        self.vision = MainController
+        self.vision = MainController()
 
         self.draw_playgroung.draw_robot(8, 3)
 
@@ -75,8 +76,10 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.web_socket.thread_start_comm_web()
 
     def button_reset_action(self):
-        image = self.getImage
-        self.vision.detectWorldElement(image)
+        #image = self.getImage
+        image = cv2.imread(self.imagetest)
+        world = self.vision.detectWorldElement(image)
+        print(world.__getattribute__("___axisX"))
         #cv2.imshow("capture", image)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)

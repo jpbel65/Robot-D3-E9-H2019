@@ -3,8 +3,8 @@
 # HSV COLOR
 import numpy as np
 
-LOWER_BLACK_HSV = np.array([45, 45, 100])
-UPPER_BLACK_HSV = np.array([80, 255, 255])
+LOWER_BLACK_HSV = np.array([0, 0, 0])
+UPPER_BLACK_HSV = np.array([180, 255, 110])
 
 LOWER_GREEN_HSV = np.array([140, 20, 70])
 UPPER_GREEN_HSV = np.array([170, 255, 255])

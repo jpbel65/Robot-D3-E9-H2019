@@ -11,6 +11,7 @@ from Domain.CircleDetector import CircleDetector
 from Domain.ObstaclesDetector import ObstaclesDetector
 from Domain.ZoneDetector import ZoneDetector
 from Domain.HSVColorsAndConfig import *
+from Domain.World import World
 import numpy as np
 import cv2
 
@@ -19,7 +20,7 @@ class ShapeNotValidError(Exception):
     pass
 
 
-class VisionController():
+class VisionController:
 
     def __init__(self):
         self._robotDetector = None
@@ -75,10 +76,12 @@ class VisionController():
             image = cv2.medianBlur(image, ksize=1)
 
             table = self._zoneDetector_.detectTable(image)
-            x1,y1,w1,h1=table.getOriginX(),table.getOriginY(),table.getWidth(),table.getHeight()
+            x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
             obstacles = self._obstaclesDetector_.detect(image.copy(), cv2.COLOR_BGR2GRAY)
-            zones = self._zoneDetector_.detect(crop_img,table)
+            zones = self._zoneDetector_.detect(crop_img, table)
+            world = World(table, zones, obstacles)
+            return world
 
 
 

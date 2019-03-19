@@ -7,12 +7,12 @@ from Domain import ScaleConverter
 from Domain import Robot
 
 
-class MainController():
+class MainController:
 
     def __init__(self):
         self._robotController = None
         self._table = None
-        self._visionController = VisionController
+        self._visionController = VisionController()
         self._trajectoryMapper = None
         self._trajectoryCalculator = None
         self._pieceToTakeInfo = None
@@ -34,5 +34,5 @@ class MainController():
         pass
 
     def detectWorldElement(self, image):
-        world = self.visionController.detectEntities(image)
-        pass
+        world = self._visionController.detectEntities(image)
+        return world
