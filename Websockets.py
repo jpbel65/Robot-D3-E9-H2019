@@ -21,12 +21,12 @@ def Connection_Routeur():
     return False
 
 
-start_server = websockets.serve(hello, '192.168.1.37', 8765)
+start_server = websockets.serve(hello, 'localhost', 8765)
 
 #connection = False
 #while(connection == False) :
    # connection = Connection_Routeur()
 
-
+print("ready")
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

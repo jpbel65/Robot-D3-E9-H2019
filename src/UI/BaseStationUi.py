@@ -25,7 +25,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
     data_log = True
 
     def __init__(self):
-        super(BaseStationUi, self).__init__('Station de base')
+        super(BaseStation, self).__init__('Station de base')
 
         #Definition of the forms fields
         self.textArea = ControlTextArea('Log')
@@ -73,7 +73,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.web_socket.thread_start_comm_web()
 
     def button_reset_action(self):
-        image = BaseStationUi.getImage()
+        image = BaseStation.getImage()
         cv2.imshow("capture", image)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)
@@ -115,4 +115,4 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
 
 if __name__ == "__main__":
-    pyforms.start_app(BaseStationUi)
+    pyforms.start_app(BaseStation)
