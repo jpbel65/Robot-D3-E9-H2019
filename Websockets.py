@@ -25,7 +25,7 @@ async def pong(websocket, path):
     if path == "ping":
         await websocket.send("pong")
 
-start_server = websockets.serve(hello, 'localhost', 8765)
+start_server = websockets.serve(hello, '192.168.1.37', 8765)
 start_server_pong = websockets.serve(pong, 'localhost', 7654)
 
 
