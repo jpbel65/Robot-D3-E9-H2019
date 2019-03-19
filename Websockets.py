@@ -21,19 +21,12 @@ def Connection_Routeur():
     return False
 
 
-async def pong(websocket, path):
-    if path == "ping":
-        await websocket.send("pong")
-
 start_server = websockets.serve(hello, '192.168.1.37', 8765)
-start_server_pong = websockets.serve(pong, 'localhost', 7654)
-
 
 #connection = False
 #while(connection == False) :
    # connection = Connection_Routeur()
-    
-#start_server = websockets.serve(hello, "192.168.1.38", 8765)
+
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

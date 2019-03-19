@@ -129,10 +129,10 @@ if (nPatternFound > 1):
         error = cv2.norm(imgpoints[i],imgpoints2, cv2.NORM_L2)/len(imgpoints2)
         mean_error += error
 
-    print "total error: ", mean_error/len(objpoints)
+    print ("total error: ", mean_error/len(objpoints))
 
 else:
-    print "In order to calibrate you need at least 9 good pictures... try again"
+    print ("In order to calibrate you need at least 9 good pictures... try again")
 
 
 

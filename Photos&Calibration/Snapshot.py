@@ -34,7 +34,7 @@ def save_snaps(width=0, height=0, name="snapshot", folder=".", raspi=False):
     cap.set(cv2.CAP_PROP_FPS, 15)
 
     if width > 0 and height > 0:
-        print "Setting the custom Width and Height"
+        print("Setting the custom Width and Height")
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     try:
@@ -63,7 +63,7 @@ def save_snaps(width=0, height=0, name="snapshot", folder=".", raspi=False):
         if key == ord('q'):
             break
         if key == ord(' '):
-            print "Saving image ", nSnap
+            print ("Saving image ", nSnap)
             cv2.imwrite("%s%d.jpg" % (fileName, nSnap), frame)
             nSnap += 1
 
@@ -73,8 +73,8 @@ def save_snaps(width=0, height=0, name="snapshot", folder=".", raspi=False):
 
 def main():
     # ---- DEFAULT VALUES ---
-    SAVE_FOLDER = "/home/jonathan/Desktop/images/embarque"
-    FILE_NAME = "snapshot"
+    SAVE_FOLDER = "/home/jonathan/Desktop/Project/Robot-D3-E9-H2019/Photos&Calibration/calib/Calibration-14mars"
+    FILE_NAME = "picture_serie2"
     FRAME_WIDTH = 0
     FRAME_HEIGHT = 0
 
@@ -95,7 +95,7 @@ def main():
 
     save_snaps(width=args.dwidth, height=args.dheight, name=args.name, folder=args.folder, raspi=args.raspi)
 
-    print "Files saved"
+    print ("Files saved")
 
 
 if __name__ == "__main__":
