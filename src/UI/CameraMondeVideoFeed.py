@@ -32,10 +32,10 @@ class CameraMonde:
         self.capture.release()
 
     def nextImage(self):
-        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1200);
-        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 760);
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 760)
         self.capture.set(cv2.CAP_PROP_FPS, 15)
-        ret,frame=self.capture.read()
+        ret, frame = self.capture.read()
         return frame
 
 

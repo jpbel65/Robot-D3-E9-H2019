@@ -8,10 +8,11 @@ from pyforms.controls import ControlImage
 from pyforms.controls import ControlButton
 
 
-from src.UI.Communication import Communicate
-from src.UI.WebSockeCommunicationt import WebSocket
-from src.UI.CameraMondeVideoFeed import CameraMonde
-from src.UI.MapRender import DrawPlayground
+from UI.Communication import Communicate
+from UI.WebSockeCommunicationt import WebSocket
+from UI.CameraMondeVideoFeed import CameraMonde
+from UI.MapRender import DrawPlayground
+from Application.MainController import MainController
 
 
 import numpy as np
@@ -66,6 +67,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.camera_monde = CameraMonde(self.textPlayer)
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
+        self.vision = MainController
 
         self.draw_playgroung.draw_robot(8, 3)
 
@@ -73,8 +75,9 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.web_socket.thread_start_comm_web()
 
     def button_reset_action(self):
-        image = BaseStation.getImage()
-        cv2.imshow("capture", image)
+        image = self.getImage
+        self.vision.detectWorldElement(image)
+        #cv2.imshow("capture", image)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)
         self.draw_playgroung.post_playgroung(return_data)

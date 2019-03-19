@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from src.Service.PiVisionController import PiVisionController
-from src.Service import TourelleController
-from src.Service import ArmController
-from src.Application import MainController
-from src.Service.QrCalculator import QrCalculator
+from Service.PiVisionController import PiVisionController
+from Service import TourelleController
+from Service import ArmController
+from Application import MainController
+from Service.QrCalculator import QrCalculator
 
 
 class RobotController():

@@ -12,7 +12,7 @@ class MainController():
     def __init__(self):
         self._robotController = None
         self._table = None
-        self._visionController = VisionController()
+        self._visionController = VisionController
         self._trajectoryMapper = None
         self._trajectoryCalculator = None
         self._pieceToTakeInfo = None
