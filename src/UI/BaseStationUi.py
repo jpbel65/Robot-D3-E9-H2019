@@ -17,20 +17,22 @@ from Application.MainController import MainController
 
 import numpy as np
 from PyQt5 import QtCore, QtGui
-import keyboard
+import time
 from time import sleep
 import threading
 
 
 class BaseStation(BaseWidget, QtCore.QObject):
-    data_log = True
+    thread_off = False
     imagetest = "picture_1280_720_0.jpg"
+    timer = 0
 
     def __init__(self):
         super(BaseStation, self).__init__('Station de base')
 
         #Definition of the forms fields
         self.textArea = ControlTextArea('Log')
+        self.textTimer = ControlText('Timer')
         self.textState = ControlText('État')
         self.textVolt = ControlText('Voltage')
         self.textPos = ControlText('Position')
@@ -43,6 +45,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.formset = ['', '||', 'textArea', '||',
                         (('textState', '||', 'textPiece'), '=',
                          ('textVolt', '||', 'textPos'), '=',
+                         ('textTimer'), '=',
                          ('buttonLog', '||', 'buttonReset'), '=',
                          ('textPlayer', '||', 'textImage')), '||', '', '=', '']
 
@@ -63,6 +66,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.thread_com_piece.speak[str].connect(self.update_piece)
         self.thread_com_image = Communicate()
         self.thread_com_image.speak[np.ndarray].connect(self.update_image)
+        self.thread_com_timer = Communicate()
+        self.thread_com_timer.speak[str].connect(self.update_timer)
 
         self.web_socket = WebSocket(self.textArea, self)
         self.camera_monde = CameraMonde(self.textPlayer)
@@ -73,13 +78,14 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.draw_playgroung.draw_robot(8, 3)
 
     def button_log_action(self):
+        self.thread_start_timer()
         self.web_socket.thread_start_comm_web()
 
     def button_reset_action(self):
         #image = self.getImage
         image = cv2.imread(self.imagetest)
         world = self.vision.detectWorldElement(image)
-        print(world.__getattribute__("___axisX"))
+        print(world)
         #cv2.imshow("capture", image)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)
@@ -109,9 +115,28 @@ class BaseStation(BaseWidget, QtCore.QObject):
     def update_image(self, image):
         self.textImage.value = image
 
+    @QtCore.pyqtSlot(str, name='update_timer')
+    def update_timer(self, timer):
+        self.textTimer.value = timer
+
+    def thread_start_timer(self):
+        """Button action event"""
+        t5 = threading.Thread(target=self.start_timer)
+        t5.start()
+
+    def start_timer(self):
+        start = np.around(time.time())
+        while True:
+            if self.thread_off is True:
+                break
+            now = np.around(time.time())
+            self.timer = now-start
+            self.thread_com_timer.speak[str].emit(str(now-start))
+            sleep(1)
+
     def before_close_event(self):
         self.camera_monde.stop_camera_thread()
-        self.data_log = False
+        self.thread_off = True
 
     def getImage(self):
         return self.camera_monde.nextImage()

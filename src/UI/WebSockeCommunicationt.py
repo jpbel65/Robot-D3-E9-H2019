@@ -21,7 +21,7 @@ class WebSocket:
             go = "go"
             await websocket.send(go)
             ret_log = self.log_message(go)
-            self.path.append("l,l,u")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
+            #self.path.append("l,l,u")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
             ready = await websocket.recv()
             if ready == "ok, je vais ou":
                 self.log_message(ready)
@@ -42,7 +42,7 @@ class WebSocket:
     def thread_start_comm_web(self):
         t2 = threading.Thread(target=self.async_run_comm_web)
         t2.start()
-        t2.join()
+        #t2.join()
 
     def async_run_comm_web(self):
         asyncio.run(self.start_communication_web())
@@ -58,7 +58,7 @@ class WebSocket:
             self.textArea.value = self.logResult
 
     def log_message(self, message):
-        self.logResult += message + "\n"
+        self.logResult += str(self.station.timer) + " : " + message + "\n"
         self.station.thread_com_log.speak[str].emit(self.logResult)
         return self.logResult
 
