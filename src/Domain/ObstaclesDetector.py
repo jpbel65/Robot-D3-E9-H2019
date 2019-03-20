@@ -23,13 +23,13 @@ class ObstaclesDetector(WorldEntityDetector):
         j = 0
         base = []
         for i in circles[0, :]:
-            base.append((i[0], i[1]))
+            base.append((i[0], i[1],i[2]))
         circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 100, param1=70, param2=20, minRadius=40, maxRadius=60)
         circles = np.int64(np.around(circles))
         haut = []
         for i in circles[0, :]:
             print(j)
-            haut.append((i[0], i[1]))
+            haut.append((i[0], i[1],i[2]))
         for x in base:
             for y in haut:
                 dis = math.sqrt((x[0] - y[0]) ** 2 + (y[1] - y[1]) ** 2)

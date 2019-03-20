@@ -5,10 +5,10 @@ from typing import Any
 
 class World(object):
 	def __init__(self, table, zones, obstacles):
-		self.___axisX = table.getOriginX
-		self.___axisY = table.getOriginY
-		self.___width = table.getWidth
-		self.___height = table.getHeight
+		self.___axisX = table.getOriginX()
+		self.___axisY = table.getOriginY()
+		self.___width = table.getWidth()
+		self.___height = table.getHeight()
 		self.___shapes = None
 		self.___obstacles = obstacles
 		self.___targetZone = zones[2]

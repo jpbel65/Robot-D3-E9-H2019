@@ -71,22 +71,22 @@ class VisionController:
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
     def detectEntities(self, image):
-        try:
+       # try:
             image = cv2.GaussianBlur(image, (5, 5), 0)
             image = cv2.medianBlur(image, ksize=1)
 
             table = self._zoneDetector_.detectTable(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
-            obstacles = self._obstaclesDetector_.detect(image.copy(), cv2.COLOR_BGR2GRAY)
+            obstacles = self._obstaclesDetector_.detect(crop_img)
             zones = self._zoneDetector_.detect(crop_img, table)
             world = World(table, zones, obstacles)
             return world
 
 
 
-        except Exception as e:
-            print("impossibe de detecter les zones: {}".format(type(e).__name__))
+       # except Exception as e:
+          #  print("impossibe de detecter les zones: {}".format(type(e).__name__))
 
     def processImage(self, image):
         image = cv2.GaussianBlur(image, (5, 5), 0)

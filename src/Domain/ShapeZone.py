@@ -7,5 +7,8 @@ class ShapeZone(Zone):
 	def getDimensions(self):
 		pass
 
-	def __init__(self):
-		pass
+	def __init__(self,x,y,w,h):
+		self._center =( x,y)
+		self._width= w
+		self._height = h
+

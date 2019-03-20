@@ -7,6 +7,8 @@ class TargetZone():
 	def getDimensions(self):
 		pass
 
-	def __init__(self):
-		self._unnamed_World_ = None
+	def __init__(self,coord):
+		self.center= (coord[0],coord[1])
+		self.width= coord[2]
+		self.hieght = coord[3]
 
