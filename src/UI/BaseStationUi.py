@@ -85,7 +85,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         #image = self.getImage
         image = cv2.imread(self.imagetest)
         world = self.vision.detectWorldElement(image)
-        print(world)
+        print(world._axisX)
         #cv2.imshow("capture", image)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)
