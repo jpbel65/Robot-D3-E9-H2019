@@ -1,10 +1,3 @@
-def centimetersToCoords(meters):
-    return int(meters*RATIO)
-
-
-def coordToCentimeters(coord):
-    return int(coord/RATIO)
-
 
 class Node():
     def __init__(self, parent=None, position=None):
@@ -83,96 +76,98 @@ def astar(maze, start, end):
             open_list.append(child)
 
 
-TABLE_WIDTH = 111
+class PathFinding:
+    TABLE_WIDTH = 111
 
-TABLE_LENGTH = 231
+    TABLE_LENGTH = 231
 
-ROBOT_WIDTH = 22
-ROBOT_LENGHT = 22
+    ROBOT_WIDTH = 22
+    ROBOT_LENGHT = 22
 
-OBSTACLE_WIDTH = 13
+    OBSTACLE_WIDTH = 13
 
-RATIO = 0.2
+    RATIO = 0.2
 
-yCells = int(TABLE_WIDTH * RATIO)  # 101 208
-xCells = int(TABLE_LENGTH * RATIO)  # 303 625
+    yCells = int(TABLE_WIDTH * RATIO)  # 101 208
+    xCells = int(TABLE_LENGTH * RATIO)  # 303 625
+
+    def centimetersToCoords(self, meters):
+        return int(meters * self.RATIO)
+
+    def coordToCentimeters(self, coord):
+        return int(coord / self.RATIO)
+
+    def createTable(self, x, y):
+        table = []
+        for i in range(y):
+            array = []
+            for j in range(x):
+                array.insert(0,' ')
+
+            table.insert(0,array)
+        return table
+
+    def addWallsToTable(self, table):
+        y = len(table)
+        x = len(table[0])
+        for i in range(x):
+            table[0][i] = 'W'
+            table[y-1][i] ='W'
+
+        for j in range(y):
+            table[j][0] = 'W'
+            table[j][x-1] = 'W'
+
+    def addObstacle(self, y, x, table):
+        initialX = int(x*self.RATIO)
+        initialY = int(y*self.RATIO)
+        obstacleRay = self.OBSTACLE_WIDTH / 2
+
+        table[initialY][initialX] = 'W'
+
+        for i in range(len(table)):
+            for j in range(len(table[0])):
+                deltaX = (x-j/self.RATIO)
+                deltaY = (y-i/self.RATIO)
+                if deltaX**2+deltaY**2 < obstacleRay**2 :
+                    table[i][j]= 'W'
+
+    def addSpacing(self, table):
+        robotRay = self.ROBOT_LENGHT/2
+        for i in range(len(table)):
+            for j in range(len(table[0])):
+                if table[i][j] is 'W':
+
+                    for k in range(len(table)):
+                        for l in range(len(table[0])):
+                            if table[k][l] is not 'W' and table[k][l] is not 'o':
+                                deltaX = (l/self.RATIO - j / self.RATIO)
+                                deltaY = (k/self.RATIO - i / self.RATIO)
+                                if deltaX**2+deltaY**2 < robotRay**2 :
+                                    table[k][l] = 'o'
+
+    def movementsInCm(self, cellMovements):
+        cmMovements = []
+        for i in cellMovements:
+            cmMovements.append((self.coordToCentimeters(i[0]), self.coordToCentimeters(i[1])))
+        return cmMovements
+
+    def getTestTable(self):
+        testTable = self.createTable(self.xCells, self.yCells)
+
+        self.addWallsToTable(testTable)
+        self.addObstacle(50, 50, testTable)
+        self.addObstacle(50, 130, testTable)
+
+        self.addSpacing(testTable)
+
+        cellMovements = astar(testTable, (self.centimetersToCoords(30), self.centimetersToCoords(30)),
+                                         (self.centimetersToCoords(70), self.centimetersToCoords(180)))
+
+        return self.movementsInCm(cellMovements)
 
 
-def createTable(x, y):
-    table = []
-    for i in range(y):
-        array = []
-        for j in range(x):
-            array.insert(0,' ')
-
-        table.insert(0,array)
-    return table
-
-
-def addWallsToTable(table):
-    y = len(table)
-    x = len(table[0])
-    for i in range(x):
-        table[0][i] = 'W'
-        table[y-1][i] ='W'
-
-    for j in range(y):
-        table[j][0] = 'W'
-        table[j][x-1] = 'W'
-
-
-def addObstacle(y,x, table):
-    initialX = int(x*RATIO)
-    initialY = int(y*RATIO)
-    obstacleRay = OBSTACLE_WIDTH / 2
-
-    table[initialY][initialX] = 'W'
-
-    for i in range(len(table)):
-        for j in range(len(table[0])):
-            deltaX = (x-j/RATIO)
-            deltaY = (y-i/RATIO)
-            if deltaX**2+deltaY**2 < obstacleRay**2 :
-                table[i][j]= 'W'
-
-
-def addSpacing(table):
-    robotRay = ROBOT_LENGHT/2
-    for i in range(len(table)):
-        for j in range(len(table[0])):
-            if table[i][j] is 'W':
-
-                for k in range(len(table)):
-                    for l in range(len(table[0])):
-                        if table[k][l] is not 'W' and table[k][l] is not 'o':
-                            deltaX = (l/RATIO - j / RATIO)
-                            deltaY = (k/RATIO - i / RATIO)
-                            if deltaX**2+deltaY**2 < robotRay**2 :
-                                table[k][l] = 'o'
-
-
-def movementsInCm(cellMovements):
-    cmMovements = []
-    for i in cellMovements:
-        cmMovements.append((coordToCentimeters(i[0]), coordToCentimeters(i[1])))
-    return cmMovements
-
-
-def getTestTable():
-    testTable = createTable(xCells, yCells)
-
-    addWallsToTable(testTable)
-    addObstacle(50, 50, testTable)
-    addObstacle(50, 130, testTable)
-
-    addSpacing(testTable)
-
-    cellMovements = astar(testTable, (centimetersToCoords(30), centimetersToCoords(30)),
-                                     (centimetersToCoords(70), centimetersToCoords(180)))
-
-    return movementsInCm(cellMovements)
-
-
+'''
 def main():
 
     getTestTable()
@@ -229,3 +224,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+'''

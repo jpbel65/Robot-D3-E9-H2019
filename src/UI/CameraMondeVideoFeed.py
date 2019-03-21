@@ -1,7 +1,7 @@
 import cv2
 import threading
 from scripts.PathDrawer import PathDrawer
-import scripts.PathFinding
+from scripts.PathFinding import PathFinding
 
 
 class CameraMonde:
@@ -11,6 +11,7 @@ class CameraMonde:
         self.textPlayer = camera_window
         self.drawPlannedPath = True
         self.capture = None
+        self.path_finding = PathFinding()
         self.path = self.getPlannedPath()
 
     def start_camera(self):
@@ -56,5 +57,5 @@ class CameraMonde:
         self.stop = True
 
     def getPlannedPath(self):
-        path = PathDrawer(scripts.PathFinding.getTestTable())
+        path = PathDrawer(self.path_finding.getTestTable())
         return path.getPixelatedPath()

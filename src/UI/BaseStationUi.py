@@ -13,6 +13,7 @@ from UI.WebSockeCommunicationt import WebSocket
 from UI.CameraMondeVideoFeed import CameraMonde
 from UI.MapRender import DrawPlayground
 from Application.MainController import MainController
+from scripts.PathFinding import PathFinding
 
 
 import numpy as np
@@ -74,6 +75,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
         self.vision = MainController()
+        self.path_finding = PathFinding()
 
         self.draw_playgroung.draw_robot(8, 3)
 
@@ -87,6 +89,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
         world = self.vision.detectWorldElement(image)
         print(world._axisX)
         #cv2.imshow("capture", image)
+        test = self.path_finding.getTestTable()
+        print(test)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)
         self.draw_playgroung.post_playgroung(return_data)
