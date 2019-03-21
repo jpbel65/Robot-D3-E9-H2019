@@ -174,12 +174,29 @@ class PathFinding:
                                          (self.centimetersToCoords(70), self.centimetersToCoords(180)))
 
         self.actual_path = self.movementsInCm(cellMovements)
-        self.path_websocket.append(str(self.actual_path))
+        test = self.Array_to_str_path(self.actual_path)
+        self.path_websocket.append(test)
         return self.actual_path
 
     def thread_start_pathfinding(self):
         t = threading.Thread(target=self.getTestTable)
         t.start()
+
+    def Array_to_str_path(self, path_array):
+        return_value = str()
+        for i in range(1, len(path_array)):
+            start = path_array[i-1]
+            diffX = path_array[i][0]-start[0]
+            diffY = path_array[i][1]-start[1]
+            if diffY > 0:
+                return_value = return_value + "r"
+            if diffY < 0:
+                return_value = return_value + "l"
+            if diffX > 0:
+                return_value = return_value + "d"
+            if diffX < 0:
+                return_value = return_value + "u"
+        return return_value
 
 
 '''
