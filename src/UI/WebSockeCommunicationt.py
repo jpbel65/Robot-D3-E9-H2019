@@ -22,6 +22,7 @@ class WebSocket:
             await websocket.send(go)
             ret_log = self.log_message(go)
             #self.path.append("l,l,u")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
+            self.station.path_finding.thread_start_pathfinding()
             ready = await websocket.recv()
             if ready == "ok, je vais ou":
                 self.log_message(ready)

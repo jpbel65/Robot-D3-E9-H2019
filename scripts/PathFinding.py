@@ -1,4 +1,4 @@
-
+import threading
 
 class Node():
     def __init__(self, parent=None, position=None):
@@ -87,17 +87,18 @@ class PathFinding:
 
     #yCells = int(TABLE_WIDTH * RATIO)  # 101 208
     #xCells = int(TABLE_LENGTH * RATIO)  # 303 625
+    actual_path = None
 
-    def __init__(self, world, robot_width, robot_lenght, obstacle_width, ratio):
-        self.TABLE_WIDTH = world._width
-        self.TABLE_LENGTH = world._height
+    def __init__(self, world, robot_width, robot_lenght, obstacle_width, ratio, path_box):
+        self.TABLE_WIDTH = 111#world._width
+        self.TABLE_LENGTH = 231#world._height
         self.ROBOT_WIDTH = robot_width
         self.ROBOT_LENGHT = robot_lenght
         self.OBSTACLE_WIDTH = obstacle_width
         self.RATIO = ratio
         self.yCells = int(self.TABLE_WIDTH * self.RATIO)  # 101 208
         self.xCells = int(self.TABLE_LENGTH * self.RATIO)  # 303 625
-
+        self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
 
     def centimetersToCoords(self, meters):
         return int(meters * self.RATIO)
@@ -172,7 +173,13 @@ class PathFinding:
         cellMovements = astar(testTable, (self.centimetersToCoords(30), self.centimetersToCoords(30)),
                                          (self.centimetersToCoords(70), self.centimetersToCoords(180)))
 
-        return self.movementsInCm(cellMovements)
+        self.actual_path = self.movementsInCm(cellMovements)
+        self.path_websocket.append(str(self.actual_path))
+        return self.actual_path
+
+    def thread_start_pathfinding(self):
+        t = threading.Thread(target=self.getTestTable)
+        t.start()
 
 
 '''

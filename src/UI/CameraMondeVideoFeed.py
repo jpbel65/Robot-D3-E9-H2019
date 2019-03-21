@@ -12,7 +12,7 @@ class CameraMonde:
         self.drawPlannedPath = True
         self.capture = None
         self.world = world
-        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2)
+        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, [])#le array vide est la pour le constructeur de pathfinder
         self.path = self.getPlannedPath()
 
     def start_camera(self):
@@ -26,6 +26,7 @@ class CameraMonde:
             if ret is True:
 
                 self.textPlayer.frame = frame
+
                 if self.drawPlannedPath:
                     for i in self.path:
                         if i != self.path[-1]:
