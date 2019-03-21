@@ -1,5 +1,7 @@
 import cv2
 import threading
+from scripts.PathDrawer import PathDrawer
+import scripts.PathFinding
 
 
 class CameraMonde:
@@ -7,7 +9,9 @@ class CameraMonde:
 
     def __init__(self, camera_window):
         self.textPlayer = camera_window
+        self.drawPlannedPath = True
         self.capture = None
+        self.path = self.getPlannedPath()
 
     def start_camera(self):
         self.capture = cv2.VideoCapture(0)
@@ -20,7 +24,12 @@ class CameraMonde:
             if ret is True:
 
                 self.textPlayer.frame = frame
-
+                if self.drawPlannedPath:
+                    for i in self.path:
+                        if i != self.path[-1]:
+                            cv2.line(frame, (i[1], i[0]),
+                                     (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125,
+                                     2)
                 if self.stop is True:
                     break
 
@@ -38,7 +47,6 @@ class CameraMonde:
         ret, frame = self.capture.read()
         return frame
 
-
     def thread_start_camera(self):
         """Button action event"""
         t = threading.Thread(target=self.start_camera)
@@ -46,3 +54,7 @@ class CameraMonde:
 
     def stop_camera_thread(self):
         self.stop = True
+
+    def getPlannedPath(self):
+        path = PathDrawer(scripts.PathFinding.getTestTable())
+        return path.getPixelatedPath()

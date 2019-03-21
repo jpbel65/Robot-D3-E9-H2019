@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c67deb-7996-4ba4-abef-7b3b42905786" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/PathFinding.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/PathFinding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,18 +13,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Websockets.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -44,8 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-97">
-              <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+            <state relative-caret-position="85">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -54,13 +43,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Application/MainController.py">
+        <entry file="file://$PROJECT_DIR$/../AppData/Local/Programs/Python/Python37-32/Lib/threading.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="114">
+              <caret line="864" selection-start-line="864" selection-end-line="864" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/PathDrawer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../design3-h2019/scripts/DrawPlayground.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="50" lean-forward="true" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -135,7 +139,6 @@
         <option value="$PROJECT_DIR$/Websockets.py" />
         <option value="$PROJECT_DIR$/src/Service/RobotController.py" />
         <option value="$PROJECT_DIR$/src/Service/PiVisionController.py" />
-        <option value="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" />
         <option value="$PROJECT_DIR$/src/Domain/ZoneDetector.py" />
         <option value="$PROJECT_DIR$/src/Application/VisionController.py" />
         <option value="$PROJECT_DIR$/src/Application/MainController.py" />
@@ -143,6 +146,7 @@
         <option value="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" />
         <option value="$PROJECT_DIR$/src/Domain/World.py" />
         <option value="$PROJECT_DIR$/src/UI/BaseStationUi.py" />
+        <option value="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" />
       </list>
     </option>
   </component>
@@ -228,7 +232,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Websockets">
+  <component name="RunManager" selected="Python.BaseStationUi">
     <configuration name="BaseStationUi" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Robot-D3-E9-H2019" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -504,10 +508,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../design3-h2019/scripts/DrawPlayground.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="50" lean-forward="true" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../design3-h2019/CameraMonde.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathDrawer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../AppData/Local/Programs/Python/Python37-32/Lib/threading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="864" selection-start-line="864" selection-end-line="864" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-97">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+        <state relative-caret-position="85">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
