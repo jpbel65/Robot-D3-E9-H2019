@@ -1,4 +1,5 @@
 
+
 class Node():
     def __init__(self, parent=None, position=None):
         self.parent = parent
@@ -77,19 +78,26 @@ def astar(maze, start, end):
 
 
 class PathFinding:
-    TABLE_WIDTH = 111
+    #TABLE_WIDTH = 111
+    #TABLE_LENGTH = 231
+    #ROBOT_WIDTH = 22
+    #ROBOT_LENGHT = 22
+    #OBSTACLE_WIDTH = 13
+    #RATIO = 0.2
 
-    TABLE_LENGTH = 231
+    #yCells = int(TABLE_WIDTH * RATIO)  # 101 208
+    #xCells = int(TABLE_LENGTH * RATIO)  # 303 625
 
-    ROBOT_WIDTH = 22
-    ROBOT_LENGHT = 22
+    def __init__(self, world, robot_width, robot_lenght, obstacle_width, ratio):
+        self.TABLE_WIDTH = world._width
+        self.TABLE_LENGTH = world._height
+        self.ROBOT_WIDTH = robot_width
+        self.ROBOT_LENGHT = robot_lenght
+        self.OBSTACLE_WIDTH = obstacle_width
+        self.RATIO = ratio
+        self.yCells = int(self.TABLE_WIDTH * self.RATIO)  # 101 208
+        self.xCells = int(self.TABLE_LENGTH * self.RATIO)  # 303 625
 
-    OBSTACLE_WIDTH = 13
-
-    RATIO = 0.2
-
-    yCells = int(TABLE_WIDTH * RATIO)  # 101 208
-    xCells = int(TABLE_LENGTH * RATIO)  # 303 625
 
     def centimetersToCoords(self, meters):
         return int(meters * self.RATIO)
@@ -102,9 +110,9 @@ class PathFinding:
         for i in range(y):
             array = []
             for j in range(x):
-                array.insert(0,' ')
+                array.insert(0, ' ')
 
-            table.insert(0,array)
+            table.insert(0, array)
         return table
 
     def addWallsToTable(self, table):
@@ -112,7 +120,7 @@ class PathFinding:
         x = len(table[0])
         for i in range(x):
             table[0][i] = 'W'
-            table[y-1][i] ='W'
+            table[y-1][i] = 'W'
 
         for j in range(y):
             table[j][0] = 'W'

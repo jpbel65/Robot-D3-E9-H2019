@@ -28,7 +28,7 @@ class ObstaclesDetector(WorldEntityDetector):
         circles = np.int64(np.around(circles))
         haut = []
         for i in circles[0, :]:
-            print(j)
+            #print(j)
             haut.append((i[0], i[1],i[2]))
         for x in base:
             for y in haut:

@@ -17,6 +17,7 @@ class World(object):
 		self._startZone = zones[0]
 		self._chargeZone = None
 		self._tableZone = table
+		self._ratioPixelCm = ((self._height/111)+(self._width/231))/2
 
 	def set_shapes(self, shapes):
 		self._shapes = shapes

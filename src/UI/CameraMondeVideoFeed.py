@@ -7,11 +7,12 @@ from scripts.PathFinding import PathFinding
 class CameraMonde:
     stop = False
 
-    def __init__(self, camera_window):
+    def __init__(self, camera_window, world):
         self.textPlayer = camera_window
         self.drawPlannedPath = True
         self.capture = None
-        self.path_finding = PathFinding()
+        self.world = world
+        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2)
         self.path = self.getPlannedPath()
 
     def start_camera(self):

@@ -70,12 +70,20 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.thread_com_timer = Communicate()
         self.thread_com_timer.speak[str].connect(self.update_timer)
 
+        self.vision = MainController()
+
+        # debut visison/pathfinding
+        # image = self.getImage
+        image = cv2.imread(self.imagetest)
+        self.world = self.vision.detectWorldElement(image)
+        # cv2.imshow("capture", image)
+        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2)
+
         self.web_socket = WebSocket(self.textArea, self)
-        self.camera_monde = CameraMonde(self.textPlayer)
+        self.camera_monde = CameraMonde(self.textPlayer, self.world)
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
-        self.vision = MainController()
-        self.path_finding = PathFinding()
+
 
         self.draw_playgroung.draw_robot(8, 3)
 
@@ -84,11 +92,6 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.web_socket.thread_start_comm_web()
 
     def button_reset_action(self):
-        #image = self.getImage
-        image = cv2.imread(self.imagetest)
-        world = self.vision.detectWorldElement(image)
-        print(world._axisX)
-        #cv2.imshow("capture", image)
         test = self.path_finding.getTestTable()
         print(test)
         print("reset")
