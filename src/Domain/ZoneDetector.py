@@ -39,10 +39,11 @@ class ZoneDetector(WorldEntityDetector):
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         StartZone = self.detectStartZone(image_copy)
         zones.append(StartZone)
-        shapeZone = self.detectShapeZone(image_copy, w1, h1)
-        zones.append(shapeZone)
         deposit = self.detectTargetZone(image)
         zones.append(deposit)
+        shapeZone = self.detectShapeZone(image_copy, w1, h1)
+        zones.append(shapeZone)
+
         return zones
 
     def detectTable(self, image):
@@ -74,9 +75,6 @@ class ZoneDetector(WorldEntityDetector):
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = sorted(contours, key=cv2.contourArea, reverse=True)[:15]
         table_found = False
-        contour_length = cv2.arcLength(contours[0], True)
-        polygon_points = cv2.approxPolyDP(contours[0], 0.02 * contour_length, True)
-        area = cv2.contourArea(polygon_points)
         for c in contours :
             contour_length = cv2.arcLength(c, True)
             polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
