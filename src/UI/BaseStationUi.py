@@ -36,6 +36,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.textTimer = ControlText('Timer')
         self.textState = ControlText('État')
         self.textVolt = ControlText('Voltage')
+        self.textCourant = ControlText('Courant')#slot courant
         self.textPos = ControlText('Position')
         self.textPiece = ControlText('Pièce')
         self.textPlayer = ControlPlayer('Playground')
@@ -45,8 +46,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
         self.formset = ['', '||', 'textArea', '||',
                         (('textState', '||', 'textPiece'), '=',
-                         ('textVolt', '||', 'textPos'), '=',
-                         ('textTimer'), '=',
+                         ('textVolt', '||', 'textCourant'), '=',
+                         ('textPos', '||', 'textTimer'), '=',
                          ('buttonLog', '||', 'buttonReset'), '=',
                          ('textPlayer', '||', 'textImage')), '||', '', '=', '']
 
@@ -69,6 +70,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.thread_com_image.speak[np.ndarray].connect(self.update_image)
         self.thread_com_timer = Communicate()
         self.thread_com_timer.speak[str].connect(self.update_timer)
+        self.thread_com_courant = Communicate()
+        self.thread_com_courant.speak[str].connect(self.update_courant)
 
         self.vision = MainController()
         self.web_socket = WebSocket(self.textArea, self)
@@ -123,6 +126,10 @@ class BaseStation(BaseWidget, QtCore.QObject):
     @QtCore.pyqtSlot(str, name='update_timer')
     def update_timer(self, timer):
         self.textTimer.value = timer
+
+    @QtCore.pyqtSlot(str, name='update_courant')
+    def update_courant(self, courant):
+        self.textCourant.value = courant
 
     def thread_start_timer(self):
         """Button action event"""
