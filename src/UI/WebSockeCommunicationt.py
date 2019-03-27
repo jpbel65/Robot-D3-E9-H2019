@@ -28,9 +28,10 @@ class WebSocket:
             if ready == "depart":
                 self.log_message(ready)
                 print("< {ready}")
-                self.send_path(websocket)#fonction
+                await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin start-charge")
+                self.station.thread_com_state.speak[str].emit("Charge")
                 tension = await websocket.recv()
                 self.log_message(tension)
                 self.station.thread_com_volt.speak[str].emit(tension)
@@ -40,31 +41,35 @@ class WebSocket:
                 self.station.thread_com_courant.speak[str].emit(courant)
                 self.path.append("DE050")
                 self.path.append("DO050")
-                self.send_path(websocket)#fonction
+                await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin charge-QR")
+                self.station.thread_com_state.speak[str].emit("Decode QR")
                 QR = await websocket.recv()
                 self.log_message(QR)
                 self.station.thread_com_piece.speak[str].emit(QR)
                 self.path.append("DN090")
                 self.path.append("RH070")
-                self.send_path(websocket)#fonction
+                await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
+                self.station.thread_com_state.speak[str].emit("Recherche de piece")
                 piece = await websocket.recv()
                 self.log_message(piece)
                 self.path.append("DN010")
                 self.path.append("RA030")
-                self.send_path(websocket)#fonction
+                await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
+                self.station.thread_com_state.speak[str].emit("Depo de la piece")
                 drop = await websocket.recv()
                 self.log_message(drop)
                 self.path.append("DS050")
                 self.path.append("RH090")
-                self.send_path(websocket)#fonction
+                await self.send_path(websocket)#fonction
                 await websocket.send("reboot")
                 self.log_message("roboot")
+                self.station.thread_com_state.speak[str].emit("Arrete")
 
                 #self.station.thread_com_volt.speak[str].emit("44")
                 #self.station.thread_com_piece.speak[str].emit("blue triangle")
@@ -72,7 +77,8 @@ class WebSocket:
                 #self.station.thread_com_state.speak[str].emit("progress")
                 #self.station.thread_com_image.speak[np.ndarray].emit(np.zeros((400, 200, 3), dtype=np.uint8))
 
-    def send_path(self, websocket):
+    async def send_path(self, websocket):
+        self.station.thread_com_state.speak[str].emit("Mouvement")
         while not self.path:
             self.log_message("WS empty")
             sleep(2)
