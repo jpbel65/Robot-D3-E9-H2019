@@ -4,8 +4,9 @@ from Domain import World
 
 class Robot(object):
 	def __init__(self):
-		self.___coordinate = None
-		self.___isMoving = None
-		self.___hasShape = None
-		self.___securityRadius = None
+		self._coordinate = None
+		self._isMoving = None
+		self._hasShape = None
+		self._securityRadius = None
+		self._angle = None
 

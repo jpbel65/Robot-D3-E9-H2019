@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c67deb-7996-4ba4-abef-7b3b42905786" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/VisionController.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/VisionController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/Robot.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/Robot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/RobotDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/RobotDetector.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,25 +15,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Websockets.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-349">
-              <caret line="103" column="34" lean-forward="true" selection-start-line="103" selection-start-column="34" selection-end-line="103" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="255">
+              <caret line="121" column="4" lean-forward="true" selection-start-line="121" selection-start-column="4" selection-end-line="124" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -41,11 +28,11 @@
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-97">
-              <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+            <state relative-caret-position="2">
+              <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -69,7 +56,7 @@
         <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="663">
-              <caret line="45" selection-start-line="45" selection-end-line="45" />
+              <caret line="44" selection-start-line="44" selection-end-line="44" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -77,13 +64,34 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Application/VisionController.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1105">
-              <caret line="78" selection-start-line="78" selection-end-line="78" />
+            <state relative-caret-position="1294">
+              <caret line="81" column="36" lean-forward="true" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
               <folding>
                 <element signature="e#42#74#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Domain/Robot.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Domain/RobotDetector.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-561">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+              <folding>
+                <element signature="e#42#82#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -101,8 +109,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Domain/ZoneDetector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="51" column="68" selection-start-line="51" selection-start-column="68" selection-end-line="51" selection-end-column="68" />
+            <state relative-caret-position="731">
+              <caret line="52" column="68" selection-start-line="52" selection-start-column="68" selection-end-line="52" selection-end-column="68" />
             </state>
           </provider>
         </entry>
@@ -137,12 +145,14 @@
         <option value="$PROJECT_DIR$/src/Service/PiVisionController.py" />
         <option value="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" />
         <option value="$PROJECT_DIR$/src/Domain/ZoneDetector.py" />
-        <option value="$PROJECT_DIR$/src/Application/VisionController.py" />
         <option value="$PROJECT_DIR$/src/Application/MainController.py" />
         <option value="$PROJECT_DIR$/src/Domain/HSVColorsAndConfig.py" />
         <option value="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" />
         <option value="$PROJECT_DIR$/src/Domain/World.py" />
         <option value="$PROJECT_DIR$/src/UI/BaseStationUi.py" />
+        <option value="$PROJECT_DIR$/src/Domain/RobotDetector.py" />
+        <option value="$PROJECT_DIR$/src/Domain/Robot.py" />
+        <option value="$PROJECT_DIR$/src/Application/VisionController.py" />
       </list>
     </option>
   </component>
@@ -307,7 +317,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1845238" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1845238" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -331,7 +341,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/UI/BaseStationUi.py</url>
-          <line>89</line>
+          <line>79</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
@@ -447,6 +457,9 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/picture_1280_720_0.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Application/MainController.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -460,20 +473,34 @@
     <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Application/VisionController.py">
+    <entry file="file://$PROJECT_DIR$/src/Domain/ZoneDetector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
+        <state relative-caret-position="731">
+          <caret line="52" column="68" selection-start-line="52" selection-start-column="68" selection-end-line="52" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
           <folding>
-            <element signature="e#42#74#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="121" column="4" lean-forward="true" selection-start-line="121" selection-start-column="4" selection-end-line="124" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -484,32 +511,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Domain/ZoneDetector.py">
+    <entry file="file://$PROJECT_DIR$/src/Domain/RobotDetector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="51" column="68" selection-start-line="51" selection-start-column="68" selection-end-line="51" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/picture_1280_720_0.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-349">
-          <caret line="103" column="34" lean-forward="true" selection-start-line="103" selection-start-column="34" selection-end-line="103" selection-end-column="34" />
+        <state relative-caret-position="-561">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#42#82#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py">
+    <entry file="file://$PROJECT_DIR$/src/Domain/Robot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-97">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+        <state relative-caret-position="102">
+          <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/VisionController.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1294">
+          <caret line="81" column="36" lean-forward="true" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#42#74#0" expanded="true" />
           </folding>
         </state>
       </provider>

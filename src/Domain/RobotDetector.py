@@ -7,11 +7,19 @@ import cv2
 import numpy as np
 import math
 import imutils
+import threading
 
 class RobotDetector(WorldEntityDetector):
 
     def __init__(self):
-        pass
+        self.angle = None
+        self.centerX = None
+        self.centerY = None
+
+    def thread_start_Detector(self, crop_img):
+        """Button action event"""
+        t5 = threading.Thread(target=self.detect, args=crop_img)
+        t5.start()
 
     def detect(self, crop_img):
         image = cv2.GaussianBlur(crop_img, (5, 5), 0)
@@ -45,6 +53,9 @@ class RobotDetector(WorldEntityDetector):
 
                 angle = math.atan2(-dy, dx)
                 angle = np.rad2deg(angle)
+                self.angle = angle
+                self.centerX = centerX
+                self.centerY = centerY
                 return angle, (centerX, centerY)
 
     def getTrianglePeak(self,markers):
