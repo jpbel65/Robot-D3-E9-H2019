@@ -28,18 +28,7 @@ class WebSocket:
             if ready == "depart":
                 self.log_message(ready)
                 print("< {ready}")
-                while not self.path:
-                    self.log_message("WS empty")
-                    if keyboard.is_pressed('q'):
-                        self.path.append("l,l,u")
-                    sleep(5)
-                while self.path:
-                    await websocket.send(self.path[0])
-                    self.log_message(self.path[0])
-                    next = await websocket.recv()
-                    if next == "next":
-                        self.path.remove(self.path[0])
-                        self.log_message(next)
+                self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin start-charge")
                 tension = await websocket.recv()
@@ -51,18 +40,7 @@ class WebSocket:
                 self.station.thread_com_courant.speak[str].emit(courant)
                 self.path.append("DE050")
                 self.path.append("DO050")
-                while not self.path:
-                    self.log_message("WS empty")
-                    if keyboard.is_pressed('q'):
-                        self.path.append("l,l,u")
-                    sleep(5)
-                while self.path:
-                    await websocket.send(self.path[0])
-                    self.log_message(self.path[0])
-                    next = await websocket.recv()
-                    if next == "next":
-                        self.path.remove(self.path[0])
-                        self.log_message(next)
+                self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin charge-QR")
                 QR = await websocket.recv()
@@ -70,57 +48,23 @@ class WebSocket:
                 self.station.thread_com_piece.speak[str].emit(QR)
                 self.path.append("DN090")
                 self.path.append("RH070")
-                while not self.path:
-                    self.log_message("WS empty")
-                    if keyboard.is_pressed('q'):
-                        self.path.append("l,l,u")
-                    sleep(5)
-                while self.path:
-                    await websocket.send(self.path[0])
-                    self.log_message(self.path[0])
-                    next = await websocket.recv()
-                    if next == "next":
-                        self.path.remove(self.path[0])
-                        self.log_message(next)
+                self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
                 piece = await websocket.recv()
                 self.log_message(piece)
                 self.path.append("DN010")
                 self.path.append("RA030")
-                while not self.path:
-                    self.log_message("WS empty")
-                    if keyboard.is_pressed('q'):
-                        self.path.append("l,l,u")
-                    sleep(5)
-                while self.path:
-                    await websocket.send(self.path[0])
-                    self.log_message(self.path[0])
-                    next = await websocket.recv()
-                    if next == "next":
-                        self.path.remove(self.path[0])
-                        self.log_message(next)
+                self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
                 drop = await websocket.recv()
                 self.log_message(drop)
                 self.path.append("DS050")
                 self.path.append("RH090")
-                while not self.path:
-                    self.log_message("WS empty")
-                    if keyboard.is_pressed('q'):
-                        self.path.append("l,l,u")
-                    sleep(5)
-                while self.path:
-                    await websocket.send(self.path[0])
-                    self.log_message(self.path[0])
-                    next = await websocket.recv()
-                    if next == "next":
-                        self.path.remove(self.path[0])
-                        self.log_message(next)
+                self.send_path(websocket)#fonction
                 await websocket.send("reboot")
                 self.log_message("roboot")
-
 
                 #self.station.thread_com_volt.speak[str].emit("44")
                 #self.station.thread_com_piece.speak[str].emit("blue triangle")
@@ -128,10 +72,21 @@ class WebSocket:
                 #self.station.thread_com_state.speak[str].emit("progress")
                 #self.station.thread_com_image.speak[np.ndarray].emit(np.zeros((400, 200, 3), dtype=np.uint8))
 
+    def send_path(self, websocket):
+        while not self.path:
+            self.log_message("WS empty")
+            sleep(2)
+        while self.path:
+            await websocket.send(self.path[0])
+            self.log_message(self.path[0])
+            next = await websocket.recv()
+            if next == "next":
+                self.path.remove(self.path[0])
+                self.log_message(next)
+
     def thread_start_comm_web(self):
         t2 = threading.Thread(target=self.async_run_comm_web)
         t2.start()
-        #t2.join()
 
     def async_run_comm_web(self):
         asyncio.run(self.start_communication_web())
