@@ -3,8 +3,9 @@
 from Domain import World
 from Domain import ObstaclesDetector
 
-class Obstacle():
-	def __init__(self,center,radius):
-		self.___coordinate = center
-		self.___radius = radius
+
+class Obstacle:
+	def __init__(self, center, radius):
+		self._coordinate = center
+		self._radius = radius
 

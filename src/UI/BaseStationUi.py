@@ -75,7 +75,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
 
         # debut visison/pathfinding
-        # image = self.getImage
+        #image = self.getImage
         image = cv2.imread(self.imagetest)
         self.world = self.vision.detectWorldElement(image)
         # cv2.imshow("capture", image)

@@ -94,7 +94,8 @@ class PathFinding:
         self.TABLE_LENGTH = 231#world._height
         self.ROBOT_WIDTH = robot_width
         self.ROBOT_LENGHT = robot_lenght
-        self.OBSTACLE_WIDTH = obstacle_width
+        self.OBSTACLE = world._obstacles
+        self.OBSTACLE_WIDTH = obstacle_width #self.obstacle._radius
         self.RATIO = ratio
         self.yCells = int(self.TABLE_WIDTH * self.RATIO)  # 101 208
         self.xCells = int(self.TABLE_LENGTH * self.RATIO)  # 303 625
@@ -178,8 +179,30 @@ class PathFinding:
         self.path_websocket.append(test)
         return self.actual_path
 
-    def thread_start_pathfinding(self):
-        t = threading.Thread(target=self.getTestTable)
+    def getPath(self, robot, destination):
+        print(robot)
+        print(destination)
+        table = self.createTable(self.xCells, self.yCells)
+
+        self.addWallsToTable(table)
+        #for i in range(0, len(self.OBSTACLE)):
+            #self.addObstacle(self.OBSTACLE[i][0], self.OBSTACLE[i][1], table)
+        self.addObstacle(50, 50, table)
+        self.addObstacle(50, 130, table)
+
+        self.addSpacing(table)
+
+        cellMovements = astar(table,
+                              (self.centimetersToCoords(30), self.centimetersToCoords(30)),  #robot
+                              (self.centimetersToCoords(70), self.centimetersToCoords(180)))  #destination
+
+        self.actual_path = self.movementsInCm(cellMovements)
+        test = self.Array_to_str_path(self.actual_path)
+        self.path_websocket.append(test)
+        return self.actual_path
+
+    def thread_start_pathfinding(self, robot, destination):
+        t = threading.Thread(target=self.getPath, args=(robot, destination))
         t.start()
 
     def Array_to_str_path(self, path_array):
