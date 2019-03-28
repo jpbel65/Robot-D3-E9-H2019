@@ -7,24 +7,29 @@ import numpy as np
 import signal
 
 
-class WebSocket:
+class WebSocket(websockets.WebSocketCommonProtocol):
     logResult = ''
-    path = []
+    #path = []
 
     def __init__(self, log_window, station):
+        super(WebSocket, self).__init__()
         self.textArea = log_window
         self.station = station
+        print(self.ping_interval)
+        print(self.ping_timeout)
+        self.path = []
 
     async def start_communication_web(self):
         async with websockets.connect(
-                'ws://10.248.95.160:8765') as websocket:#10.240.86.202:8765
+                'ws://localhost:8765', ping_interval=70, ping_timeout=10) as websocket:#10.248.95.160
             go = "go"
             await websocket.send(go)
             self.log_message(go)
-            self.path.append("RH045")
-            self.path.append("DN100")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
+            self.path.append("DS001")
+            self.path.append("DN001")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
             #self.station.path_finding.thread_start_pathfinding(123, 32)
             ready = await websocket.recv()
+            print(ready)
             if ready == "depart":
                 self.log_message(ready)
                 print("< {ready}")
@@ -39,8 +44,8 @@ class WebSocket:
                 courant = await websocket.recv()
                 self.log_message(courant)
                 self.station.thread_com_courant.speak[str].emit(courant)
-                self.path.append("DE050")
-                self.path.append("DO050")
+                self.path.append("DE003")
+                self.path.append("DO003")
                 await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin charge-QR")
@@ -48,24 +53,24 @@ class WebSocket:
                 QR = await websocket.recv()
                 self.log_message(QR)
                 self.station.thread_com_piece.speak[str].emit(QR)
-                self.path.append("DN090")
-                self.path.append("RH070")
+                self.path.append("DN006")
+                self.path.append("DS006")
                 await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
                 self.station.thread_com_state.speak[str].emit("Recherche de piece")
                 piece = await websocket.recv()
                 self.log_message(piece)
-                self.path.append("DN010")
-                self.path.append("RA030")
+                self.path.append("DO005")
+                self.path.append("DE005")
                 await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
                 self.station.thread_com_state.speak[str].emit("Depo de la piece")
                 drop = await websocket.recv()
                 self.log_message(drop)
-                self.path.append("DS050")
-                self.path.append("RH090")
+                self.path.append("DS005")
+                self.path.append("DN005")
                 await self.send_path(websocket)#fonction
                 await websocket.send("reboot")
                 self.log_message("roboot")
