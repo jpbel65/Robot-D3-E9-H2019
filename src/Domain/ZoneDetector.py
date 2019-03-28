@@ -39,10 +39,11 @@ class ZoneDetector(WorldEntityDetector):
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         StartZone = self.detectStartZone(image_copy)
         zones.append(StartZone)
-        shapeZone = self.detectShapeZone(image_copy, w1, h1)
-        zones.append(shapeZone)
         deposit = self.detectTargetZone(image)
         zones.append(deposit)
+        shapeZone = self.detectShapeZone(image_copy, w1, h1)
+        zones.append(shapeZone)
+
         return zones
 
     def detectTable(self, image):
@@ -65,6 +66,26 @@ class ZoneDetector(WorldEntityDetector):
         if table_found == "False":
             raise TableZoneNotFoundError
 
+    def detectTableAlternative(self, image):
+        image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
+        mask = cv2.adaptiveThreshold(cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY), 255,
+                                     cv2.THRESH_BINARY, cv2.THRESH_BINARY, 11, 2)
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=2)
+        contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:15]
+        table_found = False
+        for c in contours :
+            contour_length = cv2.arcLength(c, True)
+            polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
+            area = cv2.contourArea(polygon_points)
+            if area >= 600000 and area <= 800000:
+                  x, y, w, h = cv2.boundingRect(polygon_points)
+                  return TableZone((x, y, w, h))
+
+        if table_found == "False":
+            raise TableZoneNotFoundError
+
     def detectStartZone(self, image):
         mask = cv2.inRange(image, np.array([0, 0, 0]), np.array([180, 255, 110]))
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(3, 3))
@@ -79,6 +100,9 @@ class ZoneDetector(WorldEntityDetector):
             area = cv2.contourArea(polygon_points)
             if area >= MIN_START_ZONE_AREA and area < MAX_START_ZONE_AREA:
                 x, y, w, h = cv2.boundingRect(polygon_points)
+                M = cv2.moments(c)
+                centerX = int((M["m10"] / M["m00"]))
+                centerY = int((M["m01"] / M["m00"]))
                 return StartZone(Square((x, y, w, h)))
 
         if square_found == "False":
@@ -103,8 +127,9 @@ class ZoneDetector(WorldEntityDetector):
             area = cv2.contourArea(polygon_points)
             if area >= 5000 and area < 8000 and len(polygon_points) == 4:
                 x, y, w, h = cv2.boundingRect(polygon_points)
-                centerX = (x + w) / 2
-                centerY = (y + h) / 2
+                M = cv2.moments(c)
+                centerX = int((M["m10"] / M["m00"]))
+                centerY = int((M["m01"] / M["m00"]))
                 return ShapeZone(x, y, w, h)
         if found == False:
             raise ShapeZoneNotFoundError
@@ -132,6 +157,9 @@ class ZoneDetector(WorldEntityDetector):
              area = cv2.contourArea(polygon_points)
              if area >= 4000 and area <= 8000 and len(polygon_points) == 4:
                    x, y,  w, h = cv2.boundingRect(polygon_points)
+                   M = cv2.moments(c)
+                   centerX = int((M["m10"] / M["m00"]))
+                   centerY = int((M["m01"] / M["m00"]))
                    return TargetZone((x, y, w, h))
              elif area >= 20 and area <= 100 and len(polygon_points) == 4:
                      x, y, w, h = cv2.boundingRect(polygon_points)

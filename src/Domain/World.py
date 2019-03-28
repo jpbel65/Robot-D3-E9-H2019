@@ -12,8 +12,8 @@ class World(object):
 		self._height = table.getHeight()
 		self._shapes = None
 		self._obstacles = obstacles
-		self._targetZone = zones[2]
-		self._shapeZone = zones[1]
+		self._targetZone = zones[1]
+		self._shapeZone = zones[2]
 		self._startZone = zones[0]
 		self._chargeZone = None
 		self._tableZone = table

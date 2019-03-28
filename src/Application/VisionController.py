@@ -12,6 +12,8 @@ from Domain.ObstaclesDetector import ObstaclesDetector
 from Domain.ZoneDetector import ZoneDetector
 from Domain.HSVColorsAndConfig import *
 from Domain.World import World
+from Domain.RobotDetector import RobotDetector
+from Domain.Robot import Robot
 import numpy as np
 import cv2
 
@@ -23,11 +25,13 @@ class ShapeNotValidError(Exception):
 class VisionController:
 
     def __init__(self):
-        self._robotDetector = None
+        self._robotDetector = RobotDetector()
         self._converter = None
         self._shapeDetector_ = None
         self._obstaclesDetector_ = ObstaclesDetector()
         self._zoneDetector_ = ZoneDetector()
+        self._robot = Robot()
+
 
     def detectShapes(self, image, shape):
         specifiShapeDetector = None
@@ -37,7 +41,7 @@ class VisionController:
             specifiShapeDetector = CircleDetector()
 
         elif (shape == "triangle"):
-            specifiShapeDetector = TriangleDetector
+            specifiShapeDetector = TriangleDetector()
         elif (shape == "pentagone"):
             specifiShapeDetector = PentagoneDetector()
         else:
@@ -70,12 +74,17 @@ class VisionController:
         color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
+    def detectRobotAndGetAngle(self, image):
+        self._robotDetector.thread_start_Detector(image)
+        self._robot._coordinate = (self._robotDetector.centerX,self._robotDetector.centerY)
+        self._robot._angle = self._robotDetector.angle
+
     def detectEntities(self, image):
        # try:
             image = cv2.GaussianBlur(image, (5, 5), 0)
             image = cv2.medianBlur(image, ksize=1)
 
-            table = self._zoneDetector_.detectTable(image)
+            table = self._zoneDetector_.detectTableAlternative(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
             obstacles = self._obstaclesDetector_.detect(crop_img)
