@@ -30,6 +30,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
     def __init__(self):
         super(BaseStation, self).__init__('Station de base')
 
+        self.robot = None
+
         #Definition of the forms fields
         self.textArea = ControlTextArea('Log')
         self.textTimer = ControlText('Timer')
@@ -78,8 +80,11 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.draw_playgroung.draw_robot(8, 3)
 
     def button_log_action(self):
+        self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
+        self.robot = self.vision._visionController._robot
         self.thread_start_timer()
         self.web_socket.thread_start_comm_web()
+
 
     def button_reset_action(self):
         #image = self.getImage

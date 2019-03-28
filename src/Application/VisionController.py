@@ -75,7 +75,8 @@ class VisionController:
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
     def detectRobotAndGetAngle(self, image):
-        self._robotDetector.thread_start_Detector(image)
+        #self._robotDetector.thread_start_Detector(image)
+        self._robotDetector.detect(image)
         self._robot._coordinate = (self._robotDetector.centerX,self._robotDetector.centerY)
         self._robot._angle = self._robotDetector.angle
 
