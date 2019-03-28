@@ -35,9 +35,12 @@ class RobotDetector(WorldEntityDetector):
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(3, 3))
         canny_output_close = cv2.morphologyEx(canny_output, cv2.MORPH_OPEN, kernel=kernel)
         canny_output_close = cv2.morphologyEx(canny_output, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)
+        #cv2.imshow("canny_output_close", canny_output_close);
+        #cv2.waitKey();
+
         hierachy = cv2.findContours(canny_output_close, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(hierachy)
-        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:1]
+        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:10]
 
         for c in cnts:
             M = cv2.moments(c)
