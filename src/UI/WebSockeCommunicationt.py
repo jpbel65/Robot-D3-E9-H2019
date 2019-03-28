@@ -9,17 +9,19 @@ import signal
 
 class WebSocket(websockets.WebSocketCommonProtocol):
     logResult = ''
-    path = []
+    #path = []
 
     def __init__(self, log_window, station):
+        super(WebSocket, self).__init__()
         self.textArea = log_window
         self.station = station
-        super().__init__()
-        super().ping_interval = 10
+        print(self.ping_interval)
+        print(self.ping_timeout)
+        self.path = []
 
     async def start_communication_web(self):
         async with websockets.connect(
-                'ws://10.248.95.160:8765') as websocket:#10.240.86.202:8765
+                'ws://localhost:8765', ping_interval=70, ping_timeout=10) as websocket:#10.248.95.160
             go = "go"
             await websocket.send(go)
             self.log_message(go)
@@ -27,6 +29,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             self.path.append("DN001")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
             #self.station.path_finding.thread_start_pathfinding(123, 32)
             ready = await websocket.recv()
+            print(ready)
             if ready == "depart":
                 self.log_message(ready)
                 print("< {ready}")
