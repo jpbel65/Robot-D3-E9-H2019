@@ -5,7 +5,6 @@ class PathDrawer:
     def __init__(self, path):
         self.path = path
         self.pixelatedPath = self.convertPathFromCmToPixel()
-        print(self.path)
 
 
     def convertPathFromCmToPixel(self):

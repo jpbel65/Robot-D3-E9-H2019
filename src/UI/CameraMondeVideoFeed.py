@@ -12,8 +12,9 @@ class CameraMonde:
         self.drawPlannedPath = True
         self.capture = None
         self.world = world
-        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, [])#le array vide est la pour le constructeur de pathfinder
+        self.path_finding = PathFinding(self.world)  #le array vide est la pour le constructeur de pathfinder
         self.path = self.getPlannedPath()
+        self.obstacles = PathDrawer(self.path_finding.getUnsafeLocations()).getPixelatedPath()
 
     def start_camera(self):
         self.capture = cv2.VideoCapture(0)
@@ -31,8 +32,9 @@ class CameraMonde:
                     for i in self.path:
                         if i != self.path[-1]:
                             cv2.line(frame, (i[1], i[0]),
-                                     (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125,
-                                     2)
+                                     (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125, 2)
+                    for k in self.obstacles:
+                        cv2.circle(frame,  (k[1], k[0]), 10, 200, 1)
                 if self.stop is True:
                     break
 
@@ -59,5 +61,5 @@ class CameraMonde:
         self.stop = True
 
     def getPlannedPath(self):
-        path = PathDrawer(self.path_finding.getTestTable())
+        path = PathDrawer(self.path_finding.getTestTablePath())
         return path.getPixelatedPath()
