@@ -101,6 +101,9 @@ class PathFinding:
     actual_path = None
 
     def __init__(self, world, robot_width = 22, robot_lenght =22, obstacle_width = 13, ratio = 0.2, path_box = []):
+        self.pixelRatio = world._ratioPixelCm
+        self.axisX = world._axisX
+        self.axisY = world._axisY
         self.TABLE_WIDTH = 111#world._width
         self.TABLE_LENGTH = 231#world._height
         self.ROBOT_WIDTH = robot_width
@@ -171,7 +174,7 @@ class PathFinding:
     def movementsInCm(self, cellMovements):
         cmMovements = []
         for i in cellMovements:
-            cmMovements.append((self.coordToCentimeters(i[0]), self.coordToCentimeters(i[1])))
+            cmMovements.append((self.coordToCentimeters(i[0]) + (self.axisX * self.pixelRatio), self.coordToCentimeters(i[1])*(self.axisY * self.pixelRatio)))
         return cmMovements
 
     def getTestTablePath(self):
@@ -193,24 +196,21 @@ class PathFinding:
         return self.actual_path
 
     def getPath(self, robot, destination):
-        table = self.createTable(self.xCells, self.yCells)
+        self.createTable(self.xCells, self.yCells)
 
-        self.addWallsToTable(table)
-        #for i in range(0, len(self.OBSTACLE)):
-            #self.addObstacle(self.OBSTACLE[i][0], self.OBSTACLE[i][1], table)
-        self.addObstacle(50, 50, table)
-        self.addObstacle(50, 130, table)
+        self.addWallsToTable()
 
-        self.addSpacing(table)
+        for i in self.OBSTACLE:
+            self.addObstacle(i._coordinate[1], i._coordinate[0])
 
-        cellMovements = astar(table,
-                              (self.centimetersToCoords(70), self.centimetersToCoords(180)),  #robot
-                              (self.centimetersToCoords(30), self.centimetersToCoords(30)))  #destination
+        self.addSpacing()
+
+        cellMovements = astar(self.tableLayout, (self.centimetersToCoords(robot[1]/self.pixelRatio), self.centimetersToCoords(robot[0]/self.pixelRatio)), (self.centimetersToCoords(destination[1]/self.pixelRatio), self.centimetersToCoords(destination[0]/self.pixelRatio)))
+
+        #cellMovements = self.smoothPathCompare()
 
         self.actual_path = self.movementsInCm(cellMovements)
-        test = self.Array_to_str_path(self.actual_path)
-        self.path_websocket.append(test)
-        return self.actual_path
+        self.getJointPath(self.actual_path)
 
     def getUnsafeLocations(self):
 
@@ -243,16 +243,42 @@ class PathFinding:
                 return_value = return_value + "u"
         return return_value
 
-    def getJointPath(self):
-        jointPath = []
-        path = self.tableLayout
-        for k in path:
-            jointLenght = 0
-            if k is not path[-1] and k is not path[-2]:
-                xMovement = k[0] - path.index(k)+1[0] + path.index(k)+1[0] - path.index(k)+2[0]
-                yMovement = k[1] - path.index(k) + 1[1] + path.index(k) + 1[1] - path.index(k) + 2[1]
-                if abs(xMovement) == 2:
-                    return
+    def getJointPath(self, path):
+        bufferPath = path
+        while(bufferPath):
+            for k in bufferPath:
+                jointLenght = 0
+                if k == bufferPath[bufferPath.index(k)+1] and k != bufferPath[-1]:
+                        jointLenght = jointLenght + 1
+                else :
+                    diffY = k[1]
+                    diffX = k[0]
+                    side = None
+                    if diffY > 0:
+                        side = "E"
+                    if diffY < 0:
+                        side = "O"
+                    if diffX > 0:
+                        side = "S"
+                    if diffX < 0:
+                        side = "N"
+                    movement = k[0]*jointLenght
+                    if movement == 0:
+                        movement = k[1]*jointLenght
+
+                    movementString = []
+                    if movement < 10:
+                        self.path_websocket.append('D' + side + "00" + movement)
+
+                    elif 9 < movement < 100:
+                        self.path_websocket.append('D' + side + "0" + movement)
+                    else:
+                        self.path_websocket.append('D' + side + "0" + str(round(movement/2)))
+                        self.path_websocket.append('D' + side + "0" + str(round(movement/2)))
+                    for i in range(0, jointLenght):
+                        bufferPath.remove(bufferPath[0])
+                    break
+
 
     def smoothPathCompare(self):
         smoothestPath = []
