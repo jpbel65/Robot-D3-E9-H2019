@@ -1,23 +1,24 @@
 import threading
 
 class Node():
-    def __init__(self, parent=None, position=None):
+    def __init__(self, parent=None, position=None, directionFrom = 0):
         self.parent = parent
         self.position = position
 
         self.g = 0
         self.h = 0
         self.f = 0
+        self.directionFrom = directionFrom
 
     def __eq__(self, other):
         return self.position == other.position
 
 
-def astar(maze, start, end):
+def astar(maze, start, end, direction=0):
 
-    start_node = Node(None, start)
+    start_node = Node(None, start, direction)
     start_node.g = start_node.h = start_node.f = 0
-    end_node = Node(None, end)
+    end_node = Node(None, end, 3)
     end_node.g = end_node.h = end_node.f = 0
 
     open_list = []
@@ -57,6 +58,14 @@ def astar(maze, start, end):
                 continue
 
             new_node = Node(current_node, node_position)
+            if new_position == (0, -1):
+                new_node = Node(current_node, node_position, 1)
+            elif new_position == (0, 1):
+                new_node = Node(current_node, node_position, 3)
+            elif new_position == (1, 0):
+                new_node = Node(current_node, node_position, 0)
+            elif new_position == (-1, 0):
+                new_node = Node(current_node, node_position, 2)
 
             children.append(new_node)
 
@@ -68,6 +77,8 @@ def astar(maze, start, end):
 
             child.g = current_node.g + 1
             child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
+            if current_node.directionFrom != child.directionFrom:
+                child.h = child.h + 8000
             child.f = child.g + child.h
 
             for open_node in open_list:
@@ -89,7 +100,7 @@ class PathFinding:
     #xCells = int(TABLE_LENGTH * RATIO)  # 303 625
     actual_path = None
 
-    def __init__(self, world, robot_width, robot_lenght, obstacle_width, ratio, path_box):
+    def __init__(self, world, robot_width = 22, robot_lenght =22, obstacle_width = 13, ratio = 0.2, path_box = []):
         self.TABLE_WIDTH = 111#world._width
         self.TABLE_LENGTH = 231#world._height
         self.ROBOT_WIDTH = robot_width
@@ -100,12 +111,13 @@ class PathFinding:
         self.yCells = int(self.TABLE_WIDTH * self.RATIO)  # 101 208
         self.xCells = int(self.TABLE_LENGTH * self.RATIO)  # 303 625
         self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
+        self.tableLayout = []
 
     def centimetersToCoords(self, meters):
-        return int(meters * self.RATIO)
+        return int(round(meters * self.RATIO))
 
     def coordToCentimeters(self, coord):
-        return int(coord / self.RATIO)
+        return int(round(coord / self.RATIO))
 
     def createTable(self, x, y):
         table = []
@@ -115,46 +127,46 @@ class PathFinding:
                 array.insert(0, ' ')
 
             table.insert(0, array)
-        return table
+        self.tableLayout = table
 
-    def addWallsToTable(self, table):
-        y = len(table)
-        x = len(table[0])
+    def addWallsToTable(self):
+        y = len(self.tableLayout)
+        x = len(self.tableLayout[0])
         for i in range(x):
-            table[0][i] = 'W'
-            table[y-1][i] = 'W'
+            self.tableLayout[0][i] = 'W'
+            self.tableLayout[y-1][i] = 'W'
 
         for j in range(y):
-            table[j][0] = 'W'
-            table[j][x-1] = 'W'
+            self.tableLayout[j][0] = 'W'
+            self.tableLayout[j][x-1] = 'W'
 
-    def addObstacle(self, y, x, table):
+    def addObstacle(self, y, x):
         initialX = int(x*self.RATIO)
         initialY = int(y*self.RATIO)
         obstacleRay = self.OBSTACLE_WIDTH / 2
 
-        table[initialY][initialX] = 'W'
+        self.tableLayout[initialY][initialX] = 'W'
 
-        for i in range(len(table)):
-            for j in range(len(table[0])):
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
                 deltaX = (x-j/self.RATIO)
                 deltaY = (y-i/self.RATIO)
                 if deltaX**2+deltaY**2 < obstacleRay**2 :
-                    table[i][j]= 'W'
+                    self.tableLayout[i][j]= 'W'
 
-    def addSpacing(self, table):
+    def addSpacing(self):
         robotRay = self.ROBOT_LENGHT/2
-        for i in range(len(table)):
-            for j in range(len(table[0])):
-                if table[i][j] is 'W':
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
+                if self.tableLayout[i][j] is 'W':
 
-                    for k in range(len(table)):
-                        for l in range(len(table[0])):
-                            if table[k][l] is not 'W' and table[k][l] is not 'o':
+                    for k in range(len(self.tableLayout)):
+                        for l in range(len(self.tableLayout[0])):
+                            if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o':
                                 deltaX = (l/self.RATIO - j / self.RATIO)
                                 deltaY = (k/self.RATIO - i / self.RATIO)
                                 if deltaX**2+deltaY**2 < robotRay**2 :
-                                    table[k][l] = 'o'
+                                    self.tableLayout[k][l] = 'o'
 
     def movementsInCm(self, cellMovements):
         cmMovements = []
@@ -162,17 +174,18 @@ class PathFinding:
             cmMovements.append((self.coordToCentimeters(i[0]), self.coordToCentimeters(i[1])))
         return cmMovements
 
-    def getTestTable(self):
-        testTable = self.createTable(self.xCells, self.yCells)
+    def getTestTablePath(self):
+        self.createTable(self.xCells, self.yCells)
 
-        self.addWallsToTable(testTable)
-        self.addObstacle(50, 50, testTable)
-        self.addObstacle(50, 130, testTable)
+        self.addWallsToTable()
+        self.addObstacle(40, 50)
+        self.addObstacle(30, 130)
 
-        self.addSpacing(testTable)
+        self.addSpacing()
 
-        cellMovements = astar(testTable, (self.centimetersToCoords(30), self.centimetersToCoords(30)),
-                                         (self.centimetersToCoords(70), self.centimetersToCoords(180)))
+        cellMovements = astar(self.tableLayout, (self.centimetersToCoords(30), self.centimetersToCoords(30)),(self.centimetersToCoords(75), self.centimetersToCoords(185)))
+
+        #cellMovements = self.smoothPathCompare()
 
         self.actual_path = self.movementsInCm(cellMovements)
         test = self.Array_to_str_path(self.actual_path)
@@ -180,8 +193,6 @@ class PathFinding:
         return self.actual_path
 
     def getPath(self, robot, destination):
-        print(robot)
-        print(destination)
         table = self.createTable(self.xCells, self.yCells)
 
         self.addWallsToTable(table)
@@ -193,13 +204,24 @@ class PathFinding:
         self.addSpacing(table)
 
         cellMovements = astar(table,
-                              (self.centimetersToCoords(30), self.centimetersToCoords(30)),  #robot
-                              (self.centimetersToCoords(70), self.centimetersToCoords(180)))  #destination
+                              (self.centimetersToCoords(70), self.centimetersToCoords(180)),  #robot
+                              (self.centimetersToCoords(30), self.centimetersToCoords(30)))  #destination
 
         self.actual_path = self.movementsInCm(cellMovements)
         test = self.Array_to_str_path(self.actual_path)
         self.path_websocket.append(test)
         return self.actual_path
+
+    def getUnsafeLocations(self):
+
+        unsafeLocations = []
+
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
+                if self.tableLayout[i][j] != ' ':
+                    unsafeLocations.append((self.coordToCentimeters(i), self.coordToCentimeters(j)))
+
+        return unsafeLocations
 
     def thread_start_pathfinding(self, robot, destination):
         t = threading.Thread(target=self.getPath, args=(robot, destination))
@@ -221,6 +243,35 @@ class PathFinding:
                 return_value = return_value + "u"
         return return_value
 
+    def getJointPath(self):
+        jointPath = []
+        path = self.tableLayout
+        for k in path:
+            jointLenght = 0
+            if k is not path[-1] and k is not path[-2]:
+                xMovement = k[0] - path.index(k)+1[0] + path.index(k)+1[0] - path.index(k)+2[0]
+                yMovement = k[1] - path.index(k) + 1[1] + path.index(k) + 1[1] - path.index(k) + 2[1]
+                if abs(xMovement) == 2:
+                    return
+
+    def smoothPathCompare(self):
+        smoothestPath = []
+        straightMovesCount = 0
+        for i in range(0, 4):
+            consecutiveMovements = 0
+            path = astar(self.tableLayout, (self.centimetersToCoords(70), self.centimetersToCoords(180)),(self.centimetersToCoords(30), self.centimetersToCoords(30)), i)
+            for j in path:
+                if j is not path[-1] and j is not path[-2]:
+                    yMovement = abs(j[0] - path[path.index(j)+1][0]) +  abs(path[path.index(j)+1][0] - path[path.index(j)+2][0])
+                    xMovement = abs(j[1] - path[path.index(j) + 1][1]) + abs(path[path.index(j) + 1][1] - path[path.index(j) + 2][1])
+                    if yMovement == 2 or xMovement == 2:
+                        consecutiveMovements = consecutiveMovements + 1
+            if consecutiveMovements > straightMovesCount:
+                smoothestPath = path
+                straightMovesCount = consecutiveMovements
+
+        print(smoothestPath)
+        return smoothestPath
 
 '''
 def main():
