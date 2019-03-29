@@ -32,6 +32,7 @@ class ObstaclesDetector(WorldEntityDetector):
         haut = []
         for i in circles[0, :]:
             haut.append((i[0], i[1], i[2]))
+
         for x in base:
             for y in haut:
                 dis = math.sqrt((x[0] - y[0]) ** 2 + (y[1] - y[1]) ** 2)

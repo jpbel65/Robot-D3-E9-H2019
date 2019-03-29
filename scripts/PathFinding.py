@@ -1,28 +1,24 @@
-def centimetersToCoords(meters):
-    return int(meters*ratio)
-
-def coordToCentimeters(coord):
-    return int(coord/ratio)
-
+import threading
 
 class Node():
-    def __init__(self, parent=None, position=None):
+    def __init__(self, parent=None, position=None, directionFrom = 0):
         self.parent = parent
         self.position = position
 
         self.g = 0
         self.h = 0
         self.f = 0
+        self.directionFrom = directionFrom
 
     def __eq__(self, other):
         return self.position == other.position
 
 
-def astar(maze, start, end):
+def astar(maze, start, end, direction=0):
 
-    start_node = Node(None, start)
+    start_node = Node(None, start, direction)
     start_node.g = start_node.h = start_node.f = 0
-    end_node = Node(None, end)
+    end_node = Node(None, end, 3)
     end_node.g = end_node.h = end_node.f = 0
 
     open_list = []
@@ -62,6 +58,14 @@ def astar(maze, start, end):
                 continue
 
             new_node = Node(current_node, node_position)
+            if new_position == (0, -1):
+                new_node = Node(current_node, node_position, 1)
+            elif new_position == (0, 1):
+                new_node = Node(current_node, node_position, 3)
+            elif new_position == (1, 0):
+                new_node = Node(current_node, node_position, 0)
+            elif new_position == (-1, 0):
+                new_node = Node(current_node, node_position, 2)
 
             children.append(new_node)
 
@@ -73,6 +77,8 @@ def astar(maze, start, end):
 
             child.g = current_node.g + 1
             child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
+            if current_node.directionFrom != child.directionFrom:
+                child.h = child.h + 8000
             child.f = child.g + child.h
 
             for open_node in open_list:
@@ -82,85 +88,195 @@ def astar(maze, start, end):
             open_list.append(child)
 
 
-TABLE_WIDTH = 111.5
+class PathFinding:
+    #TABLE_WIDTH = 111
+    #TABLE_LENGTH = 231
+    #ROBOT_WIDTH = 22
+    #ROBOT_LENGHT = 22
+    #OBSTACLE_WIDTH = 13
+    #RATIO = 0.2
 
-TABLE_LENGTH = 230.5
+    #yCells = int(TABLE_WIDTH * RATIO)  # 101 208
+    #xCells = int(TABLE_LENGTH * RATIO)  # 303 625
+    actual_path = None
 
-ROBOT_WIDTH = 22
-ROBOT_LENGHT = 22
+    def __init__(self, world, robot_width = 22, robot_lenght =22, obstacle_width = 13, ratio = 0.2, path_box = []):
+        self.TABLE_WIDTH = 111#world._width
+        self.TABLE_LENGTH = 231#world._height
+        self.ROBOT_WIDTH = robot_width
+        self.ROBOT_LENGHT = robot_lenght
+        self.OBSTACLE = world._obstacles
+        self.OBSTACLE_WIDTH = obstacle_width #self.obstacle._radius
+        self.RATIO = ratio
+        self.yCells = int(self.TABLE_WIDTH * self.RATIO)  # 101 208
+        self.xCells = int(self.TABLE_LENGTH * self.RATIO)  # 303 625
+        self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
+        self.tableLayout = []
 
-OBSTACLE_WIDTH = 13
+    def centimetersToCoords(self, meters):
+        return int(round(meters * self.RATIO))
 
-ratio = float(input("Entrez l'echelle désiree :"))
+    def coordToCentimeters(self, coord):
+        return int(round(coord / self.RATIO))
 
-yCells = int(TABLE_WIDTH * ratio)  # 101 208
-xCells = int(TABLE_LENGTH * ratio)  # 303 625
+    def createTable(self, x, y):
+        table = []
+        for i in range(y):
+            array = []
+            for j in range(x):
+                array.insert(0, ' ')
 
-def createTable(x, y):
-    table = []
-    for i in range(y):
-        array = []
-        for j in range(x):
-            array.insert(0,' ')
+            table.insert(0, array)
+        self.tableLayout = table
 
-        table.insert(0,array)
-    return table
+    def addWallsToTable(self):
+        y = len(self.tableLayout)
+        x = len(self.tableLayout[0])
+        for i in range(x):
+            self.tableLayout[0][i] = 'W'
+            self.tableLayout[y-1][i] = 'W'
 
-def addWallsToTable(table):
-    y = len(table)
-    x = len(table[0])
-    for i in range(x):
-        table[0][i] = 'W'
-        table[y-1][i] ='W'
+        for j in range(y):
+            self.tableLayout[j][0] = 'W'
+            self.tableLayout[j][x-1] = 'W'
 
-    for j in range(y):
-        table[j][0] = 'W'
-        table[j][x-1] = 'W'
+    def addObstacle(self, y, x):
+        initialX = int(x*self.RATIO)
+        initialY = int(y*self.RATIO)
+        obstacleRay = self.OBSTACLE_WIDTH / 2
 
-def addObstacle(y,x, table):
-    initialX = int(x*ratio)
-    initialY = int(y*ratio)
-    obstacleRay = OBSTACLE_WIDTH / 2
+        self.tableLayout[initialY][initialX] = 'W'
 
-    table[initialY][initialX] = 'W'
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
+                deltaX = (x-j/self.RATIO)
+                deltaY = (y-i/self.RATIO)
+                if deltaX**2+deltaY**2 < obstacleRay**2 :
+                    self.tableLayout[i][j]= 'W'
 
-    for i in range(len(table)):
-        for j in range(len(table[0])):
-            deltaX = (x-j/ratio)
-            deltaY = (y-i/ratio)
-            if deltaX**2+deltaY**2 < obstacleRay**2 :
-                table[i][j]= 'W'
+    def addSpacing(self):
+        robotRay = self.ROBOT_LENGHT/2
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
+                if self.tableLayout[i][j] is 'W':
 
+                    for k in range(len(self.tableLayout)):
+                        for l in range(len(self.tableLayout[0])):
+                            if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o':
+                                deltaX = (l/self.RATIO - j / self.RATIO)
+                                deltaY = (k/self.RATIO - i / self.RATIO)
+                                if deltaX**2+deltaY**2 < robotRay**2 :
+                                    self.tableLayout[k][l] = 'o'
 
-def addSpacing(table):
-    robotRay = ROBOT_LENGHT/2
-    for i in range(len(table)):
-        for j in range(len(table[0])):
-            if table[i][j] is 'W':
+    def movementsInCm(self, cellMovements):
+        cmMovements = []
+        for i in cellMovements:
+            cmMovements.append((self.coordToCentimeters(i[0]), self.coordToCentimeters(i[1])))
+        return cmMovements
 
-                for k in range(len(table)):
-                    for l in range(len(table[0])):
-                        if table[k][l] is not 'W' and table[k][l] is not 'o':
-                            deltaX = (l/ratio - j / ratio)
-                            deltaY = (k/ratio - i / ratio)
-                            if deltaX**2+deltaY**2 < robotRay**2 :
-                                table[k][l] = 'o'
+    def getTestTablePath(self):
+        self.createTable(self.xCells, self.yCells)
 
+        self.addWallsToTable()
+        self.addObstacle(40, 50)
+        self.addObstacle(30, 130)
+
+        self.addSpacing()
+
+        cellMovements = astar(self.tableLayout, (self.centimetersToCoords(30), self.centimetersToCoords(30)),(self.centimetersToCoords(75), self.centimetersToCoords(185)))
+
+        #cellMovements = self.smoothPathCompare()
+
+        self.actual_path = self.movementsInCm(cellMovements)
+        test = self.Array_to_str_path(self.actual_path)
+        self.path_websocket.append(test)
+        return self.actual_path
+
+    def getPath(self, robot, destination):
+        table = self.createTable(self.xCells, self.yCells)
+
+        self.addWallsToTable(table)
+        #for i in range(0, len(self.OBSTACLE)):
+            #self.addObstacle(self.OBSTACLE[i][0], self.OBSTACLE[i][1], table)
+        self.addObstacle(50, 50, table)
+        self.addObstacle(50, 130, table)
+
+        self.addSpacing(table)
+
+        cellMovements = astar(table,
+                              (self.centimetersToCoords(70), self.centimetersToCoords(180)),  #robot
+                              (self.centimetersToCoords(30), self.centimetersToCoords(30)))  #destination
+
+        self.actual_path = self.movementsInCm(cellMovements)
+        test = self.Array_to_str_path(self.actual_path)
+        self.path_websocket.append(test)
+        return self.actual_path
+
+    def getUnsafeLocations(self):
+
+        unsafeLocations = []
+
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
+                if self.tableLayout[i][j] != ' ':
+                    unsafeLocations.append((self.coordToCentimeters(i), self.coordToCentimeters(j)))
+
+        return unsafeLocations
+
+    def thread_start_pathfinding(self, robot, destination):
+        t = threading.Thread(target=self.getPath, args=(robot, destination))
+        t.start()
+
+    def Array_to_str_path(self, path_array):
+        return_value = str()
+        for i in range(1, len(path_array)):
+            start = path_array[i-1]
+            diffX = path_array[i][0]-start[0]
+            diffY = path_array[i][1]-start[1]
+            if diffY > 0:
+                return_value = return_value + "r"
+            if diffY < 0:
+                return_value = return_value + "l"
+            if diffX > 0:
+                return_value = return_value + "d"
+            if diffX < 0:
+                return_value = return_value + "u"
+        return return_value
+
+    def getJointPath(self):
+        jointPath = []
+        path = self.tableLayout
+        for k in path:
+            jointLenght = 0
+            if k is not path[-1] and k is not path[-2]:
+                xMovement = k[0] - path.index(k)+1[0] + path.index(k)+1[0] - path.index(k)+2[0]
+                yMovement = k[1] - path.index(k) + 1[1] + path.index(k) + 1[1] - path.index(k) + 2[1]
+                if abs(xMovement) == 2:
+                    return
+
+    def smoothPathCompare(self):
+        smoothestPath = []
+        straightMovesCount = 0
+        for i in range(0, 4):
+            consecutiveMovements = 0
+            path = astar(self.tableLayout, (self.centimetersToCoords(70), self.centimetersToCoords(180)),(self.centimetersToCoords(30), self.centimetersToCoords(30)), i)
+            for j in path:
+                if j is not path[-1] and j is not path[-2]:
+                    yMovement = abs(j[0] - path[path.index(j)+1][0]) +  abs(path[path.index(j)+1][0] - path[path.index(j)+2][0])
+                    xMovement = abs(j[1] - path[path.index(j) + 1][1]) + abs(path[path.index(j) + 1][1] - path[path.index(j) + 2][1])
+                    if yMovement == 2 or xMovement == 2:
+                        consecutiveMovements = consecutiveMovements + 1
+            if consecutiveMovements > straightMovesCount:
+                smoothestPath = path
+                straightMovesCount = consecutiveMovements
+
+        print(smoothestPath)
+        return smoothestPath
+
+'''
 def main():
 
-
-    tableMap = [
-        ['W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', 'W', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', 'W', ' ', 'W', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', 'W', 'W', ' ', ' ', ' ', ' ', ' ', ' ', 'W'],
-        ['W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'W'],
-        ['W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W']]
+    getTestTable()
 
     tableMap = createTable(xCells, yCells)
 
@@ -178,10 +294,8 @@ def main():
     ob2x = float(input("Entrez la coordonne en X du deuxieme obstacle: (cm) : "))
     ob2y = float(input("Entrez la coordonne en Y du deuxieme obstacle: (cm) : "))
 
-    addObstacle(ob1y,ob1x,tableMap)
+    addObstacle(ob1y, ob1x, tableMap)
     addObstacle(ob2y, ob2x, tableMap)
-
-
 
     for i in tableMap:
         print(i)
@@ -197,14 +311,11 @@ def main():
     print("------------------------------------------------------------------------")
 
     input()
-    directions = astar(tableMap, (int(startingY*ratio), int(startingX*ratio)), (int(targetY*ratio), int(targetX*ratio)))
-
+    directions = astar(tableMap, (int(startingY*RATIO), int(startingX*RATIO)), (int(targetY*RATIO), int(targetX*RATIO)))
 
     for i in directions:
-
         tableResult = tableMap
         tableResult[i[0]][i[1]] = '*'
-
 
     for i in tableMap:
         print(i)
@@ -214,13 +325,9 @@ def main():
     input()
     for coords in directions:
         if directions[directions.index(coords)] is not directions[len(directions)-1]:
-            print('('+str((directions[directions.index(coords)+1][0]-coords[0])/ratio) + ', ' + str((directions[directions.index(coords)+1][1]- coords[1])/ratio) + ')')
-
-
-
-
-
+            print('('+str((directions[directions.index(coords)+1][0]-coords[0])/RATIO) + ', ' + str((directions[directions.index(coords)+1][1]- coords[1])/RATIO) + ')')
 
 
 if __name__ == '__main__':
     main()
+'''

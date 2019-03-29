@@ -13,6 +13,7 @@ from UI.WebSockeCommunicationt import WebSocket
 from UI.CameraMondeVideoFeed import CameraMonde
 from UI.MapRender import DrawPlayground
 from Application.MainController import MainController
+from scripts.PathFinding import PathFinding
 
 
 import numpy as np
@@ -37,6 +38,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.textTimer = ControlText('Timer')
         self.textState = ControlText('État')
         self.textVolt = ControlText('Voltage')
+        self.textCourant = ControlText('Courant')#slot courant
         self.textPos = ControlText('Position')
         self.textPiece = ControlText('Pièce')
         self.textPlayer = ControlPlayer('Playground')
@@ -46,8 +48,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
         self.formset = ['', '||', 'textArea', '||',
                         (('textState', '||', 'textPiece'), '=',
-                         ('textVolt', '||', 'textPos'), '=',
-                         ('textTimer'), '=',
+                         ('textVolt', '||', 'textCourant'), '=',
+                         ('textPos', '||', 'textTimer'), '=',
                          ('buttonLog', '||', 'buttonReset'), '=',
                          ('textPlayer', '||', 'textImage')), '||', '', '=', '']
 
@@ -70,12 +72,23 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.thread_com_image.speak[np.ndarray].connect(self.update_image)
         self.thread_com_timer = Communicate()
         self.thread_com_timer.speak[str].connect(self.update_timer)
+        self.thread_com_courant = Communicate()
+        self.thread_com_courant.speak[str].connect(self.update_courant)
 
+        self.vision = MainController()
         self.web_socket = WebSocket(self.textArea, self)
-        self.camera_monde = CameraMonde(self.textPlayer)
+
+
+        # debut visison/pathfinding
+        #image = self.getImage
+        image = cv2.imread(self.imagetest)
+        self.world = self.vision.detectWorldElement(image)
+        # cv2.imshow("capture", image)
+        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+
+        self.camera_monde = CameraMonde(self.textPlayer, self.world)
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
-        self.vision = MainController()
 
         self.draw_playgroung.draw_robot(8, 3)
 
@@ -87,11 +100,6 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
 
     def button_reset_action(self):
-        #image = self.getImage
-        image = cv2.imread(self.imagetest)
-        world = self.vision.detectWorldElement(image)
-        print(world._axisX)
-        #cv2.imshow("capture", image)
         print("reset")
         return_data = self.draw_playgroung.de_draw_robot(8, 3)
         self.draw_playgroung.post_playgroung(return_data)
@@ -123,6 +131,10 @@ class BaseStation(BaseWidget, QtCore.QObject):
     @QtCore.pyqtSlot(str, name='update_timer')
     def update_timer(self, timer):
         self.textTimer.value = timer
+
+    @QtCore.pyqtSlot(str, name='update_courant')
+    def update_courant(self, courant):
+        self.textCourant.value = courant
 
     def thread_start_timer(self):
         """Button action event"""
