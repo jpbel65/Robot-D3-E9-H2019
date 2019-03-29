@@ -21,7 +21,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     async def start_communication_web(self):
         async with websockets.connect(
-                'ws://localhost:8765', ping_interval=70, ping_timeout=10) as websocket:#10.248.95.160
+                'ws://10.248.95.160:8765', ping_interval=70, ping_timeout=10) as websocket:#10.248.95.160
             go = "go"
             await websocket.send(go)
             self.log_message(go)
