@@ -85,7 +85,9 @@ class VisionController:
             image = cv2.GaussianBlur(image, (5, 5), 0)
             image = cv2.medianBlur(image, ksize=1)
 
-            table = self._zoneDetector_.detectTableAlternative(image)
+            #table = self._zoneDetector_.detectTableAlternative(image)
+
+            table = self._zoneDetector_.detectTable(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
             obstacles = self._obstaclesDetector_.detect(crop_img)
