@@ -1,6 +1,7 @@
 PIXELRATIO = 5.432081257
 
 
+
 class PathDrawer:
     def __init__(self, path):
         self.path = path
