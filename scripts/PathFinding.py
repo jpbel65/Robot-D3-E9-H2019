@@ -276,14 +276,14 @@ class PathFinding:
                         movement = bufferPath[k][1]*jointLenght
 
                     movementString = []
-                    if movement < 10:
-                        self.path_websocket.append('D' + side + "00" + str(int(movement)))
+                    if abs(movement) < 10:
+                        self.path_websocket.append('D' + side + "00" + str(abs(int(movement))))
 
-                    elif 9 < movement < 100:
-                        self.path_websocket.append('D' + side + "0" + str(int(movement)))
+                    elif 9 < abs(movement) < 100:
+                        self.path_websocket.append('D' + side + "0" + str(abs(int(movement))))
                     else:
-                        self.path_websocket.append('D' + side + "0" + str(int(movement/2)))
-                        self.path_websocket.append('D' + side + "0" + str(int(movement/2)))
+                        self.path_websocket.append('D' + side + "0" + str(abs(int(movement/2))))
+                        self.path_websocket.append('D' + side + "0" + str(abs(int(movement/2))))
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
                     break
