@@ -21,13 +21,16 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     async def start_communication_web(self):
         async with websockets.connect(
-                'ws://192.168.1.38:8765', ping_interval=70, ping_timeout=10) as websocket:#10.248.95.160
+                'ws://10.240.104.107:8765', ping_interval=70, ping_timeout=10) as websocket:#10.248.95.160 192.168.1.38
             go = "go"
             await websocket.send(go)
             self.log_message(go)
             #self.path.append("DS001")
             #self.path.append("DN001")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
-            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (self.station.world._width/3,self.station.world._height/3))
+            print(self.station.world._shapeZone._center)
+            print((self.station.robot._angle))
+            #self.path.append("RH0"+str(abs(int(self.station.robot._angle)+1)))
+            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, self.station.world._shapeZone._center)
             ready = await websocket.recv()
             print(ready)
             if ready == "depart":
@@ -101,6 +104,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     def async_run_comm_web(self):
         asyncio.run(self.start_communication_web())
+
 
     def thread_start_update_log(self):
         t4 = threading.Thread(target=self.run_update_log)

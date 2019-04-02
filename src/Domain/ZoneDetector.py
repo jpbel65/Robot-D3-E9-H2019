@@ -72,6 +72,8 @@ class ZoneDetector(WorldEntityDetector):
                                      cv2.THRESH_BINARY, cv2.THRESH_BINARY, 11, 2)
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=2)
+        cv2.imshow('',mask)
+        cv2.waitKey()
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = sorted(contours, key=cv2.contourArea, reverse=True)[:15]
         table_found = False

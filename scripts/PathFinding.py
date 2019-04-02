@@ -178,15 +178,14 @@ class PathFinding:
     def movementsInCm(self, cellMovements):
         cmMovements = []
         for i in cellMovements:
-            cmMovements.append((self.coordToCentimeters(i[0]) + (self.axisX / self.pixelRatio), self.coordToCentimeters(i[1]) + (self.axisY / self.pixelRatio)))
+            #cmMovements.append((self.coordToCentimeters(i[0]) + (self.axisX / self.pixelRatio), self.coordToCentimeters(i[1]) + (self.axisY / self.pixelRatio)))
+            cmMovements.append((self.coordToCentimeters(i[0]), self.coordToCentimeters(i[1])))
         return cmMovements
 
     def getTestTablePath(self):
         self.createTable(self.xCells, self.yCells)
 
         self.addWallsToTable()
-        print(self.coordToCentimeters(self.xCells))
-        print(self.coordToCentimeters(self.yCells))
         self.addObstacle(40, 50)
         self.addObstacle(109, 229)
 
@@ -249,37 +248,42 @@ class PathFinding:
         return return_value
 
     def getJointPath(self, path):
-        bufferPath = path
+        bufferPath = []
+        for i in path:
+            if i != path[-1]:
+                bufferPath.append((path[path.index(i)+1][0]-i[0], path[path.index(i)+1][1]-i[1]))
         while(bufferPath):
-            for k in bufferPath:
-                jointLenght = 0
-                if k == bufferPath[bufferPath.index(k)+1] and k != bufferPath[-1]:
+            jointLenght = 1
+
+            for k in range(0, len(bufferPath)-1):
+                if bufferPath[k][0] == bufferPath[k+1][0] and bufferPath[k][1] == bufferPath[k+1][1]:
+                #if k == bufferPath[bufferPath.index(k)+1] and k != bufferPath[-1]:
                         jointLenght = jointLenght + 1
                 else :
-                    diffY = k[1]
-                    diffX = k[0]
+                    diffY = bufferPath[k][1]
+                    diffX = bufferPath[k][0]
                     side = None
                     if diffY > 0:
-                        side = "E"
-                    if diffY < 0:
                         side = "O"
+                    if diffY < 0:
+                        side = "E"
                     if diffX > 0:
-                        side = "S"
-                    if diffX < 0:
                         side = "N"
-                    movement = k[0]*jointLenght
+                    if diffX < 0:
+                        side = "S"
+                    movement = bufferPath[k][0]*jointLenght
                     if movement == 0:
-                        movement = k[1]*jointLenght
+                        movement = bufferPath[k][1]*jointLenght
 
                     movementString = []
                     if movement < 10:
-                        self.path_websocket.append('D' + side + "00" + movement)
+                        self.path_websocket.append('D' + side + "00" + str(int(movement)))
 
                     elif 9 < movement < 100:
-                        self.path_websocket.append('D' + side + "0" + movement)
+                        self.path_websocket.append('D' + side + "0" + str(int(movement)))
                     else:
-                        self.path_websocket.append('D' + side + "0" + str(round(movement/2)))
-                        self.path_websocket.append('D' + side + "0" + str(round(movement/2)))
+                        self.path_websocket.append('D' + side + "0" + str(int(movement/2)))
+                        self.path_websocket.append('D' + side + "0" + str(int(movement/2)))
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
                     break
