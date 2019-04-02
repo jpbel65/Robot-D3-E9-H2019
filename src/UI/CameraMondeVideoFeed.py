@@ -22,7 +22,7 @@ class CameraMonde:
 
     def start_camera(self):
         self.capture = cv2.VideoCapture(0)
-        #self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1200)
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1200)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 760)
         self.capture.set(cv2.CAP_PROP_FPS, 15)
 
@@ -60,7 +60,7 @@ class CameraMonde:
         self.capture.release()
 
     def nextImage(self):
-        #self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 760)
         self.capture.set(cv2.CAP_PROP_FPS, 15)
         ret, frame = self.capture.read()
