@@ -80,19 +80,20 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
 
         # debut visison/pathfinding
-        #image = self.getImage
-        image = cv2.imread(self.imagetest)
-        self.world = self.vision.detectWorldElement(image)
-        # cv2.imshow("capture", image)
-        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
-
-        self.camera_monde = CameraMonde(self.textPlayer, self.world)
+        self.camera_monde = CameraMonde(self.textPlayer, self)
         self.camera_monde.thread_start_camera()
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
 
         self.draw_playgroung.draw_robot(8, 3)
+        self.world = None
+        self.image = None
+        self.path_finding = None
 
     def button_log_action(self):
+        self.image = self.camera_monde.frame
+        self.world = self.vision.detectWorldElement(self.image)
+        # cv2.imshow("capture", image)
+        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
         self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
         self.robot = self.vision._visionController._robot
         self.thread_start_timer()
