@@ -111,8 +111,8 @@ class PathFinding:
         self.OBSTACLE = world._obstacles
         self.OBSTACLE_WIDTH = obstacle_width #self.obstacle._radius
         self.RATIO = ratio
-        self.yCells = int(self.TABLE_WIDTH * self.RATIO)  # 101 208
-        self.xCells = int(self.TABLE_LENGTH * self.RATIO)  # 303 625
+        self.yCells = int(self.TABLE_WIDTH * self.RATIO)
+        self.xCells = int(self.TABLE_LENGTH * self.RATIO)
         self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
         self.tableLayout = []
 
@@ -152,6 +152,8 @@ class PathFinding:
 
         for i in range(len(self.tableLayout)):
             for j in range(len(self.tableLayout[0])):
+                if self.tableLayout[i][j] == 'W':
+                    continue
                 deltaX = (x-j/self.RATIO)
                 deltaY = (y-i/self.RATIO)
                 if deltaX**2+deltaY**2 < obstacleRay**2 :
@@ -165,24 +167,28 @@ class PathFinding:
 
                     for k in range(len(self.tableLayout)):
                         for l in range(len(self.tableLayout[0])):
+                            if self.tableLayout[k][l] is 'W' or self.tableLayout[k][l] is 'o':
+                                continue
                             if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o':
                                 deltaX = (l/self.RATIO - j / self.RATIO)
                                 deltaY = (k/self.RATIO - i / self.RATIO)
-                                if deltaX**2+deltaY**2 < robotRay**2 :
+                                if deltaX**2+deltaY**2 < robotRay**2:
                                     self.tableLayout[k][l] = 'o'
 
     def movementsInCm(self, cellMovements):
         cmMovements = []
         for i in cellMovements:
-            cmMovements.append((self.coordToCentimeters(i[0]) + (self.axisX * self.pixelRatio), self.coordToCentimeters(i[1])*(self.axisY * self.pixelRatio)))
+            cmMovements.append((self.coordToCentimeters(i[0]) + (self.axisX / self.pixelRatio), self.coordToCentimeters(i[1]) + (self.axisY / self.pixelRatio)))
         return cmMovements
 
     def getTestTablePath(self):
         self.createTable(self.xCells, self.yCells)
 
         self.addWallsToTable()
+        print(self.coordToCentimeters(self.xCells))
+        print(self.coordToCentimeters(self.yCells))
         self.addObstacle(40, 50)
-        self.addObstacle(30, 130)
+        self.addObstacle(109, 229)
 
         self.addSpacing()
 
@@ -201,13 +207,12 @@ class PathFinding:
         self.addWallsToTable()
 
         for i in self.OBSTACLE:
-            self.addObstacle(i._coordinate[1], i._coordinate[0])
+            self.addObstacle(i._coordinate[1]/self.pixelRatio, i._coordinate[0]/self.pixelRatio)
 
         self.addSpacing()
 
         cellMovements = astar(self.tableLayout, (self.centimetersToCoords(robot[1]/self.pixelRatio), self.centimetersToCoords(robot[0]/self.pixelRatio)), (self.centimetersToCoords(destination[1]/self.pixelRatio), self.centimetersToCoords(destination[0]/self.pixelRatio)))
 
-        #cellMovements = self.smoothPathCompare()
 
         self.actual_path = self.movementsInCm(cellMovements)
         self.getJointPath(self.actual_path)

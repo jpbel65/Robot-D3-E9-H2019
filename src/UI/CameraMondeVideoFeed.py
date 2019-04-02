@@ -48,7 +48,7 @@ class CameraMonde:
                             cv2.line(frame, (i[1], i[0]),
                                      (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125, 2)
                     for k in self.obstacles:
-                        cv2.circle(frame,  (k[1], k[0]), 10, 200, 1)
+                        cv2.circle(frame,  (k[1] + self.world._axisY, k[0] + self.world._axisX), 3, 200, 1)
                 if self.stop is True:
                     break
 
