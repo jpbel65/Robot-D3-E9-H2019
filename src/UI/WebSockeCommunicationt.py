@@ -25,17 +25,30 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             go = "go"
             await websocket.send(go)
             self.log_message(go)
-            #self.path.append("DS001")
-            #self.path.append("DN001")#cree a thread qui fait le pathfinding et push les chemin dans une list producteur
             print(self.station.world._shapeZone._center)
             print((self.station.robot._angle))
-            #self.path.append("RH0"+str(abs(int(self.station.robot._angle)+1)))
             self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, self.station.world._shapeZone._center)
             ready = await websocket.recv()
             print(ready)
             if ready == "depart":
                 self.log_message(ready)
                 print("< {ready}")
+                self.station.thread_com_state.speak[str].emit("Calibration")
+                angle = int(self.station.robot._angle)+1#+1 correctif angle
+                side = "H"
+                if angle < 0:
+                    side = "A"
+                    angle = abs(angle)
+                angle = str(angle)
+                while len(angle) is not 3:
+                    angle = "0" + angle
+                self.path.append("R" + side + angle)# rota angle depart
+                await websocket.send(self.path[0])
+                self.log_message(self.path[0])
+                next = await websocket.recv()
+                if next == "next":
+                    self.path.remove(self.path[0])
+                    self.log_message(next)
                 await self.send_path(websocket)#fonction
                 await websocket.send("fin")
                 self.log_message("fin start-charge")
