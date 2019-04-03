@@ -115,7 +115,8 @@ class PathFinding:
         self.xCells = int(self.TABLE_LENGTH * self.RATIO)
         self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
         self.tableLayout = []
-        self.actual_path = None
+        self.actual_path = []
+        self.pathFound: False
 
     def centimetersToCoords(self, meters):
         return int(round(meters * self.RATIO))
@@ -202,6 +203,10 @@ class PathFinding:
         return self.actual_path
 
     def getPath(self, robot, destination):
+        self.actual_path = []
+        accessible = True
+
+
         self.createTable(self.xCells, self.yCells)
 
         self.addWallsToTable()
@@ -211,12 +216,22 @@ class PathFinding:
 
         self.addSpacing()
 
-        cellMovements = astar(self.tableLayout, (self.centimetersToCoords(robot[1]/self.pixelRatio), self.centimetersToCoords(robot[0]/self.pixelRatio)), (self.centimetersToCoords(destination[1]/self.pixelRatio), self.centimetersToCoords(destination[0]/self.pixelRatio)))
+        destinationX = self.centimetersToCoords(destination[1]/(self.pixelRatio))
+        destinationY = self.centimetersToCoords(destination[1]/(self.pixelRatio))
+        if(self.tableLayout[destinationX][destinationY] != ' '):
+            accessible = False
+        if accessible:
+            cellMovements = astar(self.tableLayout, (self.centimetersToCoords(robot[1]/self.pixelRatio), self.centimetersToCoords(robot[0]/self.pixelRatio)), (self.centimetersToCoords(destination[1]/self.pixelRatio), self.centimetersToCoords(destination[0]/self.pixelRatio)))
+            self.actual_path = self.movementsInCm(cellMovements)
+            self.getJointPath(self.actual_path)
 
 
-        self.actual_path = self.movementsInCm(cellMovements)
-        self.getJointPath(self.actual_path)
+        if self.actual_path == []:
+            accessible = False
 
+        print(accessible)
+        self.pathFound = accessible
+        return accessible
     def getUnsafeLocations(self):
 
         unsafeLocations = []
@@ -284,14 +299,14 @@ class PathFinding:
                         movement = abs(bufferPath[k][1]*jointLenght)
 
                     movementString = []
-                    if movement < 10:
-                        self.path_websocket.append('D' + side + "00" + str(int(movement)))
+                    if (movement) < 10:
+                        self.path_websocket.append('D' + side + "00" + str((int(movement))))
 
-                    elif 9 < movement < 100:
-                        self.path_websocket.append('D' + side + "0" + str(int(movement)))
+                    elif 9 < (movement) < 100:
+                        self.path_websocket.append('D' + side + "0" + str((int(movement))))
                     else:
-                        self.path_websocket.append('D' + side + "0" + str(int(movement/2)))
-                        self.path_websocket.append('D' + side + "0" + str(int(movement/2)))
+                        self.path_websocket.append('D' + side + "0" + str((int(movement/2))))
+                        self.path_websocket.append('D' + side + "0" + str((int(movement/2))))
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
                     break

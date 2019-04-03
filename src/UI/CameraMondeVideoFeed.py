@@ -10,7 +10,7 @@ class CameraMonde:
     def __init__(self, camera_window, station):
         self.textPlayer = camera_window
         self.station = station
-        self.drawPlannedPath = False
+        self.drawPlannedPath = True
         self.capture = None
         self.frame = None
         self.world = None
@@ -35,20 +35,20 @@ class CameraMonde:
 
                 if self.station.world is not None and self.world_true is False:
                     self.world = self.station.world
-                    self.path_finding = PathFinding(
-                        self.world)  # le array vide est la pour le constructeur de pathfinder
+                    self.path_finding = self.station.path_finding  # le array vide est la pour le constructeur de pathfinder
                     self.path = self.getPlannedPath()
-                    self.obstacles = PathDrawer(self.path_finding.getUnsafeLocations()).getPixelatedPath()
+                    self.obstacles = PathDrawer(self.path_finding).getObstacles()
                     self.world_true = True
                     self.drawPlannedPath = True
 
-                if self.drawPlannedPath:
-                    for i in self.path:
-                        if i != self.path[-1]:
-                            cv2.line(frame, (i[1], i[0]),
-                                     (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125, 2)
-                    for k in self.obstacles:
-                        cv2.circle(frame,  (k[1] + self.world._axisY, k[0] + self.world._axisX), 3, 200, 1)
+                if self.path_finding:
+                    if self.path_finding.pathFound:
+                        for i in self.path_finding:
+                            if i != self.path[-1]:
+                                cv2.line(frame, (i[1], i[0]),
+                                         (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125, 2)
+                        for k in self.obstacles:
+                            cv2.circle(frame,  (k[1] + self.world._axisY, k[0] + self.world._axisX), 3, 200, 1)
                 if self.stop is True:
                     break
 
@@ -75,5 +75,6 @@ class CameraMonde:
         self.stop = True
 
     def getPlannedPath(self):
-        path = PathDrawer(self.path_finding.getActualPath)
-        return path.getPixelatedPath()
+        pathDrawer = PathDrawer(self.path_finding)
+        self.path = pathDrawer.getPixelatedPath()
+        return pathDrawer.getPixelatedPath()

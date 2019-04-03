@@ -21,6 +21,7 @@ from PyQt5 import QtCore, QtGui
 import time
 from time import sleep
 import threading
+import Domain.ZoneDetector
 
 
 class BaseStation(BaseWidget, QtCore.QObject):
@@ -91,13 +92,27 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
     def button_log_action(self):
         self.image = self.camera_monde.frame
-        self.world = self.vision.detectWorldElement(self.image)
-        # cv2.imshow("capture", image)
-        self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
-        self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
-        self.robot = self.vision._visionController._robot
-        self.thread_start_timer()
-        self.web_socket.thread_start_comm_web()
+        try:
+            self.world = self.vision.detectWorldElement(self.image)
+            # cv2.imshow("capture", image)
+            self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+            self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
+            self.robot = self.vision._visionController._robot
+            self.thread_start_timer()
+            self.web_socket.thread_start_comm_web()
+
+        except Domain.ZoneDetector.TargetZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Target Zone not Found !")
+        except Domain.ZoneDetector.ShapeZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Shape Zone not Found !")
+        except Domain.ZoneDetector.TableZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Table not detected !")
+        except Domain.ZoneDetector.StartZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Target Zone not Found !")
+
+
+
+
 
 
     def button_reset_action(self):

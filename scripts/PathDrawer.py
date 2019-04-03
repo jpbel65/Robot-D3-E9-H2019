@@ -3,10 +3,11 @@
 
 
 class PathDrawer:
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, pathFinding):
+        self.path = pathFinding.getActualPath()
         self.pixelatedPath = self.convertPathFromCmToPixel()
-        self.pixelRatio = self.path.getPixelRatio
+        self.pixelRatio = pathFinding.getPixelRatio()
+        self.obstacles = pathFinding.getUnsafeLocations()
 
 
     def convertPathFromCmToPixel(self):
@@ -19,3 +20,9 @@ class PathDrawer:
 
     def getPixelatedPath(self):
         return self.pixelatedPath
+
+    def getObstacles(self):
+        obstacles = []
+        for i in self.path:
+            obstacles.append((int(i[0] * self.pixelRatio), int(i[1] * self.pixelRatio)))
+        return obstacles
