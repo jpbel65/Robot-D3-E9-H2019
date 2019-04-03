@@ -75,5 +75,5 @@ class CameraMonde:
         self.stop = True
 
     def getPlannedPath(self):
-        path = PathDrawer(self.path_finding.getTestTablePath())
+        path = PathDrawer(self.path_finding.getActualPath)
         return path.getPixelatedPath()

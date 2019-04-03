@@ -98,7 +98,7 @@ class PathFinding:
 
     #yCells = int(TABLE_WIDTH * RATIO)  # 101 208
     #xCells = int(TABLE_LENGTH * RATIO)  # 303 625
-    actual_path = None
+
 
     def __init__(self, world, robot_width = 22, robot_lenght =22, obstacle_width = 13, ratio = 0.2, path_box = []):
         self.pixelRatio = world._ratioPixelCm
@@ -115,6 +115,7 @@ class PathFinding:
         self.xCells = int(self.TABLE_LENGTH * self.RATIO)
         self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
         self.tableLayout = []
+        self.actual_path = None
 
     def centimetersToCoords(self, meters):
         return int(round(meters * self.RATIO))
@@ -227,6 +228,13 @@ class PathFinding:
 
         return unsafeLocations
 
+    def getActualPath(self):
+        return self.actual_path
+
+    def getPixelRatio(self):
+        return self.pixelRatio
+
+
     def thread_start_pathfinding(self, robot, destination):
         t = threading.Thread(target=self.getPath, args=(robot, destination))
         t.start()
@@ -271,9 +279,9 @@ class PathFinding:
                         side = "N"
                     if diffX < 0:
                         side = "S"
-                    movement = bufferPath[k][0]*jointLenght
+                    movement = abs(bufferPath[k][0]*jointLenght)
                     if movement == 0:
-                        movement = bufferPath[k][1]*jointLenght
+                        movement = abs(bufferPath[k][1]*jointLenght)
 
                     movementString = []
                     if movement < 10:
