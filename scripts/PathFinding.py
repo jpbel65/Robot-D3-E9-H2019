@@ -257,6 +257,9 @@ class PathFinding:
             time = str(datetime.datetime.now())
             f = open("../../scripts/PathFindingTrace/" + time + ".txt", "w+")
 
+
+            for i in cellMovements:
+                self.tableLayout[i[0]][i[1]] = '*'
             self.tableLayout[yOrigin][xOrigin] = 'S'
             self.tableLayout[yTarget][xTarget] = 'F'
 
@@ -265,6 +268,8 @@ class PathFinding:
                 f.write(line + "\n")
             f.close()
 
+            for i in cellMovements:
+                self.tableLayout[i[0]][i[1]] = ' '
             self.tableLayout[yOrigin][xOrigin] = ' '
             self.tableLayout[yTarget][xTarget] = ' '
 

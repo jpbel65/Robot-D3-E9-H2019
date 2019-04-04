@@ -57,9 +57,9 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             print(self.station.world._height)
             print(self.station.world._width)
 
-            #self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (119 + self.station.world._axisX, self.station.world._height-100 + self.station.world._axisY - 103))
-            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (
-                    119 + self.station.world._axisX, self.station.world._height - 100 + self.station.world._axisY + 3030))
+            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (119 + self.station.world._axisX, self.station.world._height-100 + self.station.world._axisY - 103))
+            #self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (
+            #        119 + self.station.world._axisX, self.station.world._height - 100 + self.station.world._axisY + 3030))
             print(self.path)
             ready = await websocket.recv()
             print(ready)
