@@ -36,11 +36,10 @@ class CameraMonde:
                 if self.station.world is not None and self.world_true is False:
                     self.world = self.station.world
                     self.path_finding = self.station.path_finding  # le array vide est la pour le constructeur de pathfinder
-                    self.path = self.getPlannedPath()
-                    self.obstacles = PathDrawer(self.path_finding).getObstacles()
+                    #self.path = self.getPlannedPath()
+                    #self.obstacles = PathDrawer(self.path_finding).getObstacles()
                     self.world_true = True
                     self.drawPlannedPath = True
-
                 if False: #self.path_finding:
                     if self.path_finding.pathFound:
                         for i in self.path_finding:

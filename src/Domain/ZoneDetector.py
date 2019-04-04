@@ -42,6 +42,7 @@ class ZoneDetector(WorldEntityDetector):
         deposit = self.detectTargetZone(image)
         print(deposit.center)
         zones.append(deposit)
+        image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         shapeZone = self.detectShapeZone(image_copy, w1, h1)
         zones.append(shapeZone)
 
@@ -68,8 +69,8 @@ class ZoneDetector(WorldEntityDetector):
             raise TableZoneNotFoundError
 
     def detectTableAlternative(self, image):
-        image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
-        mask = cv2.adaptiveThreshold(cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY), 255,
+        #image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
+        mask = cv2.adaptiveThreshold(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), 255,
                                      cv2.THRESH_BINARY, cv2.THRESH_BINARY, 11, 2)
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=2)
@@ -114,7 +115,7 @@ class ZoneDetector(WorldEntityDetector):
         found = False
         x1, y1 = 0, 0
         cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 15)
-        mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 110]))
+        mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 40]))
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(7, 7))
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=1)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)

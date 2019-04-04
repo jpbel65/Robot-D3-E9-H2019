@@ -104,7 +104,7 @@ def astar(maze, start, end, direction=0):
 class PathFinding:
 
 
-    def __init__(self, world, robot_width = 22, robot_lenght =22, obstacle_width = 13, ratio = 0.2, path_box = []):
+    def __init__(self, world, path_box = [], robot_width = 22, robot_lenght =25, obstacle_width = 35, ratio = 0.2):
         self.pixelRatio = world._ratioPixelCm
         self.axisX = world._axisX
         self.axisY = world._axisY
@@ -115,7 +115,7 @@ class PathFinding:
         self.OBSTACLE = world._obstacles
         self.OBSTACLE_WIDTH = obstacle_width #self.obstacle._radius
         self.RATIO = ratio
-        self.yCells = int(self.TABLE_WIDTH * self.RATIO)
+        self.yCells = int(self.TABLE_WIDTH * self.RATIO) + 1
         self.xCells = int(self.TABLE_LENGTH * self.RATIO)
         self.path_websocket = path_box#est le array des tracé qui seront utiliser par les websocket
         self.tableLayout = []
@@ -154,32 +154,41 @@ class PathFinding:
         initialY = int(y*self.RATIO)
         obstacleRay = self.OBSTACLE_WIDTH / 2
 
-        self.tableLayout[initialY][initialX] = 'W'
+        self.tableLayout[initialY][initialX] = 'O'
 
         for i in range(len(self.tableLayout)):
             for j in range(len(self.tableLayout[0])):
-                if self.tableLayout[i][j] == 'W':
+                if self.tableLayout[i][j] == 'O':
                     continue
                 deltaX = (x-j/self.RATIO)
                 deltaY = (y-i/self.RATIO)
                 if deltaX**2+deltaY**2 < obstacleRay**2 :
-                    self.tableLayout[i][j]= 'W'
+                    self.tableLayout[i][j]= 'O'
 
     def addSpacing(self):
         robotRay = self.ROBOT_LENGHT/2
         for i in range(len(self.tableLayout)):
             for j in range(len(self.tableLayout[0])):
                 if self.tableLayout[i][j] is 'W':
-
                     for k in range(len(self.tableLayout)):
                         for l in range(len(self.tableLayout[0])):
-                            if self.tableLayout[k][l] is 'W' or self.tableLayout[k][l] is 'o':
+                            if self.tableLayout[k][l] is 'W' or self.tableLayout[k][l] is 'o' or self.tableLayout[k][l] is 'O':
                                 continue
-                            if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o':
+                            if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o' and self.tableLayout[k][l] is not 'O':
                                 deltaX = (l/self.RATIO - j / self.RATIO)
                                 deltaY = (k/self.RATIO - i / self.RATIO)
-                                if deltaX**2+deltaY**2 < robotRay**2:
+                                if deltaX**2+deltaY**2 < (robotRay**2)/2:
                                     self.tableLayout[k][l] = 'o'
+                # if self.tableLayout[i][j] is 'W':
+                #     for k in range(len(self.tableLayout)):
+                #         for l in range(len(self.tableLayout[0])):
+                #             if self.tableLayout[k][l] is 'W' or self.tableLayout[k][l] is 'o' or self.tableLayout[k][l] is 'O':
+                #                 continue
+                #             if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o' and self.tableLayout[k][l] is not 'O':
+                #                 deltaX = (l/self.RATIO - j / self.RATIO)
+                #                 deltaY = (k/self.RATIO - i / self.RATIO)
+                #                 if deltaX**2+deltaY**2 < robotRay**2:
+                #                     self.tableLayout[k][l] = 'o'
 
     def movementsInCm(self, cellMovements):
         cmMovements = []
@@ -206,9 +215,9 @@ class PathFinding:
         self.path_websocket.append(test)
         return self.actual_path
 
-    def getPath(self, robot, destination):
+    def getPath(self, robot, destination, extra = []):
         ###Prend en paramettre un tuple (x,y) de la position d'origine du robot en pixel et un tuple (x,y) de la position finale du Robot)
-
+        print(threading.current_thread().getName())
         self.actual_path = []
         accessible = True
 
@@ -219,7 +228,7 @@ class PathFinding:
         for i in self.OBSTACLE:
             self.addObstacle(i._coordinate[1]/self.pixelRatio, i._coordinate[0]/self.pixelRatio)
 
-        self.addSpacing()
+        #self.addSpacing()
         xOrigin = self.centimetersToCoords(robot[0]/self.pixelRatio)
         yOrigin = self.centimetersToCoords(robot[1]/self.pixelRatio)
         xTarget = self.centimetersToCoords(destination[0]/self.pixelRatio)
@@ -243,10 +252,30 @@ class PathFinding:
 
         if(self.tableLayout[yOrigin][xOrigin] != ' '):
             accessible = False
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + "FAILORIGIN.txt", "w+")
+            self.tableLayout[yOrigin][xOrigin] = 'S'
+            self.tableLayout[yTarget][xTarget] = 'F'
+            for i in self.tableLayout:
+                line = str(i)
+                f.write(line + "\n")
+            f.close()
             raise OriginUnaccessible
 
         if(self.tableLayout[yTarget][xTarget] != ' '):
             accessible = False
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + "FAILTARGET.txt", "w+")
+            self.tableLayout[yOrigin][xOrigin] = 'S'
+            self.tableLayout[yTarget][xTarget] = 'F'
+            for i in self.tableLayout:
+                line = str(i)
+                f.write(line + "\n")
+            f.close()
             raise TargetUnaccessible
 
         if accessible:
@@ -279,7 +308,7 @@ class PathFinding:
 
             print(accessible)
             self.pathFound = accessible
-            self.getJointPath(self.actual_path)
+            self.getJointPath(self.actual_path, extra)
 
         return accessible
     def getUnsafeLocations(self):
@@ -300,8 +329,8 @@ class PathFinding:
         return self.pixelRatio
 
 
-    def thread_start_pathfinding(self, robot, destination):
-        t = threading.Thread(target=self.getPath, args=(robot, destination))
+    def thread_start_pathfinding(self, robot, destination, extra = []):
+        t = threading.Thread(target=self.getPath, args=(robot, destination, extra))
         t.start()
 
     def Array_to_str_path(self, path_array):
@@ -320,7 +349,7 @@ class PathFinding:
                 return_value = return_value + "u"
         return return_value
 
-    def getJointPath(self, path):
+    def getJointPath(self, path, extra):
         bufferPath = []
         for i in path:
             if i != path[-1]:
@@ -360,7 +389,8 @@ class PathFinding:
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
                     break
-
+        for h in extra:
+            self.path_websocket.append(h)
 
     def smoothPathCompare(self):
         smoothestPath = []

@@ -97,12 +97,12 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.path_finding = None
 
     def button_log_action(self):
-        if True:
+        if False:
             try:
                 table = TableZone((33, 54, 1200, 580))
                 obstacle = [Obstacle((600+33,290+54),33)]
                 self.world = World(table, fakeAZoneList(), obstacle)
-                self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+                self.path_finding = PathFinding(self.world, self.web_socket.path)
                 self.robot = Robot()
                 self.robot._coordinate = (288 + 33, 288 + 54)
                 self.robot._angle = 0
@@ -123,7 +123,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
             try:
                 self.world = self.vision.detectWorldElement(self.image)
                 # cv2.imshow("capture", image)
-                self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+                self.path_finding = PathFinding(self.world, self.web_socket.path)
                 self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
                 self.robot = self.vision._visionController._robot
                 self.thread_start_timer()
