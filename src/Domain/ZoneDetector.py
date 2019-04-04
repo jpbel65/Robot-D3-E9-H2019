@@ -114,15 +114,16 @@ class ZoneDetector(WorldEntityDetector):
 
         found = False
         x1, y1 = 0, 0
-        cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 15)
-        mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 40]))
+        cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 20)
+        cv2.line(crop_img, (x1+w1, y1), (x1 + w1, y1+h1), (255, 0, 0), 10)
+        mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 110]))
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(7, 7))
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=1)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
 
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:8]
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:20]
         for c in contours:
             contour_length = cv2.arcLength(c, True)
             polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
