@@ -39,15 +39,6 @@ class CameraMonde:
                     #self.path = self.getPlannedPath()
                     #self.obstacles = PathDrawer(self.path_finding).getObstacles()
                     self.world_true = True
-                    self.drawPlannedPath = True
-                if False: #self.path_finding:
-                    if self.path_finding.pathFound:
-                        for i in self.path_finding:
-                            if i != self.path[-1]:
-                                cv2.line(frame, (i[1], i[0]),
-                                         (self.path[self.path.index(i) + 1][1], self.path[self.path.index(i) + 1][0]), 125, 2)
-                        for k in self.obstacles:
-                            cv2.circle(frame,  (k[1] + self.world._axisY, k[0] + self.world._axisX), 3, 200, 1)
                 if self.stop is True:
                     break
 

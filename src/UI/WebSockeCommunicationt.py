@@ -38,7 +38,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         self.testOffline(False)
 
         async with websockets.connect(
-                'ws://10.240.104.107:8765', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107
+                'ws://10.240.17.211:8765', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107
             print("in websocket")
             go = "go"
             await websocket.send(go)
@@ -119,7 +119,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 shape = self.station.world._targetZone.center
                 print(shape)
                 corectif = self.adjustement(shape)
-                await self.send_path(websocket, (shape[0], shape[1]-60))#fonction target zone
+                await self.send_path(websocket, (shape[0], shape[1]-100))#fonction target zone
                 #await self.addRotation(shape, websocket)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")

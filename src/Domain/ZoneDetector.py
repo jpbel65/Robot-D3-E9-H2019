@@ -114,8 +114,8 @@ class ZoneDetector(WorldEntityDetector):
 
         found = False
         x1, y1 = 0, 0
-        cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 15)
-        mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 40]))
+        cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 30)
+        mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 110]))
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(7, 7))
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=1)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)

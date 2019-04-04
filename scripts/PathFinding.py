@@ -31,7 +31,7 @@ def astar(maze, start, end, direction=0):
 
     start_node = Node(None, start, direction)
     start_node.g = start_node.h = start_node.f = 0
-    end_node = Node(None, end, 3)
+    end_node = Node(None, end, 2)
     end_node.g = end_node.h = end_node.f = 0
 
     open_list = []
@@ -152,9 +152,15 @@ class PathFinding:
     def addObstacle(self, y, x):
         initialX = int(x*self.RATIO)
         initialY = int(y*self.RATIO)
-        obstacleRay = self.OBSTACLE_WIDTH / 2
+        obstacleRay = (self.OBSTACLE_WIDTH / 2)#*self.RATIO
 
         self.tableLayout[initialY][initialX] = 'O'
+
+        # for i in range(round(initialY - obstacleRay), round(initialY + obstacleRay)):
+        #     for j in range(round(initialX- obstacleRay), round(initialX+ obstacleRay)):
+        #         if self.tableLayout[i][j] == 'O':
+        #             continue
+        #         self.tableLayout[i][j] = 'O'
 
         for i in range(len(self.tableLayout)):
             for j in range(len(self.tableLayout[0])):
@@ -162,6 +168,7 @@ class PathFinding:
                     continue
                 deltaX = (x-j/self.RATIO)
                 deltaY = (y-i/self.RATIO)
+
                 if deltaX**2+deltaY**2 < obstacleRay**2 :
                     self.tableLayout[i][j]= 'O'
 

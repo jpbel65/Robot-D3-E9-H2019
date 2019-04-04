@@ -100,14 +100,15 @@ class BaseStation(BaseWidget, QtCore.QObject):
         if False:
             try:
                 table = TableZone((33, 54, 1200, 580))
-                obstacle = [Obstacle((600+33,290+54),33)]
+                obstacle = [Obstacle((600+33,430+54),33), Obstacle((600+33,150+54),33)]
                 self.world = World(table, fakeAZoneList(), obstacle)
                 self.path_finding = PathFinding(self.world, self.web_socket.path)
                 self.robot = Robot()
-                self.robot._coordinate = (288 + 33, 288 + 54)
+                self.robot._coordinate = (288 + 33, 80 + 54)
                 self.robot._angle = 0
                 self.thread_start_timer()
                 self.web_socket.thread_start_comm_web()
+                self.path_finding.getPath(self.robot._coordinate, (1000,400))
                 print('end')
 
             except TargetZoneNotFoundError:
