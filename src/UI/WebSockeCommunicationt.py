@@ -21,7 +21,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     def testOffline(self, bool):
         if bool:
-            print("Path foung : ")
+            print("Path found : ")
             self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate,
                                                                (self.station.world._width-300 + self.station.world._axisX, self.station.world._width/2 + self.station.world._axisY))
 
@@ -43,6 +43,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             go = "go"
             await websocket.send(go)
             self.log_message(go)
+
             print("Obstacle :")
             print(self.station.world._obstacles[0]._coordinate)
             print("Destination :")
@@ -55,7 +56,10 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             print("TABLE")
             print(self.station.world._height)
             print(self.station.world._width)
-            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (119 + self.station.world._axisX, self.station.world._height-100 + self.station.world._axisY - 103))
+
+            #self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (119 + self.station.world._axisX, self.station.world._height-100 + self.station.world._axisY - 103))
+            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (
+                    119 + self.station.world._axisX, self.station.world._height - 100 + self.station.world._axisY + 3030))
             print(self.path)
             ready = await websocket.recv()
             print(ready)

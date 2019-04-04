@@ -32,7 +32,7 @@ from scripts.PathFinding import PathFinding
 
 class BaseStation(BaseWidget, QtCore.QObject):
     thread_off = False
-    imagetest = "picture_1280_720_0.jpg"
+    imagetest = "picture_1280_720_0FLECHE.jpg"
     timer = 0
 
     def __init__(self):
@@ -97,28 +97,28 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.path_finding = None
 
     def button_log_action(self):
-        # if os.environ['TESTENV']:
-        #     try:
-        #         table = TableZone((33, 54, 1200, 580))
-        #         obstacle = [Obstacle((600+33,290+54),33)]
-        #         self.world = World(table, fakeAZoneList(), obstacle)
-        #         self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
-        #         self.robot = Robot()
-        #         self.robot._coordinate = (288 + 33, 288 + 54)
-        #         self.robot._angle = 0
-        #         self.thread_start_timer()
-        #         self.web_socket.thread_start_comm_web()
-        #         print('end')
-        #
-        #     except TargetZoneNotFoundError:
-        #         self.web_socket.log_message("ERROR : Target Zone not Found !")
-        #     except ShapeZoneNotFoundError:
-        #         self.web_socket.log_message("ERROR : Shape Zone not Found !")
-        #     except TableZoneNotFoundError:
-        #         self.web_socket.log_message("ERROR : Table not detected !")
-        #     except StartZoneNotFoundError:
-        #         self.web_socket.log_message("ERROR : Target Zone not Found !")
-        # else:
+        if True:
+            try:
+                table = TableZone((33, 54, 1200, 580))
+                obstacle = [Obstacle((600+33,290+54),33)]
+                self.world = World(table, fakeAZoneList(), obstacle)
+                self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+                self.robot = Robot()
+                self.robot._coordinate = (288 + 33, 288 + 54)
+                self.robot._angle = 0
+                self.thread_start_timer()
+                self.web_socket.thread_start_comm_web()
+                print('end')
+
+            except TargetZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Target Zone not Found !")
+            except ShapeZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Shape Zone not Found !")
+            except TableZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Table not detected !")
+            except StartZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Target Zone not Found !")
+        else:
             self.image = self.camera_monde.frame
             try:
                 self.world = self.vision.detectWorldElement(self.image)

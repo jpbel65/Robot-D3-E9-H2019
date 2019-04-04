@@ -1,4 +1,17 @@
 import threading
+import datetime
+
+class OriginNotOnTable(Exception):
+    pass
+
+class TargetNotOnTable(Exception):
+    pass
+
+class OriginUnaccessible(Exception):
+    pass
+
+class TargetUnaccessible(Exception):
+    pass
 
 class Node():
     def __init__(self, parent=None, position=None, directionFrom = 0):
@@ -194,9 +207,10 @@ class PathFinding:
         return self.actual_path
 
     def getPath(self, robot, destination):
+        ###Prend en paramettre un tuple (x,y) de la position d'origine du robot en pixel et un tuple (x,y) de la position finale du Robot)
+
         self.actual_path = []
         accessible = True
-
 
         self.createTable(self.xCells, self.yCells)
 
@@ -206,22 +220,62 @@ class PathFinding:
             self.addObstacle(i._coordinate[1]/self.pixelRatio, i._coordinate[0]/self.pixelRatio)
 
         self.addSpacing()
+        xOrigin = self.centimetersToCoords(robot[0]/self.pixelRatio)
+        yOrigin = self.centimetersToCoords(robot[1]/self.pixelRatio)
+        xTarget = self.centimetersToCoords(destination[0]/self.pixelRatio)
+        yTarget = self.centimetersToCoords(destination[1]/self.pixelRatio)
 
-        # destinationX = self.centimetersToCoords(destination[0]/(self.pixelRatio))
-        # destinationY = self.centimetersToCoords(destination[1]/(self.pixelRatio))
-        # if(self.tableLayout[destinationX][destinationY] != ' '):
-        #     accessible = False
+        xMaxTable = len(self.tableLayout)
+        yMaxTable = len(self.tableLayout[0])
+
+        if xOrigin > len(self.tableLayout[0]):
+            accessible = False
+            raise OriginNotOnTable
+        if yOrigin > len(self.tableLayout):
+            accessible = False
+            raise OriginNotOnTable
+        if xTarget > len(self.tableLayout[0]):
+            accessible = False
+            raise TargetNotOnTable
+        if yTarget > len(self.tableLayout):
+            accessible = False
+            raise TargetNotOnTable
+
+        if(self.tableLayout[yOrigin][xOrigin] != ' '):
+            accessible = False
+            raise OriginUnaccessible
+
+        if(self.tableLayout[yTarget][xTarget] != ' '):
+            accessible = False
+            raise TargetUnaccessible
+
         if accessible:
-            cellMovements = astar(self.tableLayout, (self.centimetersToCoords(robot[1]/self.pixelRatio), self.centimetersToCoords(robot[0]/self.pixelRatio)), (self.centimetersToCoords(destination[1]/self.pixelRatio), self.centimetersToCoords(destination[0]/self.pixelRatio)))
+            cellMovements = astar(self.tableLayout, (yOrigin, xOrigin), (yTarget, xTarget))
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + ".txt", "w+")
+
+            self.tableLayout[yOrigin][xOrigin] = 'S'
+            self.tableLayout[yTarget][xTarget] = 'F'
+
+            for i in self.tableLayout:
+                line = str(i)
+                f.write(line + "\n")
+            f.close()
+
+            self.tableLayout[yOrigin][xOrigin] = ' '
+            self.tableLayout[yTarget][xTarget] = ' '
+
             self.actual_path = self.movementsInCm(cellMovements)
+            if self.actual_path == []:
+                accessible = False
+
+            print(accessible)
+            self.pathFound = accessible
             self.getJointPath(self.actual_path)
 
-
-        if self.actual_path == []:
-            accessible = False
-
-        print(accessible)
-        self.pathFound = accessible
         return accessible
     def getUnsafeLocations(self):
 
