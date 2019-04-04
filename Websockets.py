@@ -7,12 +7,11 @@ from time import sleep
 async def hello(websocket, path):
     name = await websocket.recv()
     if name == "go":
-        sleep(30)
-        print(websockets.WebSocketClientProtocol.is_client)
-        sleep(30)
-        await websocket.send("ok, je vais ou")
-        pos = await websocket.recv()
-        print(pos)
+        await websocket.send("depart")
+        while True:
+            pos = await websocket.recv()
+            print(pos)
+            await websocket.send("next")
 
         
 def Connection_Routeur():

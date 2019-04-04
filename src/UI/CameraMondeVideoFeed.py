@@ -41,7 +41,7 @@ class CameraMonde:
                     self.world_true = True
                     self.drawPlannedPath = True
 
-                if self.path_finding:
+                if False: #self.path_finding:
                     if self.path_finding.pathFound:
                         for i in self.path_finding:
                             if i != self.path[-1]:

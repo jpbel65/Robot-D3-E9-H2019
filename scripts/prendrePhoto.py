@@ -3,13 +3,13 @@ import numpy as np
 from PIL import Image
 
 def main():
-    capture = cv2.VideoCapture(0)
+    capture = cv2.VideoCapture(1)
 
     while True:
 
         ret, frame = capture.read()
         cv2.imshow('Current', frame)
-        cv2.imwrite("/home/pi/Documents/Robot-D3-E9-H2019/PhotoForme/Pentagon.jpg", frame )
+        cv2.imwrite("Photos&Calibration/Screen/wadawdwa.jpg", frame )
         exit(0)
 
 

@@ -40,6 +40,7 @@ class ZoneDetector(WorldEntityDetector):
         StartZone = self.detectStartZone(image_copy)
         zones.append(StartZone)
         deposit = self.detectTargetZone(image)
+        print(deposit.center)
         zones.append(deposit)
         shapeZone = self.detectShapeZone(image_copy, w1, h1)
         zones.append(shapeZone)
@@ -72,8 +73,6 @@ class ZoneDetector(WorldEntityDetector):
                                      cv2.THRESH_BINARY, cv2.THRESH_BINARY, 11, 2)
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=2)
-        cv2.imshow('',mask)
-        cv2.waitKey()
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = sorted(contours, key=cv2.contourArea, reverse=True)[:15]
         table_found = False
@@ -163,9 +162,7 @@ class ZoneDetector(WorldEntityDetector):
                    centerX = int((M["m10"] / M["m00"]))
                    centerY = int((M["m01"] / M["m00"]))
                    return TargetZone((x, y, w, h))
-             elif area >= 20 and area <= 100 and len(polygon_points) == 4:
-                     x, y, w, h = cv2.boundingRect(polygon_points)
-                     return TargetZone((x, y, w, h))
+
 
           if found == False:
                 raise TargetZoneNotFoundError
@@ -183,3 +180,10 @@ def _threshold_black(self, image):
 def CropTableFromImage(self, mask, table):
     return mask[table.getOriginY():table.getOriginY() + table.getHeight(),
            table.getOriginX():table.getOriginX() + table.getWidth()]
+
+def fakeAZoneList():
+    zone = []
+    zone.append(StartZone(Square((115+33, 115+54, 3*115, 3*115))))
+    zone.append(TargetZone((720+33, 54, 115, 114/3)))
+    zone.append(ShapeZone(720+33, 580+54-114/3, 115, 114/3))
+    return zone

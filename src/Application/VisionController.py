@@ -16,6 +16,7 @@ from Domain.RobotDetector import RobotDetector
 from Domain.Robot import Robot
 import numpy as np
 import cv2
+import math
 
 
 class ShapeNotValidError(Exception):
@@ -77,7 +78,7 @@ class VisionController:
     def detectRobotAndGetAngle(self, image):
         #self._robotDetector.thread_start_Detector(image)
         self._robotDetector.detect(image)
-        self._robot._coordinate = (self._robotDetector.centerX,self._robotDetector.centerY)
+        self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         self._robot._angle = self._robotDetector.angle
 
     def detectEntities(self, image):
@@ -89,10 +90,16 @@ class VisionController:
             #table = self._zoneDetector_.detectTableAlternative(image)
 
 
+
             table = self._zoneDetector_.detectTable(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
+            self.detectRobotAndGetAngle(crop_img)
             obstacles = self._obstaclesDetector_.detect(crop_img)
+            for i in obstacles:
+                dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
+                if dis <= 160:
+                    obstacles.remove(i)
             zones = self._zoneDetector_.detect(crop_img, table)
             world = World(table, zones, obstacles)
             return world

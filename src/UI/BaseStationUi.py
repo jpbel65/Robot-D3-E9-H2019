@@ -1,27 +1,33 @@
-import pyforms
-import cv2
-from pyforms.basewidget import BaseWidget
-from pyforms.controls import ControlTextArea
-from pyforms.controls import ControlText
-from pyforms.controls import ControlPlayer
-from pyforms.controls import ControlImage
-from pyforms.controls import ControlButton
-
-
-from UI.Communication import Communicate
-from UI.WebSockeCommunicationt import WebSocket
-from UI.CameraMondeVideoFeed import CameraMonde
-from UI.MapRender import DrawPlayground
-from Application.MainController import MainController
-from scripts.PathFinding import PathFinding
-
-
-import numpy as np
-from PyQt5 import QtCore, QtGui
+import os
+import threading
 import time
 from time import sleep
-import threading
-import Domain.ZoneDetector
+
+import numpy as np
+import pyforms
+from PyQt5 import QtCore
+from pyforms.basewidget import BaseWidget
+from pyforms.controls import ControlButton
+from pyforms.controls import ControlImage
+from pyforms.controls import ControlPlayer
+from pyforms.controls import ControlText
+from pyforms.controls import ControlTextArea
+
+from Application.MainController import MainController
+from Domain.Obstacle import Obstacle
+from Domain.Robot import Robot
+from Domain.TableZone import TableZone
+from Domain.World import World
+from Domain.ZoneDetector import TableZoneNotFoundError
+from Domain.ZoneDetector import TargetZoneNotFoundError
+from Domain.ZoneDetector import StartZoneNotFoundError
+from Domain.ZoneDetector import ShapeZoneNotFoundError
+from Domain.ZoneDetector import fakeAZoneList
+from UI.CameraMondeVideoFeed import CameraMonde
+from UI.Communication import Communicate
+from UI.MapRender import DrawPlayground
+from UI.WebSockeCommunicationt import WebSocket
+from scripts.PathFinding import PathFinding
 
 
 class BaseStation(BaseWidget, QtCore.QObject):
@@ -91,24 +97,49 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.path_finding = None
 
     def button_log_action(self):
-        self.image = self.camera_monde.frame
-        try:
-            self.world = self.vision.detectWorldElement(self.image)
-            # cv2.imshow("capture", image)
-            self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
-            self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
-            self.robot = self.vision._visionController._robot
-            self.thread_start_timer()
-            self.web_socket.thread_start_comm_web()
+        # if os.environ['TESTENV']:
+        #     try:
+        #         table = TableZone((33, 54, 1200, 580))
+        #         obstacle = [Obstacle((600+33,290+54),33)]
+        #         self.world = World(table, fakeAZoneList(), obstacle)
+        #         self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+        #         self.robot = Robot()
+        #         self.robot._coordinate = (288 + 33, 288 + 54)
+        #         self.robot._angle = 0
+        #         self.thread_start_timer()
+        #         self.web_socket.thread_start_comm_web()
+        #         print('end')
+        #
+        #     except TargetZoneNotFoundError:
+        #         self.web_socket.log_message("ERROR : Target Zone not Found !")
+        #     except ShapeZoneNotFoundError:
+        #         self.web_socket.log_message("ERROR : Shape Zone not Found !")
+        #     except TableZoneNotFoundError:
+        #         self.web_socket.log_message("ERROR : Table not detected !")
+        #     except StartZoneNotFoundError:
+        #         self.web_socket.log_message("ERROR : Target Zone not Found !")
+        # else:
+            self.image = self.camera_monde.frame
+            try:
+                self.world = self.vision.detectWorldElement(self.image)
+                # cv2.imshow("capture", image)
+                self.path_finding = PathFinding(self.world, 22, 22, 13, 0.2, self.web_socket.path)
+                self.vision._visionController.detectRobotAndGetAngle(self.camera_monde.frame)
+                self.robot = self.vision._visionController._robot
+                self.thread_start_timer()
+                self.web_socket.thread_start_comm_web()
+                print('end')
 
-        except Domain.ZoneDetector.TargetZoneNotFoundError:
-            self.web_socket.log_message("ERROR : Target Zone not Found !")
-        except Domain.ZoneDetector.ShapeZoneNotFoundError:
-            self.web_socket.log_message("ERROR : Shape Zone not Found !")
-        except Domain.ZoneDetector.TableZoneNotFoundError:
-            self.web_socket.log_message("ERROR : Table not detected !")
-        except Domain.ZoneDetector.StartZoneNotFoundError:
-            self.web_socket.log_message("ERROR : Target Zone not Found !")
+            except TargetZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Target Zone not Found !")
+            except ShapeZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Shape Zone not Found !")
+            except TableZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Table not detected !")
+            except StartZoneNotFoundError:
+                self.web_socket.log_message("ERROR : Target Zone not Found !")
+            except ConnectionRefusedError:
+                self.web_socket.log_message("ERROR : Connection Refused")
 
 
 

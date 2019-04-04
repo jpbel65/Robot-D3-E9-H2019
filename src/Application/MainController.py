@@ -1,10 +1,4 @@
-from Service import RobotController
-from Domain import World
 from Application.VisionController import VisionController
-from Application import TrajectoryMapper
-from Application import TrajectoryCalculator
-from Domain import ScaleConverter
-from Domain import Robot
 
 
 class MainController:

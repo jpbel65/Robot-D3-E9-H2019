@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Application import VisionController
-from Domain import Obstacle
-from Domain.WorldEntityDetector import WorldEntityDetector
-from Domain.Obstacle import Obstacle
 import cv2
-import numpy as np
 import math
+import numpy as np
+
+from Domain import Obstacle
+from Domain.Obstacle import Obstacle
+from Domain.WorldEntityDetector import WorldEntityDetector
 
 
 class ObstacleNotFoundError(Exception):
@@ -35,9 +35,10 @@ class ObstaclesDetector(WorldEntityDetector):
 
         for x in base:
             for y in haut:
-                dis = math.sqrt((x[0] - y[0]) ** 2 + (y[1] - y[1]) ** 2)
-                if dis <= 100:
+                dis = math.sqrt((x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2)
+                if dis <= 180:
                     haut.remove(y)
+
 
         if len(haut) != 0:
             for x in haut:

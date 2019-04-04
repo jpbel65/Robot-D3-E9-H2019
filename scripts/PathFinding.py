@@ -89,15 +89,6 @@ def astar(maze, start, end, direction=0):
 
 
 class PathFinding:
-    #TABLE_WIDTH = 111
-    #TABLE_LENGTH = 231
-    #ROBOT_WIDTH = 22
-    #ROBOT_LENGHT = 22
-    #OBSTACLE_WIDTH = 13
-    #RATIO = 0.2
-
-    #yCells = int(TABLE_WIDTH * RATIO)  # 101 208
-    #xCells = int(TABLE_LENGTH * RATIO)  # 303 625
 
 
     def __init__(self, world, robot_width = 22, robot_lenght =22, obstacle_width = 13, ratio = 0.2, path_box = []):
@@ -216,10 +207,10 @@ class PathFinding:
 
         self.addSpacing()
 
-        destinationX = self.centimetersToCoords(destination[1]/(self.pixelRatio))
-        destinationY = self.centimetersToCoords(destination[1]/(self.pixelRatio))
-        if(self.tableLayout[destinationX][destinationY] != ' '):
-            accessible = False
+        # destinationX = self.centimetersToCoords(destination[0]/(self.pixelRatio))
+        # destinationY = self.centimetersToCoords(destination[1]/(self.pixelRatio))
+        # if(self.tableLayout[destinationX][destinationY] != ' '):
+        #     accessible = False
         if accessible:
             cellMovements = astar(self.tableLayout, (self.centimetersToCoords(robot[1]/self.pixelRatio), self.centimetersToCoords(robot[0]/self.pixelRatio)), (self.centimetersToCoords(destination[1]/self.pixelRatio), self.centimetersToCoords(destination[0]/self.pixelRatio)))
             self.actual_path = self.movementsInCm(cellMovements)
@@ -300,13 +291,13 @@ class PathFinding:
 
                     movementString = []
                     if (movement) < 10:
-                        self.path_websocket.append('D' + side + "00" + str((int(movement))))
+                        self.path_websocket.append('D' + side + "0" + str((int(movement))) + "0")
 
                     elif 9 < (movement) < 100:
-                        self.path_websocket.append('D' + side + "0" + str((int(movement))))
+                        self.path_websocket.append('D' + side + str((int(movement))) + "0")
                     else:
-                        self.path_websocket.append('D' + side + "0" + str((int(movement/2))))
-                        self.path_websocket.append('D' + side + "0" + str((int(movement/2))))
+                        self.path_websocket.append('D' + side + str((int(movement/2))) + "0")
+                        self.path_websocket.append('D' + side + str((int(movement/2))) + "0")
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
                     break
