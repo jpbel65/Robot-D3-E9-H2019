@@ -1,5 +1,6 @@
 import threading
 import datetime
+import math
 
 class OriginNotOnTable(Exception):
     pass
@@ -121,6 +122,7 @@ class PathFinding:
         self.tableLayout = []
         self.actual_path = []
         self.pathFound: False
+        self.world = world
 
     def centimetersToCoords(self, meters):
         return int(round(meters * self.RATIO))
@@ -218,6 +220,28 @@ class PathFinding:
     def getPath(self, robot, destination, extra = []):
         ###Prend en paramettre un tuple (x,y) de la position d'origine du robot en pixel et un tuple (x,y) de la position finale du Robot)
         print(threading.current_thread().getName())
+
+        #code pour corriger le robot
+        hauteur_table = 78 * self.pixelRatio
+        hauteur_robot = 23.3 * self.pixelRatio
+        newX = robot._coordinate(0)-self.axisX-self.world._width
+        newY = robot._coordinate(1)-self.axisY-self.world._height
+
+        BigHypox = math.sqrt(hauteur_table ** 2 + newX ** 2)
+        littleHypox = BigHypox / hauteur_table * hauteur_robot
+        moyenHypox = BigHypox - littleHypox
+        reelX = math.sqrt(moyenHypox ** 2 - (hauteur_table - hauteur_robot) ** 2)
+
+        BigHypoy = math.sqrt(hauteur_table ** 2 + newY ** 2)
+        littleHypoy = BigHypoy / hauteur_table * hauteur_robot
+        moyenHypoy = BigHypoy - littleHypoy
+        reelY = math.sqrt(moyenHypoy ** 2 - (hauteur_table - hauteur_robot) ** 2)
+
+        reelX = reelX+self.axisX+self.world._width
+        reelY = reelY+self.axisY+self.world._height
+        Nrobot = (reelX, reelY)
+
+
         self.actual_path = []
         accessible = True
 
@@ -229,8 +253,8 @@ class PathFinding:
             self.addObstacle(i._coordinate[1]/self.pixelRatio, i._coordinate[0]/self.pixelRatio)
 
         #self.addSpacing()
-        xOrigin = self.centimetersToCoords(robot[0]/self.pixelRatio)
-        yOrigin = self.centimetersToCoords(robot[1]/self.pixelRatio)
+        xOrigin = self.centimetersToCoords(Nrobot[0]/self.pixelRatio)
+        yOrigin = self.centimetersToCoords(Nrobot[1]/self.pixelRatio)
         xTarget = self.centimetersToCoords(destination[0]/self.pixelRatio)
         yTarget = self.centimetersToCoords(destination[1]/self.pixelRatio)
 
