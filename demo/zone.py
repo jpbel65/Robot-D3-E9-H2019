@@ -47,6 +47,7 @@ def canny(rip, x1, y1, w1, h1 ):
             centerX = int((M["m10"] / M["m00"]))
             centerY = int((M["m01"] / M["m00"]))
             x, y, w, h = cv2.boundingRect(polygon_points)
+
             points = detectPointOfTargetZone(copy_bgr ,(centerX,centerY))
             if  h <=200 and  len(points) == 4:
 
@@ -200,22 +201,16 @@ def detect_circles_by_colour(image):
 def detectblackzone(crop_img, w1, h1):
     # cv2.line(crop_img, (0, h1), (w1 + h1, 0), (255, 0, 0), 15)
     x1, y1 = 0, 0
+#    #cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 30)
+    #cv2.line(crop_img, (x1, y1), (x1, y1 + h1), (255, 0, 0), 10)
+    cv2.line(crop_img, (w1, 0), (w1, h1), (255, 0, 0), 10)
+    cv2.line(crop_img, (0, h1), (w1, h1), (255, 0, 0), 15)
+    cv2.line(crop_img, ( 0, 0), (0,  h1), (255, 0, 0), 15)
 
-    cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 30)
-    cv2.line(crop_img, (x1, y1), (x1, y1 + h1), (255, 0, 0), 10)
-    cv2.line(crop_img, (x1+w1, y1), (x1+w1, y1 + h1), (255, 0, 0), 10)
-    cv2.line(crop_img, (x1, h1), (x1 + w1, y1 +h1), (255, 0, 0), 10)
-    # cv2.line(big_img, (x1 + w1, y1 + h1), (x1 + w1, y1 - h1), (255, 0, 0), 15)
-    cv2.imshow("OWOW ", crop_img)
-    cv2.waitKey()
-
-    mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255,110]))
+    mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255,80]))
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(7, 7))
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel=kernel, iterations=1)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)
-    cv2.imshow("mask ", mask)
-    cv2.waitKey()
-
     # contours, hierarchy = cv2.findContours(cimage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
@@ -241,6 +236,7 @@ def detectblackzone(crop_img, w1, h1):
             #if np.any(pixel[centerY, centerX] != 0):
 
               #  print("not black")
+            cv2.circle(crop_img, (centerX, centerY), 2, (0, 0, 255), 15)
             cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(color_img, 'zone de piece', (centerX, centerY), 0, 0.3, (0, 255, 0))
             break
@@ -287,19 +283,41 @@ def DetectTableAlternative(big_img):
                 x, y, w, h = cv2.boundingRect(polygon_points)
 
                 rect = cv2.minAreaRect(c)
+                angle =rect[2]
+                wRot=[0,0]
+
+               
                 box = cv2.boxPoints(rect)
                 box = np.int0(box)
-                #cv2.drawContours(color_img, [box], 0, (255, 0, 0), 2)
-                #cv2.drawContours(color_img, [box], 0, (255, 0, 0), 2)
-                cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                x1,x2,x3,x4= box[0],box[1],box[2],box[3]
+                print(w)
+                print(x1)
+                print(x2)
+                print(x3)
+                print(x4)
+                if abs(w-x1[0])<200 and abs(y-x1[1])<100:
+                    wRot=x1
+                elif abs(w-x2[0])<200 and abs(y-x2[1])<100:
+                    wRot=x2
+                elif abs(w - x3[0]) < 200 and abs(y-x3[1])<100:
+                    wRot=x3
+                elif    abs(w - x4[0]) < 200 and abs(y-x4[1])<100:
+                    wRot=x4
 
-                cv2.putText(color_img, 'zone de depart detecte', (x, y), 0, 0.3, (0, 255, 0))
+               # cv2.line(color_img, (x, y), (wrot[0], rot[1]), (0, 255, 0), 8)
+                #cv2.drawContours(color_img, [box], 0, (255, 0, 0), 2)
+
+                #cv2.drawContours(color_img, [box], 0, (255, 0, 0), 2)
+                #cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+               # cv2.putText(color_img, 'zone de depart detecte', (x, y), 0, 0.3, (0, 255, 0))
                 break
 
     #color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
     cv2.imshow("table", color_img)
     cv2.waitKey()
-    return x,y,w,h
+
+    return x,y,w,h,wRot
 
 
 def detectTriangleOnRobot(crop_img):
@@ -487,7 +505,8 @@ if __name__ == "__main__":
 
     # v2.imshow("origian",big_img)
     # big_img= blur(big_img)
-    big_img = cv2.imread("photo_b_1280_720_4.jpg", 1)
+    big_img = cv2.imread("photo_b_1280_720_5"
+                         ".jpg", 1)
     '''
     rgb_planes = cv2.split(big_img)
 
@@ -507,7 +526,8 @@ if __name__ == "__main__":
     cv2.imwrite('AAAAAAAA.png', result)
     cv2.imwrite('a.png', result_norm)
     '''
-    x,y,w,h=DetectTableAlternative(big_img)
+    x,y,w,h,wRot=DetectTableAlternative(big_img)
+    print(wRot)
 
     x1, y1, w1, h1 = x,y,w,h
 
@@ -516,6 +536,8 @@ if __name__ == "__main__":
     # x1, y1, w1, h1= 25, 65, 1240, 580
 
     crop_img = big_img[y1:y1 + h1, x1:x1 + w1]
+    cv2.line(crop_img, (0, 0), (wRot[0] - x1, wRot[1] - y1), (255, 255, 0), 20)
+    #cv2.line(crop_img, (0, 0), (w, 0), (0, 255, 0), 10)
 
 
 
@@ -529,6 +551,7 @@ if __name__ == "__main__":
 
     #points=detectPointOfTargetZone(gray,centerOfZone)
     #print(points)
+    image_copy = cv2.cvtColor(crop_img.copy(), cv2.COLOR_BGR2HSV)
     x,y,w,h = detectblackzone(crop_img, w1, h1)
     #detectTriangleOnRobot(crop_img)
     #piececouleur(crop_img)

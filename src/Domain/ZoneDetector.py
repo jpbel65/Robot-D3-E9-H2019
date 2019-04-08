@@ -33,7 +33,7 @@ class ZoneDetector(WorldEntityDetector):
     def __init__(self):
         self.___zoneList = None
 
-    def detect(self, image, table):
+    def detect(self, image, table,wRot):
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         zones = []
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
@@ -43,6 +43,7 @@ class ZoneDetector(WorldEntityDetector):
         print(deposit.center)
         zones.append(deposit)
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
+        cv2.line(image_copy, (0, 0), (wRot[0] - x1, wRot[1] - y1), (255, 255, 0), 20)
         shapeZone = self.detectShapeZone(image_copy, w1, h1)
         zones.append(shapeZone)
 
@@ -82,7 +83,22 @@ class ZoneDetector(WorldEntityDetector):
             area = cv2.contourArea(polygon_points)
             if area >= 600000 and area <= 800000:
                   x, y, w, h = cv2.boundingRect(polygon_points)
-                  return TableZone((x, y, w, h))
+                  rect = cv2.minAreaRect(c)
+                  angle = rect[2]
+                  wRot = [w, 0]
+
+                  box = cv2.boxPoints(rect)
+                  box = np.int0(box)
+                  x1, x2, x3, x4 = box[0], box[1], box[2], box[3]
+                  if abs(w - x1[0]) < 200 and abs(y - x1[1]) < 100:
+                      wRot = x1
+                  elif abs(w - x2[0]) < 200 and abs(y - x2[1]) < 100:
+                      wRot = x2
+                  elif abs(w - x3[0]) < 200 and abs(y - x3[1]) < 100:
+                      wRot = x3
+                  elif abs(w - x4[0]) < 200 and abs(y - x4[1]) < 100:
+                      wRot = x4
+                  return TableZone((x, y, w, h)),wRot
 
         if table_found == "False":
             raise TableZoneNotFoundError
@@ -113,12 +129,10 @@ class ZoneDetector(WorldEntityDetector):
 
         found = False
         x1, y1 = 0, 0
-        cv2.line(crop_img, (x1, y1), (x1 + w1, y1), (255, 0, 0), 30
 
-                 )
-        cv2.line(crop_img, (x1, y1), (x1, y1 + h1), (255, 0, 0), 10)
-        cv2.line(crop_img, (x1 + w1, y1), (x1 + w1, y1 + h1), (255, 0, 0), 10)
-        cv2.line(crop_img, (x1, h1), (x1 + w1, y1 + h1), (255, 0, 0), 10)
+        cv2.line(crop_img, (x1, y1), (x1, y1 + h1), (255, 0, 0), 15)
+        cv2.line(crop_img, (x1 + w1, y1), (x1 + w1, y1 + h1), (255, 0, 0), 15)
+        cv2.line(crop_img, (x1, h1), (x1 + w1, y1 + h1), (255, 0, 0), 15)
 
         mask = cv2.inRange(crop_img, np.array([0, 0, 0]), np.array([180, 255, 110]))
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(7, 7))
@@ -139,7 +153,9 @@ class ZoneDetector(WorldEntityDetector):
                 M = cv2.moments(c)
                 centerX = int((M["m10"] / M["m00"]))
                 centerY = int((M["m01"] / M["m00"]))
-
+                cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.imshow("color",color_img)
+                cv2.waitKey()
 
 
                 return ShapeZone(x, y, w, h)
