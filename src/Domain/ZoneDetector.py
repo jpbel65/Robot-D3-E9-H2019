@@ -43,7 +43,7 @@ class ZoneDetector(WorldEntityDetector):
         print(deposit.center)
         zones.append(deposit)
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
-        cv2.line(image_copy, (0, 0), (wRot[0] - x1, wRot[1] - y1), (255, 255, 0), 20)
+        cv2.line(image_copy, (0, 0), (wRot[0] - x1, wRot[1] - y1), (255, 255, 0), 25)
         shapeZone = self.detectShapeZone(image_copy, w1, h1)
         zones.append(shapeZone)
 
