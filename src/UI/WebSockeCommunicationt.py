@@ -133,6 +133,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 await websocket.send("reboot")
                 self.log_message("roboot")
                 self.station.thread_com_state.speak[str].emit("Arrete")
+                self.station.close_timer()
 
                 #self.station.thread_com_volt.speak[str].emit("44")
                 #self.station.thread_com_piece.speak[str].emit("blue triangle")
