@@ -1,9 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Domain import ShapeDetector
-from Domain import ScaleConverter
-from Application import MainController
-from Domain import WorldEntityDetector
+
 from Domain.SquareDetector import SquareDetector
 from Domain.TriangleDetector import TriangleDetector
 from Domain.PentagoneDetector import PentagoneDetector
@@ -79,35 +76,27 @@ class VisionController:
         #self._robotDetector.thread_start_Detector(image)
         self._robotDetector.detect(image)
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
+        newImage = image
+        cv2.circle(newImage, self._robot._coordinate, 5, 125)
+        cv2.imshow('Showrobot', newImage)
+        cv2.waitKey()
         self._robot._angle = self._robotDetector.angle
+
 
     def detectEntities(self, image):
        # try:
-
-            image = cv2.GaussianBlur(image, (5, 5), 0)
-            image = cv2.medianBlur(image, ksize=1)
-
-            table = self._zoneDetector_.detectTableAlternative(image)
-
-
-
-            #table = self._zoneDetector_.detectTable(image)
+            table,wRot = self._zoneDetector_.detectTableAlternative(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
+
             self.detectRobotAndGetAngle(crop_img)
             obstacles = self._obstaclesDetector_.detect(crop_img)
+
             for i in obstacles:
                 dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
                 if dis <= 300:
                     obstacles.remove(i)
-            for i in obstacles:
-
-                    cv2.circle(crop_img, (i._coordinate[0], i._coordinate[1]), 40, (0, 0, 255), 10)
-
-            cv2.circle(crop_img, (self._robot._coordinate[0], self._robot._coordinate[1]), 40, (0, 255, 255), 10)
-            #cv2.imshow("pbstacle",crop_img)
-           # cv2.waitKey()
-            zones = self._zoneDetector_.detect(crop_img, table)
+            zones = self._zoneDetector_.detect(crop_img, table,wRot)
             world = World(table, zones, obstacles)
             return world
 

@@ -32,6 +32,7 @@ from scripts.PathFinding import PathFinding
 
 class BaseStation(BaseWidget, QtCore.QObject):
     thread_off = False
+    timer_off = False
     imagetest = "picture_1280_720_0FLECHE.jpg"
     timer = 0
 
@@ -192,7 +193,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
     def start_timer(self):
         start = np.around(time.time())
         while True:
-            if self.thread_off is True:
+            if self.thread_off is True or self.timer_off is True:
                 break
             now = np.around(time.time())
             self.timer = now-start
@@ -202,6 +203,9 @@ class BaseStation(BaseWidget, QtCore.QObject):
     def before_close_event(self):
         self.camera_monde.stop_camera_thread()
         self.thread_off = True
+
+    def close_timer(self):
+        self.timer_off = True
 
     def getImage(self):
         return self.camera_monde.nextImage()

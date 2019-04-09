@@ -8,6 +8,8 @@ class StartZone(Zone):
 	def getDimensions(self):
 		pass
 
-	def __init__(self,square):
-		self.square = square
+	def __init__(self,x,y,w,h):
+		self.center = (x+w/2, y+h/2)
+		self.w = w
+		self.h = h
 

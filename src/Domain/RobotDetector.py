@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Application import VisionController
-from Domain import Robot
+
 from Domain.WorldEntityDetector import WorldEntityDetector
 import cv2
 import numpy as np
@@ -9,6 +8,9 @@ import math
 import imutils
 import threading
 
+
+class RobotNotFoundError(Exception):
+    pass
 class RobotDetector(WorldEntityDetector):
 
     def __init__(self):
@@ -22,6 +24,7 @@ class RobotDetector(WorldEntityDetector):
         t5.start()
 
     def detect(self, crop_img):
+        found= False
         image = cv2.GaussianBlur(crop_img, (5, 5), 0)
         image = cv2.medianBlur(image, ksize=3)
         resized = image
@@ -48,10 +51,11 @@ class RobotDetector(WorldEntityDetector):
             approx = cv2.approxPolyDP(c, 0.04 * peri, True)
             area =cv2.contourArea(approx)
             if len(approx) == 3 and area >= 000:
+                found=True
                 print(area)
                 centerX = int((M["m10"] / M["m00"]))
                 centerY = int((M["m01"] / M["m00"]))
-                cv2.circle(crop_img, (centerX, centerY), 40, (0, 255, 255), 10)
+                #cv2.circle(crop_img, (centerX, centerY), 40, (0, 255, 255), 10)
 
 
 
@@ -65,6 +69,9 @@ class RobotDetector(WorldEntityDetector):
                 self.centerX = centerX
                 self.centerY = centerY
                 return angle, (centerX, centerY)
+        if found == False:
+            raise RobotNotFoundError
+
 
     def getTrianglePeak(self,markers):
         dis1 = math.sqrt((markers[0][0][0] - markers[1][0][0]) ** 2 + (markers[0][0][1] - markers[1][0][1]) ** 2)
