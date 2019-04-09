@@ -224,28 +224,31 @@ class PathFinding:
         #code pour corriger le robot
         hauteur_table = 78 * self.pixelRatio
         hauteur_robot = 23.3 * self.pixelRatio
-        newX = robot._coordinate(0)-self.axisX-self.world._width
-        newY = robot._coordinate(1)-self.axisY-self.world._height
+        #newX = robot._coordinate(0)-self.axisX-self.world._width
+        #newY = robot._coordinate(1)-self.axisY-self.world._height
 
-        axeX = 1
-        axeY = 1
-        if newX < 0:
-            axeX = -1
-        if newY < 0:
-            axeY = -1
+        #axeX = 1
+        #axeY = 1
+        #if newX < 0:
+         #   axeX = -1
+        #if newY < 0:
+           # axeY = -1
 
-        BigHypox = math.sqrt(hauteur_table ** 2 + newX ** 2)
-        littleHypox = BigHypox / hauteur_table * hauteur_robot
-        moyenHypox = BigHypox - littleHypox
-        reelX = math.sqrt(moyenHypox ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeX
+        #BigHypox = math.sqrt(hauteur_table ** 2 + newX ** 2)
+        #littleHypox = BigHypox / hauteur_table * hauteur_robot
+        #moyenHypox = BigHypox - littleHypox
+        #reelX = math.sqrt(moyenHypox ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeX
 
-        BigHypoy = math.sqrt(hauteur_table ** 2 + newY ** 2)
-        littleHypoy = BigHypoy / hauteur_table * hauteur_robot
-        moyenHypoy = BigHypoy - littleHypoy
-        reelY = math.sqrt(moyenHypoy ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeY
+        #BigHypoy = math.sqrt(hauteur_table ** 2 + newY ** 2)
+        #littleHypoy = BigHypoy / hauteur_table * hauteur_robot
+        #moyenHypoy = BigHypoy - littleHypoy
+        #reelY = math.sqrt(moyenHypoy ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeY
 
-        reelX = reelX+self.axisX+self.world._width
-        reelY = reelY+self.axisY+self.world._height
+        #reelX = reelX+self.axisX+self.world._width
+        #reelY = reelY+self.axisY+self.world._height
+
+        reelX = 75.3 + robot[0]*0.8823
+        reelY = 37.6 + robot[1]*0.8924
         Nrobot = (reelX, reelY)
 
 
