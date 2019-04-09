@@ -227,15 +227,22 @@ class PathFinding:
         newX = robot._coordinate(0)-self.axisX-self.world._width
         newY = robot._coordinate(1)-self.axisY-self.world._height
 
+        axeX = 1
+        axeY = 1
+        if newX < 0:
+            axeX = -1
+        if newY < 0:
+            axeY = -1
+
         BigHypox = math.sqrt(hauteur_table ** 2 + newX ** 2)
         littleHypox = BigHypox / hauteur_table * hauteur_robot
         moyenHypox = BigHypox - littleHypox
-        reelX = math.sqrt(moyenHypox ** 2 - (hauteur_table - hauteur_robot) ** 2)
+        reelX = math.sqrt(moyenHypox ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeX
 
         BigHypoy = math.sqrt(hauteur_table ** 2 + newY ** 2)
         littleHypoy = BigHypoy / hauteur_table * hauteur_robot
         moyenHypoy = BigHypoy - littleHypoy
-        reelY = math.sqrt(moyenHypoy ** 2 - (hauteur_table - hauteur_robot) ** 2)
+        reelY = math.sqrt(moyenHypoy ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeY
 
         reelX = reelX+self.axisX+self.world._width
         reelY = reelY+self.axisY+self.world._height
