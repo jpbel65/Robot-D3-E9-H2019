@@ -32,7 +32,7 @@ def astar(maze, start, end, direction=0):
 
     start_node = Node(None, start, direction)
     start_node.g = start_node.h = start_node.f = 0
-    end_node = Node(None, end, 3)
+    end_node = Node(None, end, 2)
     end_node.g = end_node.h = end_node.f = 0
 
     open_list = []
@@ -154,9 +154,15 @@ class PathFinding:
     def addObstacle(self, y, x):
         initialX = int(x*self.RATIO)
         initialY = int(y*self.RATIO)
-        obstacleRay = self.OBSTACLE_WIDTH / 2
+        obstacleRay = (self.OBSTACLE_WIDTH / 2 + 10)#*self.RATIO
 
         self.tableLayout[initialY][initialX] = 'O'
+
+        # for i in range(round(initialY - obstacleRay), round(initialY + obstacleRay)):
+        #     for j in range(round(initialX- obstacleRay), round(initialX+ obstacleRay)):
+        #         if self.tableLayout[i][j] == 'O':
+        #             continue
+        #         self.tableLayout[i][j] = 'O'
 
         for i in range(len(self.tableLayout)):
             for j in range(len(self.tableLayout[0])):
@@ -164,6 +170,7 @@ class PathFinding:
                     continue
                 deltaX = (x-j/self.RATIO)
                 deltaY = (y-i/self.RATIO)
+
                 if deltaX**2+deltaY**2 < obstacleRay**2 :
                     self.tableLayout[i][j]= 'O'
 
@@ -218,36 +225,19 @@ class PathFinding:
         return self.actual_path
 
     def getPath(self, robot, destination, extra = []):
-        ###Prend en paramettre un tuple (x,y) de la position d'origine du robot en pixel et un tuple (x,y) de la position finale du Robot)
-        print(threading.current_thread().getName())
 
-        #code pour corriger le robot
-        hauteur_table = 78 * self.pixelRatio
-        hauteur_robot = 23.3 * self.pixelRatio
-        newX = robot._coordinate(0)-self.axisX-self.world._width
-        newY = robot._coordinate(1)-self.axisY-self.world._height
+        newRobot = (robot[0]/self.pixelRatio - 4.5, robot[1]/self.pixelRatio - 10)
 
-        axeX = 1
-        axeY = 1
-        if newX < 0:
-            axeX = -1
-        if newY < 0:
-            axeY = -1
+        hauteur_table = 197 - 24
+        hauteur_robot = 24
+        milieuX_table = self.world._width / self.pixelRatio / 2
+        milieuY_table = self.world._height / self.pixelRatio / 2
 
-        BigHypox = math.sqrt(hauteur_table ** 2 + newX ** 2)
-        littleHypox = BigHypox / hauteur_table * hauteur_robot
-        moyenHypox = BigHypox - littleHypox
-        reelX = math.sqrt(moyenHypox ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeX
+        distanceXMilieu = newRobot[0] - milieuX_table
+        distanceYMilieu = newRobot[1] - milieuY_table
 
-        BigHypoy = math.sqrt(hauteur_table ** 2 + newY ** 2)
-        littleHypoy = BigHypoy / hauteur_table * hauteur_robot
-        moyenHypoy = BigHypoy - littleHypoy
-        reelY = math.sqrt(moyenHypoy ** 2 - (hauteur_table - hauteur_robot) ** 2) * axeY
-
-        reelX = reelX+self.axisX+self.world._width
-        reelY = reelY+self.axisY+self.world._height
-        Nrobot = (reelX, reelY)
-
+        deltaX = ((distanceXMilieu/hauteur_table) * hauteur_robot )/ (1.5)
+        deltaY = ((distanceYMilieu / hauteur_table) * hauteur_robot )/ (1.5)
 
         self.actual_path = []
         accessible = True
@@ -257,27 +247,47 @@ class PathFinding:
         self.addWallsToTable()
 
         for i in self.OBSTACLE:
+            print("Valeur OBSTACLE")
+            print((i._coordinate[0]/self.pixelRatio, i._coordinate[1]/self.pixelRatio))
             self.addObstacle(i._coordinate[1]/self.pixelRatio, i._coordinate[0]/self.pixelRatio)
 
+        xMaxTable = len(self.tableLayout[0])
+        yMaxTable = len(self.tableLayout)
+
         #self.addSpacing()
-        xOrigin = self.centimetersToCoords(Nrobot[0]/self.pixelRatio)
-        yOrigin = self.centimetersToCoords(Nrobot[1]/self.pixelRatio)
+        xOrigin = self.centimetersToCoords(robot[0]/self.pixelRatio - 4.5 - deltaX + 7.5)
+        yOrigin = self.centimetersToCoords(robot[1]/self.pixelRatio - 10 - deltaY)
+
+        # print("Axis")
+        # print((self.world._axisX, self.world._axisY))
+        # print("PixelRatio")
+        # print(self.pixelRatio)
+        # print("Nombre cellule en X,Y")
+        # print(xMaxTable, yMaxTable)
+        # print("Taille table pixel")
+        # print((self.world._width, self.world._height))
+        print("Origine en CM")
+        print((robot[0]/self.pixelRatio - 4.5 - deltaX + 7.5, robot[1]/self.pixelRatio - 10 - deltaY))
+        # print(("COORD d'origin"))
+        # print((xOrigin, yOrigin))
+        # print("DeltaS")
+        # print((deltaX, deltaY))
+
         xTarget = self.centimetersToCoords(destination[0]/self.pixelRatio)
         yTarget = self.centimetersToCoords(destination[1]/self.pixelRatio)
 
-        xMaxTable = len(self.tableLayout)
-        yMaxTable = len(self.tableLayout[0])
 
-        if xOrigin > len(self.tableLayout[0]):
+
+        if xOrigin > len(self.tableLayout[0]) or xOrigin <= 0:
             accessible = False
             raise OriginNotOnTable
-        if yOrigin > len(self.tableLayout):
+        if yOrigin > len(self.tableLayout) or yOrigin <= 0:
             accessible = False
             raise OriginNotOnTable
-        if xTarget > len(self.tableLayout[0]):
+        if xTarget > len(self.tableLayout[0]) or xTarget <= 0:
             accessible = False
             raise TargetNotOnTable
-        if yTarget > len(self.tableLayout):
+        if yTarget > len(self.tableLayout) or yTarget <= 0:
             accessible = False
             raise TargetNotOnTable
 
@@ -292,6 +302,7 @@ class PathFinding:
             for i in self.tableLayout:
                 line = str(i)
                 f.write(line + "\n")
+
             f.close()
             raise OriginUnaccessible
 

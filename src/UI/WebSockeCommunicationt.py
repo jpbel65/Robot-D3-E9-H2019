@@ -69,9 +69,9 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(ready)
                 print("< {ready}")
                 print(self.station.world._height-175 + self.station.world._axisY)
-                await self.send_path(websocket, (119 + self.station.world._axisX, self.station.world._height-175 + self.station.world._axisY))#fonction Charge
+                await self.send_path(websocket, (self.station.world._startZone.center[0], self.station.world._startZone.center[1]))#fonction Charge
 
-                await self.AddMove(websocket, ["DE110", "DN285"])
+                # await self.AddMove(websocket, ["DE110", "DN285"])
 
                 await websocket.send("fin")
                 self.log_message("fin start-charge")
@@ -80,7 +80,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 tension = await websocket.recv()
                 self.log_message(tension)
 
-                await self.AddMove(websocket, ["DS285", "DO200"])
+                # await self.AddMove(websocket, ["DS285", "DO200"])
+
                 sleep(2)
                 self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame)#redetec robot
                 self.station.thread_com_volt.speak[str].emit(tension)
@@ -92,7 +93,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 await self.send_path(websocket, (self.station.world._width-200 + self.station.world._axisX,
                                                                                                     self.station.world._height/2 + self.station.world._axisY - 60))#fonction QR
-                self.path.append("RH090")#add reotation
+                self.path.append("RH090")#add rotation
                 await websocket.send(self.path[0])
                 self.log_message(self.path[0])
                 next = await websocket.recv()
@@ -122,7 +123,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 shape = self.station.world._targetZone.center
                 print(shape)
                 corectif = self.adjustement(shape)
-                await self.send_path(websocket, (shape[0], shape[1]-60))#fonction target zone
+                await self.send_path(websocket, (shape[0], shape[1]-100))#fonction target zone
                 #await self.addRotation(shape, websocket)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
@@ -132,7 +133,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.vision._visionController.detectRobotAndGetAngle(
                     self.station.camera_monde.frame)  # redetec robot
                 self.log_message(drop)
-                await self.send_path(websocket, (292 + self.station.world._axisX, 324 + self.station.world._axisY))#fonction depar zone
+                await self.send_path(websocket, (self.station.world._startZone.center[0], self.station.world._startZone.center[1]))#fonction depar zone
                 await websocket.send("reboot")
                 self.log_message("roboot")
                 self.station.thread_com_state.speak[str].emit("Arrete")

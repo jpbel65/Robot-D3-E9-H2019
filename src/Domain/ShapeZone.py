@@ -11,4 +11,5 @@ class ShapeZone(Zone):
 		self._center =( x,y)
 		self._width= w
 		self._height = h
+		self._trueCenter = (x+w/2, y+h/2)
 

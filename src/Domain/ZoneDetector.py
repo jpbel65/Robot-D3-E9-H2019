@@ -120,7 +120,7 @@ class ZoneDetector(WorldEntityDetector):
                 M = cv2.moments(c)
                 centerX = int((M["m10"] / M["m00"]))
                 centerY = int((M["m01"] / M["m00"]))
-                return StartZone(Square((x, y, w, h)))
+                return StartZone(x, y, w, h)
 
         if square_found == "False":
             raise StartZoneNotFoundError
@@ -154,8 +154,8 @@ class ZoneDetector(WorldEntityDetector):
                 centerX = int((M["m10"] / M["m00"]))
                 centerY = int((M["m01"] / M["m00"]))
                 cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.imshow("color",color_img)
-                cv2.waitKey()
+                # cv2.imshow("color",color_img)
+                # cv2.waitKey()
 
 
                 return ShapeZone(x, y, w, h)
