@@ -130,7 +130,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.vision._visionController.detectRobotAndGetAngle(
                     self.station.camera_monde.frame)  # redetec robot
                 self.log_message(drop)
-                await self.send_path(websocket, (292 + self.station.world._axisX, 324 + self.station.world._axisY))#fonction depar zone
+                await self.send_path(websocket, (self.station.world._startZone.center[0], self.station.world._startZone.center[1]))#fonction depar zone
                 await websocket.send("reboot")
                 self.log_message("roboot")
                 self.station.thread_com_state.speak[str].emit("Arrete")
