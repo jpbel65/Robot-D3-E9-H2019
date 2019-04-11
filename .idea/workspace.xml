@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="8867ed41-10d1-4e4a-bd8a-bf998bbac301" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py" beforeDir="false" afterPath="$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/PathFinding.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/PathFinding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/prendrePhoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/prendrePhoto.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Domain/RobotDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/RobotDetector.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UI/BaseStationUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/BaseStationUi.py" afterDir="false" />
+=======
+    <list default="true" id="99342029-28c3-468f-980d-d7640bbff948" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/scripts/demo3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/zone_mondher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Robot-D3-E9-H2019.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Robot-D3-E9-H2019.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/PathFinding.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/PathFinding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/VisionController.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/VisionController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ShapeZone.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ShapeZone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/StartZone.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/StartZone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/ZoneDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/ZoneDetector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/BaseStationUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/BaseStationUi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/CameraMondeVideoFeed.py" afterDir="false" />
+>>>>>>> 3496d5661623c7f1814971d14b54212f3b3e4200
       <change beforePath="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/Python37/" />
@@ -17,6 +33,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/PathFinding.py">
@@ -58,6 +75,14 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="780">
               <caret line="184" column="30" lean-forward="true" selection-start-line="184" selection-start-column="30" selection-end-line="184" selection-end-column="30" />
+=======
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="246">
+              <caret line="251" column="24" selection-start-line="251" selection-start-column="24" selection-end-line="251" selection-end-column="24" />
+>>>>>>> 3496d5661623c7f1814971d14b54212f3b3e4200
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -136,13 +161,13 @@
             <path>
               <item name="Robot-D3-E9-H2019" type="b2602c69:ProjectViewProjectNode" />
               <item name="Robot-D3-E9-H2019" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="Photos&amp;Calibration" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Robot-D3-E9-H2019" type="b2602c69:ProjectViewProjectNode" />
               <item name="Robot-D3-E9-H2019" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="PathFindingTrace" type="462c0819:PsiDirectoryNode" />
+              <item name="Photos&amp;Calibration" type="462c0819:PsiDirectoryNode" />
+              <item name="calib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Robot-D3-E9-H2019" type="b2602c69:ProjectViewProjectNode" />
@@ -263,19 +288,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
+<<<<<<< HEAD
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24972677" />
+=======
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.25" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+>>>>>>> 3496d5661623c7f1814971d14b54212f3b3e4200
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="2" weight="0.32937366" />
       <window_info anchor="bottom" id="Message" order="3" />
+<<<<<<< HEAD
       <window_info anchor="bottom" id="Find" order="4" weight="0.32937366" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32937366" />
       <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.32937366" />
+=======
+      <window_info anchor="bottom" id="Find" order="4" />
+      <window_info anchor="bottom" id="Version Control" order="5" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.3289689" />
+>>>>>>> 3496d5661623c7f1814971d14b54212f3b3e4200
       <window_info anchor="bottom" id="Debug" order="7" weight="0.39956802" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -355,6 +390,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:26:44.617275.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -506,6 +542,46 @@
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
+=======
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:07:16.654257.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:07:02.646021.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:10:03.437110.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:10:50.130588FAILORIGIN.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:11:45.242760.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:10:14.930060.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:11:10.044764.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:24:30.298766.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:24:01.189596.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:22:32.698472.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:23:28.719564.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:35:04.778907.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:30:36.503887.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:29:53.582221.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:29:38.797301.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:27:19.421957FAILORIGIN.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:27:29.557888FAILORIGIN.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:41:11.720040.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:39:07.646909.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:39:23.156297.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:40:07.606388.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:40:50.137273.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:51:12.582461.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:00:07.476626FAILORIGIN.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:12:17.945875.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:07:29.714537.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:18:27.309955.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:10:31.001021.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:11:22.682714.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:50:28.860413.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:30:47.196057.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:29:02.950926.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:30:36.829911.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:49:33.095679.txt" />
+    <entry file="file://$PROJECT_DIR$/src/Application/VisionController.py">
+>>>>>>> 3496d5661623c7f1814971d14b54212f3b3e4200
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="184" column="30" lean-forward="true" selection-start-line="184" selection-start-column="30" selection-end-line="184" selection-end-column="30" />
@@ -522,6 +598,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/scripts/PathFinding.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="404">
@@ -536,6 +613,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" column="188" selection-start-line="9" selection-start-column="188" selection-end-line="9" selection-end-column="188" />
+=======
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:35:08.634500.txt" />
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:35:18.599444.txt" />
+    <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="251" column="24" selection-start-line="251" selection-start-column="24" selection-end-line="251" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+>>>>>>> 3496d5661623c7f1814971d14b54212f3b3e4200
         </state>
       </provider>
     </entry>

@@ -12,6 +12,7 @@ import signal
 class WebSocket(websockets.WebSocketCommonProtocol):
     logResult = ''
     #path = []
+    adresse = '192.168.1.38'#'10.240.104.107'
 
     def __init__(self, log_window, station):
         super(WebSocket, self).__init__()
@@ -42,7 +43,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         self.testOffline(False)
 
         async with websockets.connect(
-                'ws://192.168.1.38:8765', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107    10.240.17.211   192.168.1.38
+                'ws://'+self.adresse+':8765', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107  192.168.1.38
             print("in websocket")
             go = "go"
             await websocket.send(go)
@@ -255,4 +256,21 @@ class WebSocket(websockets.WebSocketCommonProtocol):
     def check_test(self):
         return self.logResult
 
+    async def start_communication_volt(self):
+        async with websockets.connect(
+                'ws://'+self.adresse+':4321', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107  192.168.1.38
+            await websocket.send("go")
+            while True:
+                print("in while")
+                volt = await asyncio.wait_for(websocket.recv(), timeout=1)
+                self.station.thread_com_volt.speak[str].emit(volt)
+                print(volt)
+                sleep(1)
+
+    def thread_start_comm_volt(self):
+        t45 = threading.Thread(target=self.async_run_comm_volt)
+        t45.start()
+
+    def async_run_comm_volt(self):
+        asyncio.run(self.start_communication_volt())
 

@@ -133,6 +133,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
                 self.robot = self.vision._visionController._robot
                 self.thread_start_timer()
                 self.web_socket.thread_start_comm_web()
+                self.web_socket.thread_start_comm_volt()
                 print('end')
 
             except TargetZoneNotFoundError:
@@ -155,8 +156,9 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
     def button_reset_action(self):
         print("reset")
-        return_data = self.draw_playgroung.de_draw_robot(8, 3)
-        self.draw_playgroung.post_playgroung(return_data)
+        self.web_socket.thread_start_comm_volt()
+        #return_data = self.draw_playgroung.de_draw_robot(8, 3)
+        #self.draw_playgroung.post_playgroung(return_data)
 
     @QtCore.pyqtSlot(str, name='update_log')
     def update_log(self, text):
