@@ -81,7 +81,7 @@ class VisionController:
         self._robotDetector.detect(image)
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
-        cv2.circle(newImage, self._robot._coordinate, 5, 125)
+        #cv2.circle(newImage, self._robot._coordinate, 5, 125)
         #cv2.imshow('Showrobot', newImage)
        # cv2.waitKey()
         self._robot._angle = self._robotDetector.angle
@@ -95,11 +95,8 @@ class VisionController:
             #cv2.imshow("crop1",crop_img)
             #cv2.waitKey()
 
-            self.detectRobotAndGetAngle(image,table)
+            #self.detectRobotAndGetAngle(image,table)
 
-
-            cv2.imshow("crop2",crop_img)
-            cv2.waitKey()
             obstacles = self._obstaclesDetector_.detect(crop_img)
 
             for i in obstacles:
