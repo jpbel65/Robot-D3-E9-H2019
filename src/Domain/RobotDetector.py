@@ -24,6 +24,8 @@ class RobotDetector(WorldEntityDetector):
         t5.start()
 
     def detect(self, crop_img):
+        #cv2.imshow('canny_output_close', crop_img)
+        #cv2.waitKey()
         found= False
         image = cv2.GaussianBlur(crop_img, (5, 5), 0)
         image = cv2.medianBlur(image, ksize=3)
@@ -35,10 +37,10 @@ class RobotDetector(WorldEntityDetector):
         canny_output = cv2.GaussianBlur(canny_output, (5, 5), 0)
         canny_output = cv2.Canny(resized, 150, 150)
 
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(3, 3))
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, ksize=(1, 1))
         canny_output_close = cv2.morphologyEx(canny_output, cv2.MORPH_OPEN, kernel=kernel)
         canny_output_close = cv2.morphologyEx(canny_output, cv2.MORPH_CLOSE, kernel=kernel, iterations=3)
-       # cv2.imshow('canny_output_close',  canny_output_close )
+       # cv2.imshow('canny_output_close',  canny_output_close)
         #cv2.waitKey()
 
         hierachy = cv2.findContours(canny_output_close, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -50,6 +52,8 @@ class RobotDetector(WorldEntityDetector):
             peri = cv2.arcLength(c, True)
             approx = cv2.approxPolyDP(c, 0.04 * peri, True)
             area =cv2.contourArea(approx)
+
+
             if len(approx) == 3 and area >= 000:
                 found=True
                 print(area)
@@ -67,6 +71,10 @@ class RobotDetector(WorldEntityDetector):
                 angle = np.rad2deg(angle)
                 centerX=int(round(centerX+peak[0])/2)
                 centerY=int(round(centerY+peak[1])/2)
+               # cv2.circle(crop_img, (centerX, centerY), 40, (0, 255, 255), 10)
+               # print("robot")
+                #cv2.imshow("robot",crop_img)
+                #cv2.waitKey()
                 self.angle = angle
                 self.centerX = centerX
                 self.centerY = centerY

@@ -119,13 +119,13 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.thread_com_state.speak[str].emit("Decode QR")
 
                 QR = await websocket.recv()
-                self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame)  # redetec robot
-                shape = self.station.world._shapeZone._center
+                self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame, self.station.world._tableZone)  # redetec robot
+                shape = self.station.world._shapeZone._trueCenter
                 corectif = self.adjustement(shape)
                 self.log_message(QR)
                 self.station.thread_com_piece.speak[str].emit(QR)
-                await self.send_path(websocket, (shape[0], shape[1]+120))#fonction zone piece
-                #await self.addRotation(shape, websocket)
+                await self.send_path(websocket, corectif)#fonction zone piece
+                await self.addRotation(corectif, websocket)
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
 
@@ -133,11 +133,11 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 piece = await websocket.recv()
                 self.station.vision._visionController.detectRobotAndGetAngle(
                     self.station.camera_monde.frame)  # redetec robot
-                shape = self.station.world._targetZone.center
-                print(shape)
+                shape = self.station.world._targetZone._trueCenter
+                #print(shape)
                 corectif = self.adjustement(shape)
-                await self.send_path(websocket, (shape[0], shape[1]-100))#fonction target zone
-                #await self.addRotation(shape, websocket)
+                await self.send_path(websocket, corectif)#fonction target zone
+                await self.addRotation(corectif, websocket)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
 
@@ -190,7 +190,6 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             datetime.datetime.now()
             datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
             time = str(datetime.datetime.now())
-            print("time in path:"+ time)
 
     def calibration(self):
         self.station.thread_com_state.speak[str].emit("Calibration")
@@ -199,8 +198,9 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         if angle < 0:
             side = "A"
             angle = abs(angle)
-        if angle < 10:
-            angle += 360
+        # if angle<2:
+        #     self.path.insert(0, "RH000")  # rota angle depart
+        #     return
         angle = str(angle)
         while len(angle) is not 3:
             angle = "0" + angle
@@ -222,13 +222,16 @@ class WebSocket(websockets.WebSocketCommonProtocol):
     def adjustement(self, shape):
         adjustementX = 0
         adjustementY = 0
-        if shape[1] > self.station.world._height / 2:
-            adjustementY = 146
-        elif shape[1] < self.station.world._height / 2:
-            adjustementY = -146
-        if shape[0] > self.station.world._width - 108:
-            adjustementX = -146
-        return (adjustementX, adjustementY)
+        correctif_recul = 115
+        if shape[1] > self.station.world._height-100:
+            adjustementY = -correctif_recul
+        elif shape[1] < 100:
+            adjustementY = correctif_recul
+        elif shape[0] > self.station.world._width - 100:
+            adjustementX = -correctif_recul
+        elif shape[0] < 100:
+            adjustementX = correctif_recul
+        return (shape[0]+adjustementX, shape[1]+adjustementY)
 
     def thread_start_comm_web(self):
         t2 = threading.Thread(target=self.async_run_comm_web)
@@ -265,7 +268,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 volt = await asyncio.wait_for(websocket.recv(), timeout=1)
                 self.station.thread_com_volt.speak[str].emit(volt)
                 print(volt)
-                sleep(1)
+                #sleep(1)
 
     def thread_start_comm_volt(self):
         t45 = threading.Thread(target=self.async_run_comm_volt)

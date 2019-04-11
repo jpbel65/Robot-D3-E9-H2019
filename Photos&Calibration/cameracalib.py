@@ -28,13 +28,13 @@ else:
     dimension       = float(sys.argv[5])
 
 if '-h' in sys.argv or '--h' in sys.argv:
-    print ("\n IMAGE CALIBRATION GIVEN A SET OF IMAGES")
-    print (" call: python cameracalib.py <folder> <image type> <num rows (9)> <num cols (6)> <cell dimension (25)>")
-    print ("\n The script will look for every image in the provided folder and will show the pattern found." \
+    print "\n IMAGE CALIBRATION GIVEN A SET OF IMAGES"
+    print " call: python cameracalib.py <folder> <image type> <num rows (9)> <num cols (6)> <cell dimension (25)>"
+    print "\n The script will look for every image in the provided folder and will show the pattern found." \
           " User can skip the image pressing ESC or accepting the image with RETURN. " \
           " At the end the end the following files are created:" \
           "  - cameraDistortion.txt" \
-          "  - cameraMatrix.txt \n\n")
+          "  - cameraMatrix.txt \n\n"
 
     sys.exit()
 

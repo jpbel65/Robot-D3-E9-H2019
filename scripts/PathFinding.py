@@ -280,17 +280,62 @@ class PathFinding:
 
         if xOrigin > len(self.tableLayout[0]) or xOrigin <= 0:
             accessible = False
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + "ORIGIN_NOT_ON_TABLE.txt", "w+")
+
+            f.write("Longueur de l'array (x,y)" + "\n")
+            f.write((len(self.tableLayout[0]), len(self.tableLayout)) + "\n")
+            f.write("Point d'origine:" + "\n")
+            point = (xOrigin, yOrigin)
+            f.write(point + "\n")
+
+            f.close()
             raise OriginNotOnTable
         if yOrigin > len(self.tableLayout) or yOrigin <= 0:
             accessible = False
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + "ORIGIN_NOT_ON_TABLE.txt", "w+")
+
+            f.write("Longueur de l'array (x,y)" + "\n")
+            f.write((len(self.tableLayout[0]), len(self.tableLayout)) + "\n")
+            f.write("Point d'origine:" + "\n")
+            point = (xOrigin, yOrigin)
+            f.write(point + "\n")
+
+            f.close()
             raise OriginNotOnTable
         if xTarget > len(self.tableLayout[0]) or xTarget <= 0:
             accessible = False
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + "TARGET_NOT_ON_TABLE.txt", "w+")
+
+            f.write("Longueur de l'array (x,y)" + "\n")
+            f.write((len(self.tableLayout[0]), len(self.tableLayout)) + "\n")
+            f.write("Point d'origine:" + "\n")
+            point = (xTarget, yTarget)
+            f.write(point + "\n")
             raise TargetNotOnTable
         if yTarget > len(self.tableLayout) or yTarget <= 0:
             accessible = False
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            f = open("../../scripts/PathFindingTrace/" + time + "TARGET_NOT_ON_TABLE.txt", "w+")
+
+            f.write("Longueur de l'array (x,y)" + "\n")
+            f.write((len(self.tableLayout[0]), len(self.tableLayout)) + "\n")
+            f.write("Point de target:" + "\n")
+            point = (xTarget, yTarget)
+            f.write(point + "\n")
             raise TargetNotOnTable
 
+        print((xOrigin*5,yOrigin*5))
         if(self.tableLayout[yOrigin][xOrigin] != ' ' and self.tableLayout[yOrigin][xOrigin] != 'S'):
             accessible = False
             datetime.datetime.now()
@@ -348,11 +393,9 @@ class PathFinding:
             if self.actual_path == []:
                 accessible = False
 
-            print(accessible)
             self.pathFound = accessible
             self.getJointPath(self.actual_path, extra)
 
-            print(threading.current_thread().getName())
         return accessible
     def getUnsafeLocations(self):
 
@@ -405,10 +448,8 @@ class PathFinding:
         for i in path:
             if i != path[-1]:
                 bufferPath.append((path[path.index(i)+1][0]-i[0], path[path.index(i)+1][1]-i[1]))
-        print(len(path),len(bufferPath))
         while(bufferPath):
             jointLenght = 1
-            print("BufferPath : ", len(bufferPath))
 
             if len(bufferPath) == 1:
                 diffY = bufferPath[0][1]
@@ -435,7 +476,6 @@ class PathFinding:
                 else:
                     self.path_websocket.append('D' + side + str((int(movement / 2))) + "0")
                     self.path_websocket.append('D' + side + str((int(movement / 2))) + "0")
-                print(self.path_websocket)
                 for i in range(0, jointLenght):
                     bufferPath.remove(bufferPath[0])
                 break
@@ -471,13 +511,11 @@ class PathFinding:
                         self.path_websocket.append('D' + side + str((int(movement/2))) + "0")
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
-                    print(self.path_websocket)
                     break
         for h in extra:
             self.path_websocket.append(h)
 
         print(self.path_websocket)
-        print(threading.current_thread().getName())
 
     def smoothPathCompare(self):
         smoothestPath = []
