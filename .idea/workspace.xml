@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8867ed41-10d1-4e4a-bd8a-bf998bbac301" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py" beforeDir="false" afterPath="$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/PathFinding.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/PathFinding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Application/VisionController.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/VisionController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Domain/StartZone.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/StartZone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/prendrePhoto.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/prendrePhoto.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Domain/RobotDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Domain/RobotDetector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/BaseStationUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/BaseStationUi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/Python37/" />
@@ -17,43 +18,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Application/VisionController.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="314">
-              <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/PathFinding.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="269" column="100" selection-start-line="269" selection-start-column="100" selection-end-line="269" selection-end-column="100" />
+            <state relative-caret-position="404">
+              <caret line="168" column="69" selection-start-line="168" selection-start-column="69" selection-end-line="168" selection-end-column="69" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:35:08.634500.txt">
+        <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 21:24:42.072920FAILORIGIN.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="37" lean-forward="true" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+            <state relative-caret-position="135">
+              <caret line="9" column="188" selection-start-line="9" selection-start-column="188" selection-end-line="9" selection-end-column="188" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:35:18.599444.txt">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 21:24:13.432493.txt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 21:17:16.002968FAILORIGIN.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="203" lean-forward="true" selection-start-line="10" selection-start-column="202" selection-end-line="10" selection-end-column="203" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="68" column="147" selection-start-line="68" selection-start-column="147" selection-end-line="68" selection-end-column="147" />
+            <state relative-caret-position="780">
+              <caret line="184" column="30" lean-forward="true" selection-start-line="184" selection-start-column="30" selection-end-line="184" selection-end-column="30" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -83,6 +87,9 @@
       <find>hauteur</find>
       <find>delta</find>
       <find>addOb</find>
+      <find>f</find>
+      <find>getjo</find>
+      <find>addObs</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -96,8 +103,14 @@
         <option value="$PROJECT_DIR$/src/Domain/StartZone.py" />
         <option value="$PROJECT_DIR$/src/Application/VisionController.py" />
         <option value="$PROJECT_DIR$/scripts/Calibration.py" />
-        <option value="$PROJECT_DIR$/scripts/PathFinding.py" />
+        <option value="$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:39:51.766092.txt" />
+        <option value="$PROJECT_DIR$/scripts/prendrePhoto.py" />
+        <option value="$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py" />
+        <option value="$PROJECT_DIR$/src/Domain/RobotDetector.py" />
+        <option value="$PROJECT_DIR$/src/UI/BaseStationUi.py" />
         <option value="$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py" />
+        <option value="$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:08:28.401182.txt" />
+        <option value="$PROJECT_DIR$/scripts/PathFinding.py" />
       </list>
     </option>
   </component>
@@ -207,10 +220,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="prendrePhoto" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Robot-D3-E9-H2019" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/prendrePhoto.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.BaseStationUi" />
         <item itemvalue="Python.Websockets" />
+        <item itemvalue="Python.prendrePhoto" />
       </list>
     </recent_temporary>
   </component>
@@ -232,15 +267,15 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24972677" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24972677" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="2" />
+      <window_info anchor="bottom" id="Python Console" order="2" weight="0.32937366" />
       <window_info anchor="bottom" id="Message" order="3" />
-      <window_info anchor="bottom" id="Find" order="4" />
-      <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Find" order="4" weight="0.32937366" />
+      <window_info anchor="bottom" id="Version Control" order="5" weight="0.32937366" />
+      <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.39956802" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -251,13 +286,13 @@
     </layout>
     <layout-to-restore>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24972677" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24972677" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
-      <window_info anchor="bottom" id="Find" order="4" />
+      <window_info anchor="bottom" id="Find" order="4" weight="0.32937366" />
       <window_info anchor="bottom" id="Version Control" order="5" />
       <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.39956802" />
@@ -277,227 +312,235 @@
           <line>323</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/PathFinding.py</url>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/calib/cameraDistortion.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 17:59:56.972284.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_22.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_24.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_20.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_17.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/calib/snapshot_1280_720_15.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Photos&amp;Calibration/cameracalib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Domain/WorldEntityDetector.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Domain/RobotDetector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-30">
-          <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Domain/StartZone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="12" column="35" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Domain/Zone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:07:16.654257.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:07:02.646021.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:10:03.437110.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:10:50.130588FAILORIGIN.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:11:45.242760.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:10:14.930060.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:11:10.044764.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:24:30.298766.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="57" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:24:01.189596.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:22:32.698472.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:23:28.719564.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:35:04.778907.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="144" selection-start-line="12" selection-start-column="144" selection-end-line="12" selection-end-column="144" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:30:36.503887.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:29:53.582221.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:29:38.797301.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:27:19.421957FAILORIGIN.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:27:29.557888FAILORIGIN.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:41:11.720040.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:39:07.646909.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:39:23.156297.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:40:07.606388.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:40:50.137273.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:00:07.837374.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:51:12.582461.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:13:04.202546.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:00:07.476626FAILORIGIN.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:15:30.739629.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:14:53.667208.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:14:09.097079.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="48" lean-forward="true" selection-start-column="48" selection-end-column="48" />
+        <state relative-caret-position="135">
+          <caret line="9" column="132" lean-forward="true" selection-start-line="9" selection-start-column="132" selection-end-line="9" selection-end-column="132" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:12:17.945875.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:20:33.425531.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:21:33.135411FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="21" column="398" selection-start-line="21" selection-start-column="397" selection-end-line="21" selection-end-column="398" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:26:44.617275.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:26:09.544499.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:25:08.940575.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:29:49.344915FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:34:08.809364.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:35:18.124155.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:35:52.034158.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:36:16.509326.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:07:29.714537.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:18:27.309955.txt">
+    <entry file="file://$PROJECT_DIR$/src/Domain/RobotDetector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="112" lean-forward="true" selection-start-line="14" selection-start-column="112" selection-end-line="14" selection-end-column="112" />
+        <state relative-caret-position="1035">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:10:31.001021.txt">
+    <entry file="file://$PROJECT_DIR$/src/UI/BaseStationUi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="148" column="72" selection-start-line="148" selection-start-column="72" selection-end-line="148" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:40:00.474437.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:11:22.682714.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:42:48.193544.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:50:28.860413.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 18:46:38.770535.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2019.1/system/python_stubs/2015004956/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="3622" column="8" selection-start-line="3622" selection-start-column="8" selection-end-line="3622" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:08:46.882458FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:11:48.825742FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:11:35.608084.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:16:50.579531FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:31:27.707161.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:31:41.199195FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:42:32.815051FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:52:19.756794FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:52:19.784876FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:52:19.806302FAILORIGIN.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="204" selection-start-line="17" selection-start-column="204" selection-end-line="17" selection-end-column="204" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:58:01.089812FAILORIGIN.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 19:59:40.823520FAILTARGET.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:03:02.375522.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:09:22.989861FAILORIGIN.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="172" selection-start-line="10" selection-start-column="172" selection-end-line="10" selection-end-column="173" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:08:11.463257.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="8" selection-start-column="7" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:27:13.447015.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:28:08.464239FAILORIGIN.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="182" selection-start-line="12" selection-start-column="182" selection-end-line="12" selection-end-column="182" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:08:28.401182.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="13" column="144" selection-start-line="13" selection-start-column="144" selection-end-line="13" selection-end-column="144" />
+          <caret line="13" column="159" selection-start-line="12" selection-start-column="175" selection-end-line="13" selection-end-column="161" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:30:47.196057.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:35:17.793270.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:29:02.950926.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:43:48.363016.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:30:36.829911.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:46:35.017578.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 05:49:33.095679.txt">
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 20:44:02.679493.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Application/VisionController.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFinding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="269" column="100" selection-start-line="269" selection-start-column="100" selection-end-line="269" selection-end-column="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:35:08.634500.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="37" lean-forward="true" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 06:35:18.599444.txt">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/scripts/Aruko3.jpg">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UI/WebSockeCommunicationt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="68" column="147" selection-start-line="68" selection-start-column="147" selection-end-line="68" selection-end-column="147" />
+        <state relative-caret-position="780">
+          <caret line="184" column="30" lean-forward="true" selection-start-line="184" selection-start-column="30" selection-end-line="184" selection-end-column="30" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 21:17:16.002968FAILORIGIN.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="203" lean-forward="true" selection-start-line="10" selection-start-column="202" selection-end-line="10" selection-end-column="203" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFinding.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="168" column="69" selection-start-line="168" selection-start-column="69" selection-end-line="168" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 21:24:42.072920FAILORIGIN.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="188" selection-start-line="9" selection-start-column="188" selection-end-line="9" selection-end-column="188" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/PathFindingTrace/2019-04-10 21:24:13.432493.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

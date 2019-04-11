@@ -23,6 +23,7 @@ from Domain.ZoneDetector import TargetZoneNotFoundError
 from Domain.ZoneDetector import StartZoneNotFoundError
 from Domain.ZoneDetector import ShapeZoneNotFoundError
 from Domain.ZoneDetector import fakeAZoneList
+from Domain.RobotDetector import RobotNotFoundError
 from UI.CameraMondeVideoFeed import CameraMonde
 from UI.Communication import Communicate
 from UI.MapRender import DrawPlayground
@@ -120,6 +121,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
                 self.web_socket.log_message("ERROR : Table not detected !")
             except StartZoneNotFoundError:
                 self.web_socket.log_message("ERROR : Target Zone not Found !")
+            except RobotNotFoundError:
+                self.web_socket.log_message("ERROR : Robot not found !")
         else:
             self.image = self.camera_monde.frame
             try:
@@ -142,6 +145,8 @@ class BaseStation(BaseWidget, QtCore.QObject):
                 self.web_socket.log_message("ERROR : Target Zone not Found !")
             except ConnectionRefusedError:
                 self.web_socket.log_message("ERROR : Connection Refused")
+            except RobotNotFoundError:
+                self.web_socket.log_message("ERROR : Robot not found !")
 
 
 

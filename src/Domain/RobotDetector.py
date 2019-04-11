@@ -65,6 +65,8 @@ class RobotDetector(WorldEntityDetector):
 
                 angle = math.atan2(-dy, dx)
                 angle = np.rad2deg(angle)
+                centerX=int(round(centerX+peak[0])/2)
+                centerY=int(round(centerY+peak[1])/2)
                 self.angle = angle
                 self.centerX = centerX
                 self.centerY = centerY

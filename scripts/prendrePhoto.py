@@ -12,7 +12,7 @@ def main():
 
         ret, frame = capture.read()
         cv2.imshow('Current', frame)
-        cv2.imwrite("PathFindingTrace/6.jpg", frame )
+        cv2.imwrite("Aruko3.jpg", frame )
         exit(0)
 
 

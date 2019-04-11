@@ -2,7 +2,9 @@ import keyboard
 import threading
 import asyncio
 import websockets
+import datetime
 from time import sleep
+from scripts.PathFinding import TargetUnaccessible
 import numpy as np
 import signal
 
@@ -15,6 +17,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         super(WebSocket, self).__init__()
         self.textArea = log_window
         self.station = station
+        self.ping_interval = 70
+        self.ping_timeout = 10
         print(self.ping_interval)
         print(self.ping_timeout)
         self.path = []
@@ -66,7 +70,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(ready)
                 print("< {ready}")
                 print(self.station.world._height-175 + self.station.world._axisY)
-                await self.send_path(websocket, (self.station.world._startZone.center[0], self.station.world._startZone.center[1]))#fonction Charge
+                await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
 
                 # await self.AddMove(websocket, ["DE110", "DN285"])
 
@@ -88,8 +92,19 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(courant)
                 self.station.thread_com_courant.speak[str].emit(courant)
 
-                await self.send_path(websocket, (self.station.world._width-200 + self.station.world._axisX,
-                                                                                                    self.station.world._height/2 + self.station.world._axisY - 60))#fonction QR
+                yCell = self.station.world._height/2 + self.station.world._axisY - 100
+
+                await self.send_path(websocket, (self.station.world._width-190 + self.station.world._axisX, yCell))#fonction QR
+
+
+                self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame)
+                self.calibration()
+                await websocket.send(self.path[0])
+                self.log_message(self.path[0])
+                next = await websocket.recv()
+                if next == "next":
+                    self.path.remove(self.path[0])
+                    self.log_message(next)
                 self.path.append("RH090")#add rotation
                 await websocket.send(self.path[0])
                 self.log_message(self.path[0])
@@ -130,7 +145,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.vision._visionController.detectRobotAndGetAngle(
                     self.station.camera_monde.frame)  # redetec robot
                 self.log_message(drop)
-                await self.send_path(websocket, (self.station.world._startZone.center[0], self.station.world._startZone.center[1]))#fonction depar zone
+                await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction depar zone
                 await websocket.send("reboot")
                 self.log_message("roboot")
                 self.station.thread_com_state.speak[str].emit("Arrete")
@@ -155,21 +170,26 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(next)
 
     async def send_path(self, websocket, destination):
-        self.calibration()
         self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, destination)
+        self.calibration()
+        sleep(2)
         self.station.thread_com_state.speak[str].emit("Mouvement")
         while not self.path:
             self.log_message("WS empty")
             sleep(2)
 
         while self.path:
-            sleep(2)
             await websocket.send(self.path[0])
             self.log_message(self.path[0])
             next = await websocket.recv()
             if next == "next":
                 self.path.remove(self.path[0])
                 self.log_message(next)
+            sleep(2)
+            datetime.datetime.now()
+            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+            time = str(datetime.datetime.now())
+            print("time in path:"+ time)
 
     def calibration(self):
         self.station.thread_com_state.speak[str].emit("Calibration")
@@ -178,10 +198,12 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         if angle < 0:
             side = "A"
             angle = abs(angle)
+        if angle < 10:
+            angle += 360
         angle = str(angle)
         while len(angle) is not 3:
             angle = "0" + angle
-        self.path.append("R" + side + angle)  # rota angle depart
+        self.path.insert(0, "R" + side + angle)  # rota angle depart
 
 
     async def addRotation(self, obj, websocket):
