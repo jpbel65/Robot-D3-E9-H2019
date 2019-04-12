@@ -72,29 +72,51 @@ class VisionController:
         color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
-    def detectRobotAndGetAngle(self, image):
+    def detectRobotAndGetAngleAruco(self, image,table):
         #self._robotDetector.thread_start_Detector(image)
+        x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
+        image = image[y1:y1 + h1, x1:x1 + w1]
+        #cv2.imshow("imageBeforeRobotDEtectionb", image)
+        #cv2.waitKey()
         self._robotDetector.detect(image)
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
-        cv2.circle(newImage, self._robot._coordinate, 5, 125)
+        #cv2.circle(newImage, self._robot._coordinate, 5, 125)
+        #cv2.imshow('Showrobot', newImage)
+       # cv2.waitKey()
+        self._robot._angle = self._robotDetector.angle
+
+    def detectRobotAndGetAngleAruco(self, image, table):
+        # self._robotDetector.thread_start_Detector(image)
+        x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
+        image = image[y1:y1 + h1, x1:x1 + w1]
+        # cv2.imshow("imageBeforeRobotDEtectionb", image)
+        # cv2.waitKey()
+        self._robotDetector.detectAruco(image)
+        self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
+        newImage = image
+        # cv2.circle(newImage, self._robot._coordinate, 5, 125)
         # cv2.imshow('Showrobot', newImage)
         # cv2.waitKey()
         self._robot._angle = self._robotDetector.angle
-
 
     def detectEntities(self, image):
        # try:
             table,wRot = self._zoneDetector_.detectTableAlternative(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
+            #cv2.imshow("crop1",crop_img)
+            #cv2.waitKey()
 
-            self.detectRobotAndGetAngle(crop_img)
+            #self.detectRobotAndGetAngle(image,table)
+
             obstacles = self._obstaclesDetector_.detect(crop_img)
 
             for i in obstacles:
-                dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
-                if dis <= 300:
+                #dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
+                #if dis <= 400 or i._coordinate[0]< table.getWidth()/2: # 89*5.44
+                print(89*5.44)
+                if i._coordinate[0]<int(89*5.44):
                     obstacles.remove(i)
             zones = self._zoneDetector_.detect(crop_img, table,wRot)
             world = World(table, zones, obstacles)

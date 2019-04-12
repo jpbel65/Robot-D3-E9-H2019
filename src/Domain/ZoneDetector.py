@@ -158,7 +158,7 @@ class ZoneDetector(WorldEntityDetector):
                 # cv2.waitKey()
 
 
-                return ShapeZone(x, y, w, h)
+                return ShapeZone(x, y, w, h,(centerX,centerY))
         if found == False:
             raise ShapeZoneNotFoundError
 
@@ -189,7 +189,7 @@ class ZoneDetector(WorldEntityDetector):
                   if len(points) == 4:
                       cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-                      return TargetZone((x, y, w, h))
+                      return TargetZone((x, y, w, h), points)
 
           if found == False:
               raise TargetZoneNotFoundError
