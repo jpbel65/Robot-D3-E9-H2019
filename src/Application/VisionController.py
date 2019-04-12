@@ -72,7 +72,7 @@ class VisionController:
         color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
-    def detectRobotAndGetAngleAruco(self, image,table):
+    def detectRobotAndAngle(self, image,table):
         #self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
