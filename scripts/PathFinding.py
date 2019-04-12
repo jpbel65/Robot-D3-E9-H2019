@@ -165,8 +165,8 @@ class PathFinding:
         #         self.tableLayout[i][j] = 'O'
 
 
-        for i in range(initialX - int(obstacleRay*self.RATIO), initialX + int(obstacleRay*self.RATIO) + 1):
-            for j in range(initialY - int(obstacleRay*self.RATIO) + 1 , initialY + int(obstacleRay*self.RATIO) -1 ):
+        for i in range(initialX - int(obstacleRay*self.RATIO), initialX + int(obstacleRay*self.RATIO)):
+            for j in range(initialY - int(obstacleRay*self.RATIO), initialY + int(obstacleRay*self.RATIO)):
                 if i > 0 and i < len(self.tableLayout[0]) and j > 0 and j < len(self.tableLayout):
                     self.tableLayout[j][i] = 'O'
 
@@ -245,7 +245,7 @@ class PathFinding:
         distanceYMilieu = newRobot[1] - milieuY_table
 
         deltaX = 0.0938*distanceXMilieu + 1.26
-        deltaY = 0.0938*distanceYMilieu + 1.26
+        deltaY = 0.0938*distanceYMilieu - 2.26
 
         self.actual_path = []
         accessible = True

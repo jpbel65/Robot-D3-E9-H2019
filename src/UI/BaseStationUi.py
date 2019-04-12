@@ -132,17 +132,17 @@ class BaseStation(BaseWidget, QtCore.QObject):
                 # cv2.imshow("capture", image)
                 self.path_finding = PathFinding(self.world, self.web_socket.path)
                 table= self.world._tableZone
-                x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
+
                 image=self.camera_monde.frame
                 #crop_img = image[y1:y1 + h1, x1:x1 + w1]
                # cv2.imshow("crop_img_basestation", crop_img)
                # cv2.waitKey()
 
-                self.vision._visionController.detectRobotAndGetAngleAruco(image,table)
+                self.vision._visionController.detectRobotAndGetAngleAruco(image, table)
                 self.robot = self.vision._visionController._robot
                 self.thread_start_timer()
                 self.web_socket.thread_start_comm_web()
-                self.web_socket.thread_start_comm_volt()
+                #self.web_socket.thread_start_comm_volt()
                 print('end')
 
             except TargetZoneNotFoundError:

@@ -117,6 +117,7 @@ class VisionController:
                 #if dis <= 400 or i._coordinate[0]< table.getWidth()/2: # 89*5.44
                 print(89*5.44)
                 if i._coordinate[0]<int(89*5.44):
+                    print("remove",i)
                     obstacles.remove(i)
             zones = self._zoneDetector_.detect(crop_img, table,wRot)
             world = World(table, zones, obstacles)

@@ -48,6 +48,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             go = "go"
             await websocket.send(go)
             self.log_message(go)
+            self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
+                                                                              self.station.world._tableZone)  # redetec robot
 
             print("Obstacle :")
             print(self.station.world._obstacles[0]._coordinate)
@@ -71,6 +73,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(ready)
                 print("< {ready}")
                 print(self.station.world._height-175 + self.station.world._axisY)
+
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
 
                 # await self.AddMove(websocket, ["DE110", "DN285"])
@@ -85,7 +88,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 # await self.AddMove(websocket, ["DS285", "DO200"])
 
                 sleep(2)
-                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame)#redetec robot
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)#redetec robot
                 self.station.thread_com_volt.speak[str].emit(tension)
                 sleep(5)
                 await websocket.send("ok")
@@ -93,12 +96,12 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(courant)
                 self.station.thread_com_courant.speak[str].emit(courant)
 
-                yCell = self.station.world._height/2 + self.station.world._axisY - 100
+                yCell = self.station.world._height/2 - 100
 
                 await self.send_path(websocket, (self.station.world._width-190 + self.station.world._axisX, yCell))#fonction QR
 
 
-                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame)
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
                 self.calibration()
                 await websocket.send(self.path[0])
                 self.log_message(self.path[0])
@@ -125,26 +128,25 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(QR)
                 self.station.thread_com_piece.speak[str].emit(QR)
                 await self.send_path(websocket, corectif)#fonction zone piece
-                await self.addRotation(corectif, websocket)
+                await self.addRotation(shape, websocket)
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
 
                 self.station.thread_com_state.speak[str].emit("Recherche de piece")
                 piece = await websocket.recv()
-                self.station.vision._visionController.detectRobotAndGetAngleAruco(
-                    self.station.camera_monde.frame)  # redetec robot
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
                 shape = self.station.world._targetZone._trueCenter
                 #print(shape)
                 corectif = self.adjustement(shape)
                 await self.send_path(websocket, corectif)#fonction target zone
-                await self.addRotation(corectif, websocket)
+                await self.addRotation(shape, websocket)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
 
                 self.station.thread_com_state.speak[str].emit("Depo de la piece")
                 drop = await websocket.recv()
                 self.station.vision._visionController.detectRobotAndGetAngleAruco(
-                    self.station.camera_monde.frame)  # redetec robot
+                    self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
                 self.log_message(drop)
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction depar zone
                 await websocket.send("reboot")
@@ -198,9 +200,9 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         if angle < 0:
             side = "A"
             angle = abs(angle)
-        # if angle<2:
-        #     self.path.insert(0, "RH000")  # rota angle depart
-        #     return
+        if angle<=5:
+             self.path.insert(0, "XX000")  # rota angle depart
+             return
         angle = str(angle)
         while len(angle) is not 3:
             angle = "0" + angle
@@ -208,7 +210,12 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
 
     async def addRotation(self, obj, websocket):
-        if obj[1] > self.station.world._height/2:
+        print("obj",obj)
+        if obj[0] > self.station.world._width-100:
+            return
+        elif obj[0]<100:
+            self.path.append("RH180")
+        elif obj[1] > self.station.world._height/2:
             self.path.append("RH090")
         elif obj[1] < self.station.world._height/2:
             self.path.append("RA090")
@@ -220,18 +227,22 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             self.log_message(next)
 
     def adjustement(self, shape):
+        print("adj", shape)
+        sx = shape[0] -self.station.world._axisX
+        sy = shape[1] - self.station.world._axisY
         adjustementX = 0
         adjustementY = 0
         correctif_recul = 115
-        if shape[1] > self.station.world._height-100:
+        space = 120
+        if sy> self.station.world._height-space:
             adjustementY = -correctif_recul
-        elif shape[1] < 100:
+        elif sy < space:
             adjustementY = correctif_recul
-        elif shape[0] > self.station.world._width - 100:
+        elif sx > self.station.world._width - space:
             adjustementX = -correctif_recul
-        elif shape[0] < 100:
+        elif sx < space:
             adjustementX = correctif_recul
-        return (shape[0]+adjustementX, shape[1]+adjustementY)
+        return (sx+adjustementX, sy+adjustementY)
 
     def thread_start_comm_web(self):
         t2 = threading.Thread(target=self.async_run_comm_web)

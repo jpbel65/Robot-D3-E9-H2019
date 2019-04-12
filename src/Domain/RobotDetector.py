@@ -100,7 +100,7 @@ class RobotDetector(WorldEntityDetector):
             return markers[2][0]
 
     def detectAruco(self, crop_img):
-
+        found = False
         id_to_find = 5
         marker_size = 5.5  # - [cm]
         calib_path = ""
@@ -114,19 +114,24 @@ class RobotDetector(WorldEntityDetector):
                                                      cameraMatrix=camera_matrix, distCoeff=camera_distortion)
         if ids != None and ids[0] == id_to_find:
             ret = aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, camera_distortion)
-            cv2.circle(color, (corners[0][0][0][0], corners[0][0][0][1]), 2, (0, 0, 255), 2)
-            cv2.circle(color, (corners[0][0][1][0], corners[0][0][1][1]), 2, (0, 0, 255), 2)
-            cv2.circle(color, (corners[0][0][2][0], corners[0][0][2][1]), 2, (0, 0, 255), 2)
-            cv2.circle(color, (corners[0][0][3][0], corners[0][0][3][1]), 2, (0, 0, 255), 2)
-            centerX = (corners[0][0][0][0] + corners[0][0][1][0] + corners[0][0][2][0] + corners[0][0][3][0]) / 4
-            centerY = (corners[0][0][0][1] + corners[0][0][1][1] + corners[0][0][2][1] + corners[0][0][3][1]) / 4
+            #cv2.circle(color, (corners[0][0][0][0], corners[0][0][0][1]), 2, (0, 0, 255), 2)
+            #cv2.circle(color, (corners[0][0][1][0], corners[0][0][1][1]), 2, (0, 0, 255), 2)
+            #cv2.circle(color, (corners[0][0][2][0], corners[0][0][2][1]), 2, (0, 0, 255), 2)
+            #cv2.circle(color, (corners[0][0][3][0], corners[0][0][3][1]), 2, (0, 0, 255), 2)
+            centerX = int((corners[0][0][0][0] + corners[0][0][1][0] + corners[0][0][2][0] + corners[0][0][3][0]) / 4)
+            centerY = int((corners[0][0][0][1] + corners[0][0][1][1] + corners[0][0][2][1] + corners[0][0][3][1]) / 4)
+            found= True
             print(centerX, centerY)
             dx = corners[0][0][0][0] - centerX
             dy = corners[0][0][0][1] - centerY
             cv2.circle(color, (int(centerX), int(centerY)), 2, (0, 0, 255), 2)
             angle = math.atan2(-dy, dx)
             angle = np.rad2deg(angle)
-            print("angle", angle)
-            cv2.imshow("RobotDetect", color)
-            cv2.waitKey()
-        return angle, (centerX, centerY)
+            print("anglec", angle)
+            self.angle = angle
+            self.centerX = centerX
+            self.centerY = centerY
+            return angle, (centerX, centerY)
+        if found == False:
+            raise RobotNotFoundError
+

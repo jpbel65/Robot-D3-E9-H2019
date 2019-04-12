@@ -21,7 +21,7 @@ class CameraMonde:
 
 
     def start_camera(self):
-        self.capture = cv2.VideoCapture(1)
+        self.capture = cv2.VideoCapture(0)
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 760)
         self.capture.set(cv2.CAP_PROP_FPS, 15)
@@ -40,13 +40,13 @@ class CameraMonde:
                 if self.world_true is True:
                     for i in self.world._obstacles:
                         cv2.circle(self.frame, (i._coordinate[0] + self.world._axisX, i._coordinate[1] + self.world._axisY), i._radius, 180, 3)
-                if self.station.robot is not None:
-                    self.station.vision._visionController.detectRobotAndGetAngle(self.frame, self.world._tableZone)
-                    cv2.circle(self.frame, (self.station.robot._coordinate[0],  self.station.robot._coordinate[1]), 20, 40, 2)
-                    pathToDraw = self.station.path_finding.getActualPath()
-                    if pathToDraw is not None:
-                        for i in range(0, len(pathToDraw)-1):
-                            pathToDraw[i]
+                #if self.station.robot is not None:
+                    #self.station.vision._visionController.detectRobotAndGetAngleAruco(self.frame, self.world._tableZone)
+                    #cv2.circle(self.frame, (self.station.robot._coordinate[0],  self.station.robot._coordinate[1]), 20, 40, 2)
+                    #pathToDraw = self.station.path_finding.getActualPath()
+                    #if pathToDraw is not None:
+                     #   for i in range(0, len(pathToDraw)-1):
+                      #      pathToDraw[i]
                 if self.stop is True:
                     break
 
