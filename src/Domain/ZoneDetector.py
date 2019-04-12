@@ -39,7 +39,19 @@ class ZoneDetector(WorldEntityDetector):
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         StartZone = self.detectStartZone(image_copy)
         zones.append(StartZone)
-        deposit = self.detectTargetZone(image)
+        deposit,center = self.detectTargetZone(image)
+        points= deposit._points
+        if 0<=center[0]<=60 and 0<=center[1]<=h1:
+            points.sort(key=lambda tup: tup[1],reverse=True)
+        elif w1-60<=center[0]<=w1 and 0<=center[1]<=h1:
+            points.sort(key=lambda tup: tup[1])
+        elif 60<=center[0]<=w1-60 and 0<=center[1]<=60:
+            points.sort(key=lambda tup: tup[0])
+        elif  60<=center[0]<=w1-60 and h1-60<=center[1]<=h1:
+            points.sort(key=lambda tup: tup[0], reverse=True)
+        deposit._points=points
+
+
         print(deposit.center)
         zones.append(deposit)
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
@@ -189,7 +201,7 @@ class ZoneDetector(WorldEntityDetector):
                   if len(points) == 4:
                       cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-                      return TargetZone((x, y, w, h), points)
+                      return TargetZone((x, y, w, h), points),(centerX,centerY)
 
           if found == False:
               raise TargetZoneNotFoundError
