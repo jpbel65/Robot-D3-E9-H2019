@@ -272,14 +272,16 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     async def start_communication_volt(self):
         async with websockets.connect(
-                'ws://'+self.adresse+':4321', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107  192.168.1.38
+                'ws://'+self.adresse+':4321', ping_interval=70, ping_timeout=10, close_timeout=45) as websocket:#10.240.104.107  192.168.1.38
             await websocket.send("go")
             while True:
                 print("in while")
-                volt = await asyncio.wait_for(websocket.recv(), timeout=1)
+                volt = await websocket.recv()
+                #volt = await asyncio.wait_for(websocket.recv(), timeout=1)
                 self.station.thread_com_volt.speak[str].emit(volt)
                 print(volt)
-                #sleep(1)
+                sleep(2)
+                await websocket.send("next")
 
     def thread_start_comm_volt(self):
         t45 = threading.Thread(target=self.async_run_comm_volt)
