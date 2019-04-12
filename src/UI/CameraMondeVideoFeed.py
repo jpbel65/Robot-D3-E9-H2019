@@ -14,7 +14,7 @@ class CameraMonde:
         self.capture = None
         self.frame = None
         self.world = None
-        self.path_finding = None  #le array vide est la pour le constructeur de pathfinder
+        self.path_finding = None
         self.path = None
         self.obstacles = None
         self.world_true = False
@@ -41,8 +41,12 @@ class CameraMonde:
                     for i in self.world._obstacles:
                         cv2.circle(self.frame, (i._coordinate[0] + self.world._axisX, i._coordinate[1] + self.world._axisY), i._radius, 180, 3)
                 if self.station.robot is not None:
-
-                   cv2.circle(self.frame, (self.station.robot._coordinate[0] + self.world._axisX,  self.station.robot._coordinate[1]+ self.world._axisY), 5, 40, 2)
+                    self.station.vision._visionController.detectRobotAndGetAngle(self.frame, self.world._tableZone)
+                    cv2.circle(self.frame, (self.station.robot._coordinate[0],  self.station.robot._coordinate[1]), 20, 40, 2)
+                    pathToDraw = self.station.path_finding.getActualPath()
+                    if pathToDraw is not None:
+                        for i in range(0, len(pathToDraw)-1):
+                            pathToDraw[i]
                 if self.stop is True:
                     break
 
