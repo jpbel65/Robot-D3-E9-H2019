@@ -158,7 +158,7 @@ class ZoneDetector(WorldEntityDetector):
                 # cv2.waitKey()
 
 
-                return ShapeZone(x, y, w, h)
+                return ShapeZone(x, y, w, h,(centerX,centerY))
         if found == False:
             raise ShapeZoneNotFoundError
 

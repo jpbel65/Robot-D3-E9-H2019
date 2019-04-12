@@ -138,7 +138,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
                # cv2.imshow("crop_img_basestation", crop_img)
                # cv2.waitKey()
 
-                self.vision._visionController.detectRobotAndGetAngle(image,table)
+                self.vision._visionController.detectRobotAndGetAngleAruco(image,table)
                 self.robot = self.vision._visionController._robot
                 self.thread_start_timer()
                 self.web_socket.thread_start_comm_web()

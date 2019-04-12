@@ -72,7 +72,7 @@ class VisionController:
         color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
-    def detectRobotAndGetAngle(self, image,table):
+    def detectRobotAndGetAngleAruco(self, image,table):
         #self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
@@ -86,6 +86,19 @@ class VisionController:
        # cv2.waitKey()
         self._robot._angle = self._robotDetector.angle
 
+    def detectRobotAndGetAngleAruco(self, image, table):
+        # self._robotDetector.thread_start_Detector(image)
+        x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
+        image = image[y1:y1 + h1, x1:x1 + w1]
+        # cv2.imshow("imageBeforeRobotDEtectionb", image)
+        # cv2.waitKey()
+        self._robotDetector.detectAruco(image)
+        self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
+        newImage = image
+        # cv2.circle(newImage, self._robot._coordinate, 5, 125)
+        # cv2.imshow('Showrobot', newImage)
+        # cv2.waitKey()
+        self._robot._angle = self._robotDetector.angle
 
     def detectEntities(self, image):
        # try:

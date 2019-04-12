@@ -85,7 +85,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 # await self.AddMove(websocket, ["DS285", "DO200"])
 
                 sleep(2)
-                self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame)#redetec robot
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame)#redetec robot
                 self.station.thread_com_volt.speak[str].emit(tension)
                 sleep(5)
                 await websocket.send("ok")
@@ -98,7 +98,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 await self.send_path(websocket, (self.station.world._width-190 + self.station.world._axisX, yCell))#fonction QR
 
 
-                self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame)
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame)
                 self.calibration()
                 await websocket.send(self.path[0])
                 self.log_message(self.path[0])
@@ -119,7 +119,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.thread_com_state.speak[str].emit("Decode QR")
 
                 QR = await websocket.recv()
-                self.station.vision._visionController.detectRobotAndGetAngle(self.station.camera_monde.frame, self.station.world._tableZone)  # redetec robot
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)  # redetec robot
                 shape = self.station.world._shapeZone._trueCenter
                 corectif = self.adjustement(shape)
                 self.log_message(QR)
@@ -131,7 +131,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 self.station.thread_com_state.speak[str].emit("Recherche de piece")
                 piece = await websocket.recv()
-                self.station.vision._visionController.detectRobotAndGetAngle(
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(
                     self.station.camera_monde.frame)  # redetec robot
                 shape = self.station.world._targetZone._trueCenter
                 #print(shape)
@@ -143,7 +143,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 self.station.thread_com_state.speak[str].emit("Depo de la piece")
                 drop = await websocket.recv()
-                self.station.vision._visionController.detectRobotAndGetAngle(
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(
                     self.station.camera_monde.frame)  # redetec robot
                 self.log_message(drop)
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction depar zone
