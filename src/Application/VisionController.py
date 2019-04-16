@@ -94,6 +94,7 @@ class VisionController:
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
         self._robot._angle = self._robotDetector.angle
+        self._robot.previousPos.append(self._robot._coordinate)
 
     def detectEntities(self, image):
        # try:

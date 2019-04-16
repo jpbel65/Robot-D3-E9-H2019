@@ -9,4 +9,5 @@ class Robot(object):
 		self._hasShape = None
 		self._securityRadius = None
 		self._angle = None
+		self.previousPos = []
 
