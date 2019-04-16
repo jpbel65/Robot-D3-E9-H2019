@@ -90,14 +90,9 @@ class VisionController:
         # self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
-        # cv2.imshow("imageBeforeRobotDEtectionb", image)
-        # cv2.waitKey()
-        self._robotDetector.detectAruco(image)
+        self._robotDetector.detectAruco(image, table)
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
-        # cv2.circle(newImage, self._robot._coordinate, 5, 125)
-        # cv2.imshow('Showrobot', newImage)
-        # cv2.waitKey()
         self._robot._angle = self._robotDetector.angle
 
     def detectEntities(self, image):
@@ -115,11 +110,13 @@ class VisionController:
             for i in obstacles:
                 #dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
                 #if dis <= 400 or i._coordinate[0]< table.getWidth()/2: # 89*5.44
-                print(89*5.44)
+                #print(89*5.44)
+                #print((i._coordinate[0],i._coordinate[1]))
                 if i._coordinate[0]<int(89*5.44):
-                    print("remove",i)
+                    #print("remove",i)
                     obstacles.remove(i)
-            zones = self._zoneDetector_.detect(crop_img, table,wRot)
+            #print(obstacles)
+            zones = self._zoneDetector_.detect(crop_img, table, wRot)
             world = World(table, zones, obstacles)
             return world
 

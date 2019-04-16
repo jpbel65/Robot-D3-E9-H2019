@@ -52,7 +52,6 @@ class ZoneDetector(WorldEntityDetector):
         deposit._points=points
 
 
-        print(deposit.center)
         zones.append(deposit)
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         cv2.line(image_copy, (0, 0), (wRot[0] - x1, wRot[1] - y1), (255, 255, 0), 25)
@@ -228,7 +227,6 @@ class ZoneDetector(WorldEntityDetector):
             centerY = int((M["m01"] / M["m00"]))
             disAvecCentre = math.sqrt((centerOfZone[0] - centerX) ** 2 + (centerOfZone[1] - centerY) ** 2)
             if area <= 400 and area >= 30 and disAvecCentre <= 60:
-                cv2.circle(crop_img, (centerX, centerY), 2, (0, 0, 255), 3)
                 points.append((centerX, centerY))
                 PointInOrder = []
         for i in range(len(points)):
@@ -237,7 +235,6 @@ class ZoneDetector(WorldEntityDetector):
             else:
                 points.sort(key=lambda tup: tup[0])
 
-                cv2.circle(crop_img, (centerOfZone[0], centerOfZone[1]), 2, (0, 0, 255), 3)
         return points
 
 

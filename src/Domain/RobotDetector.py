@@ -57,7 +57,6 @@ class RobotDetector(WorldEntityDetector):
 
             if len(approx) == 3 and area >= 000:
                 found=True
-                print(area)
                 centerX = int((M["m10"] / M["m00"]))
                 centerY = int((M["m01"] / M["m00"]))
                 #cv2.circle(crop_img, (centerX, centerY), 40, (0, 255, 255), 10)
@@ -99,39 +98,105 @@ class RobotDetector(WorldEntityDetector):
         else:
             return markers[2][0]
 
-    def detectAruco(self, crop_img):
+    def detectAruco(self, crop_img, table):
+        coinS = (0,0)
+        coinO = (coinS[0] + table.width, coinS[1] + table.height)
+
+        LongTableCm = 231
+        LargTableCm = 111
+
+        LongTablePx = coinO[0] - coinS[0]
+        LargTablePx = coinO[1] - coinS[1]
+
+        hauteurTable = 197
+        hauteurRobot = 24
+
+        CentreTablePx = ((coinO[0] + coinS[0]) / 2, ((coinO[1] + coinS[1]) / 2))
+
+
+        def pixXtoCM(SizePixel):
+            SizeCM = (LongTableCm / LongTablePx) * SizePixel
+            return SizeCM
+
+        def CMxtopix(SizeCM):
+            SizePixel = SizeCM * LongTablePx / LongTableCm
+            return SizePixel
+
+        def pixYtoCM(SizePixel):
+            SizeCM = (LargTableCm / LargTablePx) * SizePixel
+            return SizeCM
+
+        def CMytopix(SizeCM):
+            SizePixel = SizeCM * LargTablePx / LargTableCm
+            return SizePixel
+
+        def posReal(detX, detY):
+            distXPx = CentreTablePx[0] - detX
+            distYPx = CentreTablePx[1] - detY
+            distXCm = pixXtoCM(distXPx)
+            distYCm = pixXtoCM(distYPx)
+
+            angleCamX = np.arctan(distXCm / hauteurTable)
+            angleCamY = np.arctan(distYCm / hauteurTable)
+
+            offsetCMX = hauteurRobot * np.tan(angleCamX)
+            offsetCMY = hauteurRobot * np.tan(angleCamY)
+
+            offsetPxX = CMxtopix(offsetCMX)
+            offsetPxY = CMytopix(offsetCMY)
+
+            position = (detX + offsetPxX, detY + offsetPxY)
+
+            return (position)
+
         found = False
-        id_to_find = 5
-        marker_size = 5.5  # - [cm]
-        calib_path = ""
-        camera_matrix = np.loadtxt(calib_path + 'cameraMatrix.txt', delimiter=',')
-        camera_distortion = np.loadtxt(calib_path + 'cameraDistortion.txt', delimiter=',')
-        aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_ARUCO_ORIGINAL)
+        id_to_find = 8
+        marker_size = 100  # - [cm]
+        calibrationFile = "data.xml"
+        calibrationParams = cv2.FileStorage(calibrationFile, cv2.FILE_STORAGE_READ)
+        camera_matrix = calibrationParams.getNode("Camera_Matrix").mat()
+        dist_coeffs = calibrationParams.getNode("Distortion_Coefficients").mat()
+        dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_100)
         parameters = aruco.DetectorParameters_create()
-        frame = cv2.cvtColor(crop_img.copy(), cv2.COLOR_BGR2GRAY)
-        color = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-        corners, ids, rejected = aruco.detectMarkers(image=frame, dictionary=aruco_dict, parameters=parameters,
-                                                     cameraMatrix=camera_matrix, distCoeff=camera_distortion)
-        if ids != None and ids[0] == id_to_find:
-            ret = aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, camera_distortion)
-            #cv2.circle(color, (corners[0][0][0][0], corners[0][0][0][1]), 2, (0, 0, 255), 2)
-            #cv2.circle(color, (corners[0][0][1][0], corners[0][0][1][1]), 2, (0, 0, 255), 2)
-            #cv2.circle(color, (corners[0][0][2][0], corners[0][0][2][1]), 2, (0, 0, 255), 2)
-            #cv2.circle(color, (corners[0][0][3][0], corners[0][0][3][1]), 2, (0, 0, 255), 2)
-            centerX = int((corners[0][0][0][0] + corners[0][0][1][0] + corners[0][0][2][0] + corners[0][0][3][0]) / 4)
-            centerY = int((corners[0][0][0][1] + corners[0][0][1][1] + corners[0][0][2][1] + corners[0][0][3][1]) / 4)
-            found= True
-            print(centerX, centerY)
-            dx = corners[0][0][0][0] - centerX
-            dy = corners[0][0][0][1] - centerY
-            cv2.circle(color, (int(centerX), int(centerY)), 2, (0, 0, 255), 2)
+        gray = cv2.cvtColor(crop_img.copy(), cv2.COLOR_BGR2GRAY)
+
+        # Capture frame-by-frame
+
+        # Our operations on the frame come here
+
+        res = cv2.aruco.detectMarkers(gray, dictionary)
+
+        if len(res[0]) > 0:
+            corners = res[0]
+
+            coinA = (corners[0][0][0][0], corners[0][0][0][1])
+            coinB = (corners[0][0][1][0], corners[0][0][1][1])
+            coinC = (corners[0][0][2][0], corners[0][0][2][1])
+            coinD = (corners[0][0][3][0], corners[0][0][3][1])
+
+            centreX = (coinA[0] + coinB[0] + coinC[0] + coinD[0]) / 4
+            centreY = (coinA[1] + coinB[1] + coinC[1] + coinD[1]) / 4
+
+            centre = (centreX, centreY)
+
+            centreReal = posReal(centreX, centreY)
+
+            coinAreal = posReal(coinA[0], coinA[1])
+
+            dx = coinAreal[0] - centreReal[0]
+            dy = coinAreal[1] - centreReal[1]
             angle = math.atan2(-dy, dx)
             angle = np.rad2deg(angle)
-            print("anglec", angle)
             self.angle = angle
-            self.centerX = centerX
-            self.centerY = centerY
-            return angle, (centerX, centerY)
+            self.centerX = centreReal[0] + coinS[0]
+            self.centerY = centreReal[1] + coinS[1]
+            cv2.circle(crop_img, (int(centreReal[0]), int(centreReal[1])), 3, (0,0,255), 3)
+            # cv2.imshow('Image', crop_img)
+            # cv2.waitKey()
+
+            return angle, centre
+
+
         if found == False:
             raise RobotNotFoundError
 

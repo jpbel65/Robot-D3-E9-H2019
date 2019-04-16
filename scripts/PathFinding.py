@@ -165,21 +165,21 @@ class PathFinding:
         #         self.tableLayout[i][j] = 'O'
 
 
-        for i in range(initialX - int(obstacleRay*self.RATIO), initialX + int(obstacleRay*self.RATIO)):
-            for j in range(initialY - int(obstacleRay*self.RATIO), initialY + int(obstacleRay*self.RATIO)):
-                if i > 0 and i < len(self.tableLayout[0]) and j > 0 and j < len(self.tableLayout):
-                    self.tableLayout[j][i] = 'O'
+        # for i in range(initialX - int(obstacleRay*self.RATIO), initialX + int(obstacleRay*self.RATIO) - 1):
+        #     for j in range(initialY - int(obstacleRay*self.RATIO) + 1, initialY + int(obstacleRay*self.RATIO) +1):
+        #         if i > 0 and i < len(self.tableLayout[0]) and j > 0 and j < len(self.tableLayout):
+        #             self.tableLayout[j][i] = 'O'
 
 
-        # for i in range(len(self.tableLayout)):
-        #     for j in range(len(self.tableLayout[0])):
-        #         if self.tableLayout[i][j] == 'O':
-        #             continue
-        #         deltaX = (x-j/self.RATIO)
-        #         deltaY = (y-i/self.RATIO)
-        #
-        #         if deltaX**2+deltaY**2 < obstacleRay**2 :
-        #             self.tableLayout[i][j]= 'O'
+        for i in range(len(self.tableLayout)):
+            for j in range(len(self.tableLayout[0])):
+                if self.tableLayout[i][j] == 'O':
+                    continue
+                deltaX = (x-j/self.RATIO)
+                deltaY = (y-i/self.RATIO)
+
+                if deltaX**2+deltaY**2 < obstacleRay**2+5 :
+                    self.tableLayout[i][j]= 'O'
 
     def addSpacing(self):
         robotRay = self.ROBOT_LENGHT/2
@@ -193,8 +193,8 @@ class PathFinding:
                             if self.tableLayout[k][l] is not 'W' and self.tableLayout[k][l] is not 'o' and self.tableLayout[k][l] is not 'O':
                                 deltaX = (l/self.RATIO - j / self.RATIO)
                                 deltaY = (k/self.RATIO - i / self.RATIO)
-                                if deltaX**2+deltaY**2 < (robotRay**2)/2:
-                                    self.tableLayout[k][l] = 'o'
+                                if deltaX**2+deltaY**2 < (robotRay**2):
+                                    self.tableLayout[k][l] = 'w'
                 # if self.tableLayout[i][j] is 'W':
                 #     for k in range(len(self.tableLayout)):
                 #         for l in range(len(self.tableLayout[0])):
@@ -260,9 +260,9 @@ class PathFinding:
         xMaxTable = len(self.tableLayout[0])
         yMaxTable = len(self.tableLayout)
 
-        #self.addSpacing()
-        xOrigin = self.centimetersToCoords(robot[0]/self.pixelRatio - 4.5 - deltaX)
-        yOrigin = self.centimetersToCoords(robot[1]/self.pixelRatio - 10 - deltaY)
+        self.addSpacing()
+        xOrigin = self.centimetersToCoords(robot[0]/self.pixelRatio)
+        yOrigin = self.centimetersToCoords(robot[1]/self.pixelRatio)
 
 
 
@@ -335,7 +335,6 @@ class PathFinding:
             f.write(point + "\n")
             raise TargetNotOnTable
 
-        print((xOrigin*5,yOrigin*5))
         if(self.tableLayout[yOrigin][xOrigin] != ' ' and self.tableLayout[yOrigin][xOrigin] != 'S'):
             accessible = False
             datetime.datetime.now()
@@ -445,9 +444,8 @@ class PathFinding:
 
     def getJointPath(self, path, extra):
         bufferPath = []
-        for i in path:
-            if i != path[-1]:
-                bufferPath.append((path[path.index(i)+1][0]-i[0], path[path.index(i)+1][1]-i[1]))
+        for i in range(0, len(path)-1):
+            bufferPath.append((path[i+1][0]-path[i][0], path[i+1][1]-path[i][1]))
         while(bufferPath):
             jointLenght = 1
 
@@ -515,7 +513,6 @@ class PathFinding:
         for h in extra:
             self.path_websocket.append(h)
 
-        print(self.path_websocket)
 
     def smoothPathCompare(self):
         smoothestPath = []

@@ -20,30 +20,30 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         self.station = station
         self.ping_interval = 70
         self.ping_timeout = 10
-        print(self.ping_interval)
-        print(self.ping_timeout)
         self.path = []
 
     def testOffline(self, bool):
         if bool:
+            self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
+                                                                              self.station.world._tableZone)
+
             print("Path found : ")
-            self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate,
-                                                               (self.station.world._width-300 + self.station.world._axisX, self.station.world._width/2 + self.station.world._axisY))
+            self.station.path_finding.getPath(self.station.robot._coordinate,
+                                                               (self.station.world._width/2, self.station.world._height/2))
 
-            for obstacle in self.station.world._obstacles:
-                print(obstacle._coordinate)
-
-            print(self.station.world._shapeZone._center)
-            print(self.station.robot._angle)
-            print(self.station.world._targetZone.center)
+            print(self.station.path_finding.getActualPath())
+            print("Confusion is here")
 
     async def start_communication_web(self):
-        print("start comm")
 
-        self.testOffline(False)
+        self.testOffline(True)
+        shape = self.station.world._targetZone._trueCenter
+        corectif = self.adjustement(shape)
+        self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
+                                                                          self.station.world._tableZone)
 
         async with websockets.connect(
-                'ws://'+self.adresse+':8765', ping_interval=70, ping_timeout=10) as websocket:#10.240.104.107  192.168.1.38
+                'ws://'+self.adresse+':8765') as websocket:#10.240.104.107  192.168.1.38
             print("in websocket")
             go = "go"
             await websocket.send(go)
@@ -76,7 +76,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
 
-                # await self.AddMove(websocket, ["DE110", "DN285"])
+                await self.AddMove(websocket, ["DE310", "DN580"])
 
                 await websocket.send("fin")
                 self.log_message("fin start-charge")
@@ -85,43 +85,51 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 tension = await websocket.recv()
                 self.log_message(tension)
 
+
                 # await self.AddMove(websocket, ["DS285", "DO200"])
 
-                sleep(2)
-                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)#redetec robot
-                self.station.thread_com_volt.speak[str].emit(tension)
+                #self.station.thread_com_volt.speak[str].emit(tension)
                 sleep(5)
                 await websocket.send("ok")
                 courant = await websocket.recv()
-                self.log_message(courant)
-                self.station.thread_com_courant.speak[str].emit(courant)
+                #self.log_message(courant)
+                #self.station.thread_com_courant.speak[str].emit(courant)
+                await self.AddMove(websocket, ["DS400", "DO310"])
+
+                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
+                                                                                  self.station.world._tableZone)  # redetec robot
 
                 yCell = self.station.world._height/2 - 100
 
-                await self.send_path(websocket, (self.station.world._width-190 + self.station.world._axisX, yCell))#fonction QR
+                await self.send_path(websocket, (self.station.world._width-160 + self.station.world._axisX, yCell))#fonction QR
 
 
                 self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
-                self.calibration()
-                await websocket.send(self.path[0])
-                self.log_message(self.path[0])
-                next = await websocket.recv()
-                if next == "next":
-                    self.path.remove(self.path[0])
-                    self.log_message(next)
+
                 self.path.append("RH090")#add rotation
                 await websocket.send(self.path[0])
                 self.log_message(self.path[0])
                 next = await websocket.recv()
                 if next == "next":
                     self.path.remove(self.path[0])
-                    self.log_message(next)
+
+
+                if(self.station.robot._coordinate[1] < self.station.world._height - 245):
+                    self.path.append("DO030")
+                    await websocket.send(self.path[0])
+                    self.log_message(self.path[0])
+                    next = await websocket.recv()
+                    if next == "next":
+                        self.path.remove(self.path[0])
+
+
                 await websocket.send("fin")
                 self.log_message("fin charge-QR")
 
                 self.station.thread_com_state.speak[str].emit("Decode QR")
 
                 QR = await websocket.recv()
+
                 self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)  # redetec robot
                 shape = self.station.world._shapeZone._trueCenter
                 corectif = self.adjustement(shape)
@@ -136,8 +144,10 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 piece = await websocket.recv()
                 self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
                 shape = self.station.world._targetZone._trueCenter
-                #print(shape)
+                print("Where do we go :")
+                print(shape)
                 corectif = self.adjustement(shape)
+                print(corectif)
                 await self.send_path(websocket, corectif)#fonction target zone
                 await self.addRotation(shape, websocket)
                 await websocket.send("fin")
@@ -145,8 +155,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 self.station.thread_com_state.speak[str].emit("Depo de la piece")
                 drop = await websocket.recv()
-                self.station.vision._visionController.detectRobotAndGetAngleAruco(
-                    self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
+                #self.station.vision._visionController.detectRobotAndGetAngleAruco(
+                    #self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
                 self.log_message(drop)
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction depar zone
                 await websocket.send("reboot")
@@ -164,30 +174,33 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         for i in move:
             self.path.append(i)
         while self.path:
+            self.calibration()
             sleep(2)
             await websocket.send(self.path[0])
             self.log_message(self.path[0])
             next = await websocket.recv()
             if next == "next":
                 self.path.remove(self.path[0])
-                self.log_message(next)
+
 
     async def send_path(self, websocket, destination):
         self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, destination)
-        self.calibration()
+        #self.calibration()
         sleep(2)
         self.station.thread_com_state.speak[str].emit("Mouvement")
+        print(self.path)
         while not self.path:
             self.log_message("WS empty")
             sleep(2)
 
         while self.path:
+            self.calibration()
             await websocket.send(self.path[0])
             self.log_message(self.path[0])
             next = await websocket.recv()
             if next == "next":
                 self.path.remove(self.path[0])
-                self.log_message(next)
+
             sleep(2)
             datetime.datetime.now()
             datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
@@ -195,13 +208,14 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     def calibration(self):
         self.station.thread_com_state.speak[str].emit("Calibration")
+        self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
         angle = int(self.station.robot._angle) + 1  # +1 correctif angle
         side = "H"
         if angle < 0:
             side = "A"
             angle = abs(angle)
         if angle<=5:
-             self.path.insert(0, "XX000")  # rota angle depart
+             #self.path.insert(0, "XX000")  # rota angle depart
              return
         angle = str(angle)
         while len(angle) is not 3:
@@ -224,12 +238,11 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         next = await websocket.recv()
         if next == "next":
             self.path.remove(self.path[0])
-            self.log_message(next)
+
 
     def adjustement(self, shape):
-        print("adj", shape)
-        sx = shape[0] -self.station.world._axisX
-        sy = shape[1] - self.station.world._axisY
+        sx = shape[0]
+        sy = shape[1]
         adjustementX = 0
         adjustementY = 0
         correctif_recul = 115
@@ -275,11 +288,10 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 'ws://'+self.adresse+':4321', ping_interval=70, ping_timeout=10, close_timeout=45) as websocket:#10.240.104.107  192.168.1.38
             await websocket.send("go")
             while True:
-                print("in while")
                 volt = await websocket.recv()
                 #volt = await asyncio.wait_for(websocket.recv(), timeout=1)
                 self.station.thread_com_volt.speak[str].emit(volt)
-                print(volt)
+                #print(volt)
                 sleep(2)
                 await websocket.send("next")
 

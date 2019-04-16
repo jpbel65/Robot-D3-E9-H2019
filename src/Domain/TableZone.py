@@ -9,7 +9,7 @@ class TableZone(Zone):
     def __init__(self, coordinate):
         self.origin = (coordinate[0], coordinate[1])
         self.width = coordinate[2]
-        self.height  = coordinate[3]
+        self.height = coordinate[3]
 
     def getOriginX(self):
         return self.origin[0]

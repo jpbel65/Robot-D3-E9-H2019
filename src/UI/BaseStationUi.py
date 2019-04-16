@@ -61,7 +61,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
                          ('textVolt', '||', 'textCourant'), '=',
                          ('textPos', '||', 'textTimer'), '=',
                          ('buttonLog', '||', 'buttonReset'), '=',
-                         ('textPlayer', '||', 'textImage')), '||', '', '=', '']
+                         ('textPlayer', '||')), '||', '', '=', '']
 
         # Define the button action
         self.buttonLog.value = self.button_log_action
@@ -92,6 +92,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         # debut visison/pathfinding
         self.camera_monde = CameraMonde(self.textPlayer, self)
         self.camera_monde.thread_start_camera()
+
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
 
         self.draw_playgroung.draw_robot(8, 3)
@@ -100,63 +101,36 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.path_finding = None
 
     def button_log_action(self):
-        if False:
-            try:
-                table = TableZone((33, 54, 1200, 580))
-                obstacle = [Obstacle((600+33,430+54),33), Obstacle((600+33,150+54),33)]
-                self.world = World(table, fakeAZoneList(), obstacle)
-                self.path_finding = PathFinding(self.world, self.web_socket.path)
-                self.robot = Robot()
-                self.robot._coordinate = (288 + 33, 80 + 54)
-                self.robot._angle = 0
-                self.thread_start_timer()
-                self.web_socket.thread_start_comm_web()
-                self.path_finding.getPath(self.robot._coordinate, (1000,400))
-                print('end')
+        self.image = self.camera_monde.frame
+        try:
 
-            except TargetZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Target Zone not Found !")
-            except ShapeZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Shape Zone not Found !")
-            except TableZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Table not detected !")
-            except StartZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Target Zone not Found !")
-            except RobotNotFoundError:
-                self.web_socket.log_message("ERROR : Robot not found !")
-        else:
-            self.image = self.camera_monde.frame
-            try:
+            self.world = self.vision.detectWorldElement(self.image)
+            self.path_finding = PathFinding(self.world, self.web_socket.path)
+            table= self.world._tableZone
 
-                self.world = self.vision.detectWorldElement(self.image)
-                # cv2.imshow("capture", image)
-                self.path_finding = PathFinding(self.world, self.web_socket.path)
-                table= self.world._tableZone
+            image=self.camera_monde.frame
+            #crop_img = image[y1:y1 + h1, x1:x1 + w1]
+           # cv2.imshow("crop_img_basestation", crop_img)
+           # cv2.waitKey()
 
-                image=self.camera_monde.frame
-                #crop_img = image[y1:y1 + h1, x1:x1 + w1]
-               # cv2.imshow("crop_img_basestation", crop_img)
-               # cv2.waitKey()
+            self.vision._visionController.detectRobotAndGetAngleAruco(image, table)
+            self.robot = self.vision._visionController._robot
+            self.thread_start_timer()
+            self.web_socket.thread_start_comm_web()
+            self.web_socket.thread_start_comm_volt()
 
-                self.vision._visionController.detectRobotAndGetAngleAruco(image, table)
-                self.robot = self.vision._visionController._robot
-                self.thread_start_timer()
-                self.web_socket.thread_start_comm_web()
-                #self.web_socket.thread_start_comm_volt()
-                print('end')
-
-            except TargetZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Target Zone not Found !")
-            except ShapeZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Shape Zone not Found !")
-            except TableZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Table not detected !")
-            except StartZoneNotFoundError:
-                self.web_socket.log_message("ERROR : Target Zone not Found !")
-            except ConnectionRefusedError:
-                self.web_socket.log_message("ERROR : Connection Refused")
-            except RobotNotFoundError:
-                self.web_socket.log_message("ERROR : Robot not found !")
+        except TargetZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Target Zone not Found !")
+        except ShapeZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Shape Zone not Found !")
+        except TableZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Table not detected !")
+        except StartZoneNotFoundError:
+            self.web_socket.log_message("ERROR : Target Zone not Found !")
+        except ConnectionRefusedError:
+            self.web_socket.log_message("ERROR : Connection Refused")
+        except RobotNotFoundError:
+            self.web_socket.log_message("ERROR : Robot not found !")
 
 
 
@@ -165,7 +139,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
     def button_reset_action(self):
         print("reset")
-        self.web_socket.thread_start_comm_volt()
+        #self.web_socket.thread_start_comm_volt()
         #return_data = self.draw_playgroung.de_draw_robot(8, 3)
         #self.draw_playgroung.post_playgroung(return_data)
 
