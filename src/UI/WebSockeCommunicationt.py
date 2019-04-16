@@ -36,14 +36,14 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     async def start_communication_web(self):
 
-        self.testOffline(True)
+        self.testOffline(False)
         shape = self.station.world._targetZone._trueCenter
         corectif = self.adjustement(shape)
         self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
                                                                           self.station.world._tableZone)
 
         async with websockets.connect(
-                'ws://'+self.adresse+':8765') as websocket:#10.240.104.107  192.168.1.38
+                'ws://'+self.adresse+':8765',ping_interval=80, ping_timeout=20, timeout=300) as websocket:#10.240.104.107  192.168.1.38
             print("in websocket")
             go = "go"
             await websocket.send(go)
@@ -76,7 +76,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
 
-                await self.AddMove(websocket, ["DE310", "DN580"])
+                await self.AddMove(websocket, ["DE340", "DN580"])
 
                 await websocket.send("fin")
                 self.log_message("fin start-charge")
@@ -113,9 +113,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 if next == "next":
                     self.path.remove(self.path[0])
 
-
-                if(self.station.robot._coordinate[1] < self.station.world._height - 245):
-                    self.path.append("DO030")
+                if self.station.robot._coordinate[1] < self.station.world._height - 245:
+                    self.path.append("DO060")
                     await websocket.send(self.path[0])
                     self.log_message(self.path[0])
                     next = await websocket.recv()
@@ -174,7 +173,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         for i in move:
             self.path.append(i)
         while self.path:
-            self.calibration()
+            #self.calibration()
             sleep(2)
             await websocket.send(self.path[0])
             self.log_message(self.path[0])
@@ -224,6 +223,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
 
     async def addRotation(self, obj, websocket):
+        self.calibration()
         print("obj",obj)
         if obj[0] > self.station.world._width-100:
             return
@@ -233,11 +233,12 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             self.path.append("RH090")
         elif obj[1] < self.station.world._height/2:
             self.path.append("RA090")
-        await websocket.send(self.path[0])
-        self.log_message(self.path[0])
-        next = await websocket.recv()
-        if next == "next":
-            self.path.remove(self.path[0])
+        while self.path:
+            await websocket.send(self.path[0])
+            self.log_message(self.path[0])
+            next = await websocket.recv()
+            if next == "next":
+                self.path.remove(self.path[0])
 
 
     def adjustement(self, shape):
@@ -245,7 +246,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         sy = shape[1]
         adjustementX = 0
         adjustementY = 0
-        correctif_recul = 115
+        correctif_recul = 130
         space = 120
         if sy> self.station.world._height-space:
             adjustementY = -correctif_recul

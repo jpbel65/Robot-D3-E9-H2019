@@ -22,10 +22,11 @@ class CameraMonde:
         self.obstacles = None
         self.world_true = False
         self.whereTheRobotHasBeen = []
+        self.frame2 = None
 
 
     def start_camera(self):
-        self.capture = cv2.VideoCapture(1)
+        self.capture = cv2.VideoCapture(0)
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         self.capture.set(cv2.CAP_PROP_FPS, 15)
@@ -34,7 +35,9 @@ class CameraMonde:
                 self.frameCount += 1
                 ret, frame = self.capture.read()
                 if ret is True:
+                    self.frame2 = self.frame
                     self.frame = frame
+
                     self.showedFrame = frame.copy()
                     self.textPlayer.frame = self.showedFrame
 
@@ -77,7 +80,7 @@ class CameraMonde:
                                 self.whereTheRobotHasBeen.append((int(
                                     self.station.robot._coordinate[0] + self.world._axisX), int(
                                     self.station.robot._coordinate[1]) + self.world._axisY))
-                                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)
+                                #self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)
 
                             except :
                                 continue

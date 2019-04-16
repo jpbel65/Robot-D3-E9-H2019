@@ -85,7 +85,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.thread_com_courant = Communicate()
         self.thread_com_courant.speak[str].connect(self.update_courant)
 
-        self.vision = MainController()
+        self.vision = MainController(self)
         self.web_socket = WebSocket(self.textArea, self)
 
 

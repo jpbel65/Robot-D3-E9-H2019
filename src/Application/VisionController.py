@@ -10,6 +10,7 @@ from Domain.ZoneDetector import ZoneDetector
 from Domain.HSVColorsAndConfig import *
 from Domain.World import World
 from Domain.RobotDetector import RobotDetector
+from Domain.RobotDetector import RobotNotFoundError
 from Domain.Robot import Robot
 import numpy as np
 import cv2
@@ -22,13 +23,14 @@ class ShapeNotValidError(Exception):
 
 class VisionController:
 
-    def __init__(self):
+    def __init__(self, station):
         self._robotDetector = RobotDetector()
         self._converter = None
         self._shapeDetector_ = None
         self._obstaclesDetector_ = ObstaclesDetector()
         self._zoneDetector_ = ZoneDetector()
         self._robot = Robot()
+        self.station = station
 
 
     def detectShapes(self, image, shape):
@@ -72,7 +74,7 @@ class VisionController:
         color_img = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         color_img = cv2.drawContours(color_img, contours, -1, (0, 255, 0), 2)
 
-    def detectRobotAndAngle(self, image,table):
+    def detectRobotAndAngle(self, image, table):
         #self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
@@ -90,7 +92,14 @@ class VisionController:
         # self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
-        self._robotDetector.detectAruco(image, table)
+        try:
+            self._robotDetector.detectAruco(image, table)
+
+        except RobotNotFoundError:
+            print("frame 2")
+            self.detectRobotAndGetAngleAruco(self.station.camera_monde.frame2, table)
+            return
+
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
         self._robot._angle = self._robotDetector.angle
@@ -107,7 +116,8 @@ class VisionController:
             #self.detectRobotAndGetAngle(image,table)
 
             obstacles = self._obstaclesDetector_.detect(crop_img)
-
+            print("obstacle time")
+            print(obstacles)
             for i in obstacles:
                 #dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
                 #if dis <= 400 or i._coordinate[0]< table.getWidth()/2: # 89*5.44
@@ -116,7 +126,7 @@ class VisionController:
                 if i._coordinate[0]<int(89*5.44):
                     #print("remove",i)
                     obstacles.remove(i)
-            #print(obstacles)
+            print(obstacles)
             zones = self._zoneDetector_.detect(crop_img, table, wRot)
             world = World(table, zones, obstacles)
             return world

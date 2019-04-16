@@ -3,10 +3,10 @@ from Application.VisionController import VisionController
 
 class MainController:
 
-    def __init__(self):
+    def __init__(self, station):
         self._robotController = None
         self._table = None
-        self._visionController = VisionController()
+        self._visionController = VisionController(station)
         self._trajectoryMapper = None
         self._trajectoryCalculator = None
         self._pieceToTakeInfo = None
