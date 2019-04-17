@@ -421,6 +421,9 @@ class PathFinding:
     def getActualPath(self):
         return self.actual_path
 
+    def setActualPath(self, newPath):
+        self.actual_path = newPath
+
     def getPixelRatio(self):
         return self.pixelRatio
 

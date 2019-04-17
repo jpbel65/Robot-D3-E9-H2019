@@ -74,6 +74,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
                 await self.moveToPixel(websocket,(54 * self.station.world._ratioPixelCm, 54 * self.station.world._ratioPixelCm))
 
+                self.station.path_finding.setActualPath([(294,294), (109, 294), (109, 610)])
                 await self.AddMove(websocket, ["DE340", "DN580"])
 
                 await websocket.send("fin")
@@ -85,13 +86,15 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
 
                 # await self.AddMove(websocket, ["DS285", "DO200"])
-
+git
                 #self.station.thread_com_volt.speak[str].emit(tension)
                 sleep(5)
                 await websocket.send("ok")
                 courant = await websocket.recv()
                 #self.log_message(courant)
                 #self.station.thread_com_courant.speak[str].emit(courant)
+
+                self.station.path_finding.setActualPath([(109, self.station.world._height), (109, self.station.world._height - 218), (294,  self.station.world._height - 218)])
                 await self.AddMove(websocket, ["DS400", "DO310"])
 
                 # self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
