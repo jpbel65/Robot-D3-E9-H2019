@@ -34,7 +34,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     async def start_communication_web(self):
 
-        self.testOffline(False)
+        self.testOffline(True)
         shape = self.station.world._targetZone._trueCenter
         self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
                                                                           self.station.world._tableZone)
@@ -101,7 +101,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 yCell = self.station.world._height/2 - 100
 
-                await self.send_path(websocket, (self.station.world._width-160 + self.station.world._axisX, yCell))#fonction QR
+                await self.send_path(websocket, (self.station.world._width-160 + self.station.world._axisX, yCell), isQr = True)#fonction QR
 
 
                 # self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
@@ -343,8 +343,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
         sleep(2)
 
-    async def send_path(self, websocket, destination):
-        self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, destination)
+    async def send_path(self, websocket, destination, isQr = False):
+        self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, destination, isQr)
         #self.calibration()
         sleep(2)
         self.station.thread_com_state.speak[str].emit("Mouvement")

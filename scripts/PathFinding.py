@@ -231,7 +231,7 @@ class PathFinding:
         self.path_websocket.append(test)
         return self.actual_path
 
-    def getPath(self, robot, destination, extra = []):
+    def getPath(self, robot, destination, extra = [], isQr = False):
 
         newRobot = (robot[0]/self.pixelRatio - 4.5, robot[1]/self.pixelRatio - 10)
 
@@ -269,17 +269,19 @@ class PathFinding:
         xTarget = self.centimetersToCoords(destination[0]/self.pixelRatio)
         yTarget = self.centimetersToCoords(destination[1]/self.pixelRatio)
 
-        while True:
-            try:
-                if (self.tableLayout[yTarget][xTarget] != ' '):
-                    raise TargetUnaccessible
-                else:
+        if isQr:
+            while True:
+                try:
+                    if (self.tableLayout[yTarget][xTarget] != ' '):
+                        raise TargetUnaccessible
+                    else:
+                        break
+                except TargetUnaccessible:
+                    yTarget += 1
+                except IndexError:
+                    print(yMaxTable)
+                    print(yTarget)
                     break
-            except TargetUnaccessible:
-                yTarget += 1
-            except IndexError:
-                print(yMaxTable)
-                print(yTarget)
 
         if xOrigin > len(self.tableLayout[0]) or xOrigin <= 0:
             accessible = False
@@ -311,7 +313,7 @@ class PathFinding:
 
             f.close()
             raise OriginNotOnTable
-        if xTarget > len(self.tableLayout[0]) or xTarget <= 0:
+        if xTarget >= len(self.tableLayout[0]) or xTarget <= 0:
             accessible = False
             datetime.datetime.now()
             datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
@@ -324,7 +326,7 @@ class PathFinding:
             point = (xTarget, yTarget)
             f.write(point + "\n")
             raise TargetNotOnTable
-        if yTarget > len(self.tableLayout) or yTarget <= 0:
+        if yTarget >= len(self.tableLayout) or yTarget <= 0:
             accessible = False
             datetime.datetime.now()
             datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
@@ -332,7 +334,7 @@ class PathFinding:
             f = open("../../scripts/PathFindingTrace/" + time + "TARGET_NOT_ON_TABLE.txt", "w+")
 
             f.write("Longueur de l'array (x,y)" + "\n")
-            f.write((len(self.tableLayout[0]), len(self.tableLayout)) + "\n")
+            f.write(len(self.tableLayout[0])+ len(self.tableLayout)+ "\n")
             f.write("Point de target:" + "\n")
             point = (xTarget, yTarget)
             f.write(point + "\n")
@@ -419,12 +421,12 @@ class PathFinding:
         return self.pixelRatio
 
 
-    def thread_start_pathfinding(self, robot, destination, extra = []):
+    def thread_start_pathfinding(self, robot, destination, extra = [], isQr = False):
         destinationX = destination[0]
         destinationY = destination[1]
         while True:
             try:
-                t = threading.Thread(target=self.getPath, args=(robot, (destinationX, destinationY), extra))
+                t = threading.Thread(target=self.getPath, args=(robot, (destinationX, destinationY), extra, isQr))
                 t.start()
 
                 break
