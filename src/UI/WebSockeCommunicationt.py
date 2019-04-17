@@ -86,7 +86,6 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
 
                 # await self.AddMove(websocket, ["DS285", "DO200"])
-git
                 #self.station.thread_com_volt.speak[str].emit(tension)
                 sleep(5)
                 await websocket.send("ok")
