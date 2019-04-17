@@ -126,6 +126,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.thread_com_state.speak[str].emit("Decode QR")
 
                 QR = await websocket.recv()
+                self.station.qr_Code = QR
 
                 # self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)  # redetec robot
                 shape = self.station.world._shapeZone._trueCenter
@@ -133,7 +134,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message(QR)
                 self.station.thread_com_piece.speak[str].emit(QR)
                 await self.send_path(websocket, corectif)#fonction zone piece
-                await self.addRotation(shape, websocket)
+                await self.addRotation(shape, websocket) # Se retourne vers la piece
+                self.moveToPixel(websocket, corectif)
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
 
@@ -147,7 +149,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 corectif = self.adjustement(shape)
                 print(corectif)
                 await self.send_path(websocket, corectif)#fonction target zone
-                await self.addRotation(shape, websocket)
+                await self.addRotation(shape, websocket) # se retourne vers la zone de dépot
+                self.moveToPixel(websocket, corectif)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
 
@@ -180,6 +183,118 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             if next == "next":
                 self.path.remove(self.path[0])
 
+    def getAngleCorrection(self):
+
+        angle = int(self.station.robot._angle) + 1
+        angleCorrection = 0
+
+        if 0 <= angle <= 45:
+            angleCorrection = 0 - angle
+        elif 45 < angle <= 135:
+            angleCorrection = 90 - angle
+        elif 135 < angle <= 225:
+            angleCorrection = 180 - angle
+        elif 225 < angle <= 315:
+            angleCorrection = 270 - angle
+        elif 315 < angle <= 360:
+            angleCorrection = 360 - angleCorrection
+
+        if angleCorrection <= 3:
+            return ''
+
+        if angle < 0:
+            side = "A"
+            angle = abs(angle)
+
+        angle = str(angle)
+
+        while len(angle) is not 3:
+            angle = "0" + angle
+
+        return ("R" + side + angle) # rota angle depart
+
+
+
+
+    def moveToPixel(self,websocket , point):
+        try:
+            self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
+        except :
+            pass
+
+        rotCommand = self.getAngleCorrection()
+
+        if rotCommand is not '':
+            await self.AddMove(websocket, rotCommand)
+
+        try:
+            self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
+        except :
+            pass
+
+        origin = self.station.robot._coordinate
+        target = point
+        deltaX = target[0] - origin[0]
+        deltaY = target[1] - origin[1]
+
+        movementX = int(round(deltaX / (self.station.world._ratioPixelCm * 10)))
+        movementY = int(round(deltaY / (self.station.world._ratioPixelCm * 10)))
+
+        leftRight = "N"
+        upDown = "N"
+
+        if  0 <= self.station.robot._angle <= 45 or 315 < self.station.robot._angle <= 360:
+            if deltaX >= 0:
+                leftRight = "O"
+            if deltaX < 0 :
+                leftRight = "E"
+
+        elif 45 < self.station.robot._angle <= 135:
+            if deltaX >= 0:
+                leftRight = "N"
+            if deltaX < 0 :
+                leftRight = "S"
+        elif 225 <= self.station.robot._angle < 315:
+            if deltaX >= 0:
+                leftRight = "S"
+            if deltaX < 0 :
+                leftRight = "N"
+
+        if (movementX) < 10:
+            xCommand = ('D' + leftRight + "0" + str(movementX) + "0")
+
+        elif 9 < (movementX) < 100:
+            xCommand = ('D' + leftRight + str(movementX) + "0")
+        else:
+            xCommand = ('D' + leftRight + str(movementX) + "0")
+
+        if 0 <= self.station.robot._angle <= 45 or 315 < self.station.robot._angle <= 360:
+            if deltaY >= 0:
+                upDown = "N"
+            if deltaX < 0:
+                upDown = "S"
+
+        elif 45 < self.station.robot._angle <= 135:
+            if deltaY >= 0:
+                upDown = "O"
+            if deltaY < 0:
+                upDown = "E"
+        elif 225 <= self.station.robot._angle < 315:
+            if deltaY >= 0:
+                upDown = "E"
+            if deltaY < 0:
+                upDown = "O"
+
+        if (movementY) < 10:
+            yCommand = ('D' + upDown + "0" + str(movementY) + "0")
+
+        elif 9 < (movementY) < 100:
+            yCommand = ('D' + upDown + str(movementY) + "0")
+        else:
+            yCommand = ('D' + upDown + str(movementY) + "0")
+
+        await self.AddMove(websocket, xCommand)
+        await self.AddMove(websocket, yCommand)
 
     async def send_path(self, websocket, destination):
         self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, destination)

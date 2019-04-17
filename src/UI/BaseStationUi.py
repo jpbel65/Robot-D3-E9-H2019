@@ -99,6 +99,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.world = None
         self.image = None
         self.path_finding = None
+        self.qr_Code = None
 
     def button_log_action(self):
         self.image = self.camera_monde.frame

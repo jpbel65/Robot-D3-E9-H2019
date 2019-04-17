@@ -49,10 +49,16 @@ class CameraMonde:
                         for i in self.world._obstacles:
                             cv2.circle(self.showedFrame, (i._coordinate[0] + self.world._axisX, i._coordinate[1] + self.world._axisY), i._radius, 180, 3)
                         cv2.circle(self.showedFrame, (int(self.world._shapeZone._trueCenter[0]) + self.world._axisX, int(self.world._shapeZone._trueCenter[1]) + self.world._axisY), 4, (0, 0, 255), 3)
-                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[0][0]) + self.world._axisX, int(self.world._targetZone._points[0][1]) + self.world._axisY), 4, (0, 255, 255), 3)
-                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[1][0]) + self.world._axisX, int(self.world._targetZone._points[1][1]) + self.world._axisY), 4, (255, 0, 255), 3)
-                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[2][0]) + self.world._axisX, int(self.world._targetZone._points[2][1]) + self.world._axisY), 4, (255, 255, 0), 3)
-                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[3][0]) + self.world._axisX, int(self.world._targetZone._points[3][1]) + self.world._axisY), 4, (0, 255, 0), 3)
+
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[0][0]) + self.world._axisX, int(self.world._targetZone._points[0][1]) + self.world._axisY), 4, (0, 0, 255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[1][0]) + self.world._axisX, int(self.world._targetZone._points[1][1]) + self.world._axisY), 4, (0, 0, 255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[2][0]) + self.world._axisX, int(self.world._targetZone._points[2][1]) + self.world._axisY), 4, (0, 0, 255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[3][0]) + self.world._axisX, int(self.world._targetZone._points[3][1]) + self.world._axisY), 4, (0, 0, 255), 3)
+
+                        chosenPoint = self.station.qr_Code
+
+                        if self.station.qr_Code is not None :
+                            cv2.circle(self.showedFrame, (int(self.world._targetZone._points[int(chosenPoint[-1])][0]) + self.world._axisX, int(self.world._targetZone._points[int(chosenPoint[-1])][1]) + self.world._axisY), 4, (0, 255, 255), 3)
 
                     if self.station.path_finding is not None:
                         if len(self.station.path_finding.getActualPath()) > 1 :
