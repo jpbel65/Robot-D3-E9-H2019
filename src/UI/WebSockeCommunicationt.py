@@ -74,6 +74,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 #await self.moveToPixel(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))
 
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
+                await self.moveToPixel(websocket,(54 * self.station.world._ratioPixelCm, 54 * self.station.world._ratioPixelCm))
 
                 await self.AddMove(websocket, ["DE340", "DN580"])
 
@@ -147,10 +148,10 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 print("Where do we go :")
                 print("points",self.station.world._targetZone._points,QR[-1])
                 shape = self.station.world._targetZone._points[int(QR[-1])]
-                corectif = self.adjustementTargetZone(shape)
-                print(corectif)
+                corectif = self.adjustementTargetZone(shape, True)
                 await self.send_path(websocket, corectif)#fonction target zone
                 await self.addRotation(shape, websocket) # se retourne vers la zone de dépot
+                corectif = self.adjustementTargetZone(shape, False)
                 await self.moveToPixel(websocket, corectif)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
@@ -161,6 +162,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                     #self.station.camera_monde.frame,self.station.world._tableZone)  # redetec robot
                 self.log_message(drop)
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction depar zone
+                await self.moveToPixel(websocket,gi(54 * self.station.world._ratioPixelCm, 54 * self.station.world._ratioPixelCm))
                 await websocket.send("reboot")
                 self.log_message("roboot")
                 self.station.thread_com_state.speak[str].emit("Arrete")
@@ -297,7 +299,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         if 0 <= angle <= 45 or 315 < angle <= 360:
             if deltaY >= 0:
                 upDown = "N"
-            if deltaX < 0:
+            if deltaY < 0:
                 movementY = abs(movementY)
                 upDown = "S"
 
@@ -414,12 +416,14 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             adjustementX = correctif_recul
         return (sx+adjustementX, sy+adjustementY)
 
-    def adjustementTargetZone(self, shape):
+    def adjustementTargetZone(self, shape, enApproche):
         sx = shape[0]
         sy = shape[1]
         adjustementX = 0
         adjustementY = 0
         correctif_recul = 95
+        if enApproche:
+            correctif_recul = 140
         space = 120
         if sy> self.station.world._height-space:
             adjustementY = -correctif_recul

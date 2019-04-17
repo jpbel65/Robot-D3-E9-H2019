@@ -277,6 +277,9 @@ class PathFinding:
                     break
             except TargetUnaccessible:
                 yTarget += 1
+            except IndexError:
+                print(yMaxTable)
+                print(yTarget)
 
         if xOrigin > len(self.tableLayout[0]) or xOrigin <= 0:
             accessible = False
@@ -366,6 +369,8 @@ class PathFinding:
 
         if accessible:
             cellMovements = astar(self.tableLayout, (yOrigin, xOrigin), (yTarget, xTarget))
+            if (yOrigin, xOrigin) == (yTarget, xTarget):
+                self.path_websocket.append("DN000")
             datetime.datetime.now()
             datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
 
