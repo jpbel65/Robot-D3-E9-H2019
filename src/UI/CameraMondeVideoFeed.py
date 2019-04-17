@@ -26,7 +26,7 @@ class CameraMonde:
 
 
     def start_camera(self):
-        self.capture = cv2.VideoCapture(0)
+        self.capture = cv2.VideoCapture(1)
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         self.capture.set(cv2.CAP_PROP_FPS, 15)
@@ -48,17 +48,24 @@ class CameraMonde:
                     if self.world_true is True:
                         for i in self.world._obstacles:
                             cv2.circle(self.showedFrame, (i._coordinate[0] + self.world._axisX, i._coordinate[1] + self.world._axisY), i._radius, 180, 3)
-                        cv2.circle(self.showedFrame,(int(self.world._shapeZone._trueCenter[0]) + self.world._axisX, int(self.world._shapeZone._trueCenter[1])+ self.world._axisY),4, (0, 0, 255), 3)
-                        cv2.circle(self.showedFrame, (int(self.world._targetZone._trueCenter[0])+ self.world._axisX, int(self.world._targetZone._trueCenter[1])+ self.world._axisY), 4, (0,0,255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._shapeZone._trueCenter[0]) + self.world._axisX, int(self.world._shapeZone._trueCenter[1]) + self.world._axisY), 4, (0, 0, 255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[0][0]) + self.world._axisX, int(self.world._targetZone._points[0][1]) + self.world._axisY), 4, (0, 255, 255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[1][0]) + self.world._axisX, int(self.world._targetZone._points[1][1]) + self.world._axisY), 4, (255, 0, 255), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[2][0]) + self.world._axisX, int(self.world._targetZone._points[2][1]) + self.world._axisY), 4, (255, 255, 0), 3)
+                        cv2.circle(self.showedFrame, (int(self.world._targetZone._points[3][0]) + self.world._axisX, int(self.world._targetZone._points[3][1]) + self.world._axisY), 4, (0, 255, 0), 3)
 
                     if self.station.path_finding is not None:
                         if len(self.station.path_finding.getActualPath()) > 1 :
-                            for i in range (0, len(self.station.path_finding.getActualPath())-2):
+                            for i in range (0, len(self.station.path_finding.getActualPath())-1):
+
+                                # deltaX =self.station.path_finding.getActualPath()[0][0] - self.station.robot._coordinate[0] + self.world._axisX
+                                # deltaY = self.station.path_finding.getActualPath()[0][1] - self.station.robot._coordinate[1] + self.world._axisY
                                 curPoint = self.station.path_finding.getActualPath()[i]
                                 thenPoint = self.station.path_finding.getActualPath()[i+1]
 
                                 curPoint = self.convertPointInPixel(curPoint)
                                 thenPoint = self.convertPointInPixel(thenPoint)
+
 
                                 cv2.line(self.showedFrame,curPoint,thenPoint,(0,255,0),2)
 
@@ -74,13 +81,13 @@ class CameraMonde:
 
                                 cv2.line(self.showedFrame, (prev_x, prev_y), (cur_x, cur_y), (0, 255, 255), 2)
                         cv2.circle(self.showedFrame, (int(self.station.robot._coordinate[0] + self.world._axisX),  int(self.station.robot._coordinate[1]) + self.world._axisY), 3, (0,255,0), 3)
-                        # self.whereTheRobotHasBeen.append((int(self.station.robot._coordinate[0] + self.world._axisX),int(self.station.robot._coordinate[1]) + self.world._axisY))
                         if self.frameCount%3 == 0:
                             try :
                                 self.whereTheRobotHasBeen.append((int(
                                     self.station.robot._coordinate[0] + self.world._axisX), int(
                                     self.station.robot._coordinate[1]) + self.world._axisY))
-                                #self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)
+                                self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)
+                                self.station.thread_com_pos.speak[str].emit(str(int(self.station.robot._coordinate[0]))+","+str(int(self.station.robot._coordinate[1])))
 
                             except :
                                 continue

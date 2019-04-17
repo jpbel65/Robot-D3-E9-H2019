@@ -154,7 +154,7 @@ class PathFinding:
     def addObstacle(self, y, x):
         initialX = int(x*self.RATIO)
         initialY = int(y*self.RATIO)
-        obstacleRay = (self.OBSTACLE_WIDTH / 2 + 15)#*self.RATIO
+        obstacleRay = (self.OBSTACLE_WIDTH / 2 + 10)#*self.RATIO
 
         self.tableLayout[initialY][initialX] = 'O'
 
@@ -178,7 +178,7 @@ class PathFinding:
                 deltaX = (x-j/self.RATIO)
                 deltaY = (y-i/self.RATIO)
 
-                if deltaX**2+deltaY**2 < obstacleRay**2+5 :
+                if deltaX**2+deltaY**2 < obstacleRay**2 :
                     self.tableLayout[i][j]= 'O'
 
     def addSpacing(self):

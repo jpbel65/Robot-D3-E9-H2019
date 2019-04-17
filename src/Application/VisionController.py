@@ -92,13 +92,8 @@ class VisionController:
         # self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
-        try:
-            self._robotDetector.detectAruco(image, table)
+        self._robotDetector.detectAruco(image, table)
 
-        except RobotNotFoundError:
-            print("frame 2")
-            self.detectRobotAndGetAngleAruco(self.station.camera_monde.frame2, table)
-            return
 
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
@@ -118,17 +113,18 @@ class VisionController:
             obstacles = self._obstaclesDetector_.detect(crop_img)
             print("obstacle time")
             print(obstacles)
+            goodObstacles = []
             for i in obstacles:
                 #dis = math.sqrt((i._coordinate[0] - self._robot._coordinate[0]) ** 2 + (i._coordinate[1] - self._robot._coordinate[1]) ** 2)
                 #if dis <= 400 or i._coordinate[0]< table.getWidth()/2: # 89*5.44
                 #print(89*5.44)
                 #print((i._coordinate[0],i._coordinate[1]))
-                if i._coordinate[0]<int(89*5.44):
+                if i._coordinate[0]>int(89*5.44):
                     #print("remove",i)
-                    obstacles.remove(i)
-            print(obstacles)
+                    goodObstacles.append(i)
+            print(goodObstacles)
             zones = self._zoneDetector_.detect(crop_img, table, wRot)
-            world = World(table, zones, obstacles)
+            world = World(table, zones, goodObstacles)
             return world
 
 
