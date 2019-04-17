@@ -36,7 +36,6 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
         self.testOffline(False)
         shape = self.station.world._targetZone._trueCenter
-        corectif = self.adjustement(shape)
         self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
                                                                           self.station.world._tableZone)
 
@@ -132,7 +131,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 # self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame, self.station.world._tableZone)  # redetec robot
                 shape = self.station.world._shapeZone._trueCenter
-                corectif = self.adjustement(shape)
+                corectif = self.adjustementShapeZone(shape)
                 self.log_message(QR)
                 self.station.thread_com_piece.speak[str].emit(QR)
                 await self.send_path(websocket, corectif)#fonction zone piece
@@ -148,7 +147,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 print("Where do we go :")
                 print("points",self.station.world._targetZone._points,QR[-1])
                 shape = self.station.world._targetZone._points[int(QR[-1])]
-                corectif = self.adjustement(shape)
+                corectif = self.adjustementTargetZone(shape)
                 print(corectif)
                 await self.send_path(websocket, corectif)#fonction target zone
                 await self.addRotation(shape, websocket) # se retourne vers la zone de dépot
@@ -398,12 +397,29 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.path.remove(self.path[0])
 
 
-    def adjustement(self, shape):
+    def adjustementShapeZone(self, shape):
         sx = shape[0]
         sy = shape[1]
         adjustementX = 0
         adjustementY = 0
-        correctif_recul = 120
+        correctif_recul = 130
+        space = 120
+        if sy> self.station.world._height-space:
+            adjustementY = -correctif_recul
+        elif sy < space:
+            adjustementY = correctif_recul
+        elif sx > self.station.world._width - space:
+            adjustementX = -correctif_recul
+        elif sx < space:
+            adjustementX = correctif_recul
+        return (sx+adjustementX, sy+adjustementY)
+
+    def adjustementTargetZone(self, shape):
+        sx = shape[0]
+        sy = shape[1]
+        adjustementX = 0
+        adjustementY = 0
+        correctif_recul = 95
         space = 120
         if sy> self.station.world._height-space:
             adjustementY = -correctif_recul
