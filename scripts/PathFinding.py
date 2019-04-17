@@ -233,7 +233,7 @@ class PathFinding:
 
     def getPath(self, robot, destination, extra = [], isQr = False):
 
-        newRobot = (robot[0]/self.pixelRatio - 4.5, robot[1]/self.pixelRatio - 10)
+        # newRobot = (robot[0]/self.pixelRatio - 4.5, robot[1]/self.pixelRatio - 10)
 
         hauteur_table = 197 - 24
         hauteur_robot = 24
@@ -241,11 +241,11 @@ class PathFinding:
         milieuX_table = self.world._width / self.pixelRatio / 2
         milieuY_table = self.world._height / self.pixelRatio / 2
 
-        distanceXMilieu = newRobot[0] - milieuX_table
-        distanceYMilieu = newRobot[1] - milieuY_table
-
-        deltaX = 0.0938*distanceXMilieu + 1.26
-        deltaY = 0.0938*distanceYMilieu - 2.26
+        # distanceXMilieu = newRobot[0] - milieuX_table
+        # distanceYMilieu = newRobot[1] - milieuY_table
+        #
+        # deltaX = 0.0938*distanceXMilieu + 1.26
+        # deltaY = 0.0938*distanceYMilieu - 2.26
 
         self.actual_path = []
         accessible = True
@@ -270,6 +270,7 @@ class PathFinding:
         yTarget = self.centimetersToCoords(destination[1]/self.pixelRatio)
 
         if isQr:
+            firstYTarget = yTarget
             while True:
                 try:
                     if (self.tableLayout[yTarget][xTarget] != ' '):
@@ -278,6 +279,9 @@ class PathFinding:
                         break
                 except TargetUnaccessible:
                     yTarget += 1
+                    if yTarget >= 13:
+                        xTarget -= 1
+                        yTarget = firstYTarget
                 except IndexError:
                     print(yMaxTable)
                     print(yTarget)

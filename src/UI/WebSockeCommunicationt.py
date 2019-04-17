@@ -22,12 +22,10 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     def testOffline(self, bool):
         if bool:
-            self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
-                                                                              self.station.world._tableZone)
 
             print("Path found : ")
-            self.station.path_finding.getPath(self.station.robot._coordinate,
-                                                               (self.station.world._width/2, self.station.world._height/2))
+            yCell = self.station.world._height / 2 - 100
+            self.station.path_finding.getPath(self.station.robot._coordinate,(self.station.world._width-160 + self.station.world._axisX, yCell), isQr=True)
 
             print(self.station.path_finding.getActualPath())
             print("Confusion is here")
@@ -113,13 +111,13 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 if next == "next":
                     self.path.remove(self.path[0])
 
-                if self.station.robot._coordinate[1] < self.station.world._height - 215:
-                    self.path.append("DO060")
-                    await websocket.send(self.path[0])
-                    self.log_message(self.path[0])
-                    next = await websocket.recv()
-                    if next == "next":
-                        self.path.remove(self.path[0])
+                # if self.station.robot._coordinate[1] < self.station.world._height - 215:
+                #     self.path.append("DO060")
+                #     await websocket.send(self.path[0])
+                #     self.log_message(self.path[0])
+                #     next = await websocket.recv()
+                #     if next == "next":
+                #         self.path.remove(self.path[0])
 
 
                 await websocket.send("fin")
@@ -279,6 +277,12 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             if deltaX < 0 :
                 movementX = abs(movementX)
                 leftRight = "S"
+        elif 135 < angle < 225:
+            if deltaX >= 0:
+                leftRight = "E"
+            if deltaX < 0 :
+                 movementX = abs(movementX)
+                 leftRight = "O"
         elif 225 <= angle < 315:
             if deltaX >= 0:
                 leftRight = "S"
@@ -309,6 +313,13 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             if deltaY < 0:
                 movementY = abs(movementY)
                 upDown = "O"
+
+        elif 135 < angle < 225:
+            if deltaY >= 0:
+                upDown = "S"
+            if deltaY < 0:
+                movementY = abs(movementY)
+                upDown = "N"
         elif 225 <= angle < 315:
             if deltaY >= 0:
                 upDown = "O"
