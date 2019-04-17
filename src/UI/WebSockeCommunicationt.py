@@ -72,6 +72,8 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 print("< {ready}")
                 print(self.station.world._height-175 + self.station.world._axisY)
 
+                #await self.moveToPixel(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))
+
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
 
                 await self.AddMove(websocket, ["DE340", "DN580"])
@@ -135,7 +137,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.station.thread_com_piece.speak[str].emit(QR)
                 await self.send_path(websocket, corectif)#fonction zone piece
                 await self.addRotation(shape, websocket) # Se retourne vers la piece
-                self.moveToPixel(websocket, corectif)
+                await self.moveToPixel(websocket, corectif)
                 await websocket.send("fin")
                 self.log_message("fin QR-piece")
 
@@ -150,7 +152,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 print(corectif)
                 await self.send_path(websocket, corectif)#fonction target zone
                 await self.addRotation(shape, websocket) # se retourne vers la zone de dépot
-                self.moveToPixel(websocket, corectif)
+                await self.moveToPixel(websocket, corectif)
                 await websocket.send("fin")
                 self.log_message("fin piece-drop")
 
@@ -186,6 +188,9 @@ class WebSocket(websockets.WebSocketCommonProtocol):
     def getAngleCorrection(self):
 
         angle = int(self.station.robot._angle) + 1
+        if angle < 0 :
+            angle = angle + 360
+        print("Angle", angle)
         angleCorrection = 0
 
         if 0 <= angle <= 45:
@@ -197,26 +202,27 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         elif 225 < angle <= 315:
             angleCorrection = 270 - angle
         elif 315 < angle <= 360:
-            angleCorrection = 360 - angleCorrection
+            angleCorrection = 360 - angle
+
+        side = "H"
+        if angleCorrection > 0:
+            side = "A"
+            angle = abs(angleCorrection)
 
         if angleCorrection <= 3:
+            print("NO angle")
             return ''
 
-        if angle < 0:
-            side = "A"
-            angle = abs(angle)
+        angleCorrection = str(angleCorrection)
 
-        angle = str(angle)
+        while len(angleCorrection) is not 3:
+            angleCorrection = "0" + angleCorrection
+        rotCommand = "R" + side + angleCorrection
+        print(rotCommand)
+        return rotCommand # rota angle depart
 
-        while len(angle) is not 3:
-            angle = "0" + angle
-
-        return ("R" + side + angle) # rota angle depart
-
-
-
-
-    def moveToPixel(self,websocket , point):
+    async def moveToPixel(self,websocket , point):
+        self.station.thread_com_state.speak[str].emit("Ajustement")
         try:
             self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
         except :
@@ -225,76 +231,116 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         rotCommand = self.getAngleCorrection()
 
         if rotCommand is not '':
-            await self.AddMove(websocket, rotCommand)
+            self.path.append(rotCommand)
+            await websocket.send(rotCommand)
+            self.log_message(rotCommand)
+            next = await websocket.recv()
+            if next == "next":
+                self.path.remove(rotCommand)
+
+            sleep(2)
 
         try:
             self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,self.station.world._tableZone)
         except :
             pass
 
+        angle = self.station.robot._angle
+        if angle < 0:
+            angle = angle + 360
         origin = self.station.robot._coordinate
         target = point
         deltaX = target[0] - origin[0]
         deltaY = target[1] - origin[1]
 
-        movementX = int(round(deltaX / (self.station.world._ratioPixelCm * 10)))
-        movementY = int(round(deltaY / (self.station.world._ratioPixelCm * 10)))
+        print(deltaX)
+        print(deltaY)
+
+        movementX = int(round((deltaX / self.station.world._ratioPixelCm) * 10))
+        movementY = int(round((deltaY / self.station.world._ratioPixelCm) * 10))
+
+        print(movementX)
+        print(movementY)
 
         leftRight = "N"
         upDown = "N"
 
-        if  0 <= self.station.robot._angle <= 45 or 315 < self.station.robot._angle <= 360:
+        if  0 <= angle <= 45 or 315 < angle <= 360:
             if deltaX >= 0:
                 leftRight = "O"
             if deltaX < 0 :
-                leftRight = "E"
+                 movementX = abs(movementX)
+                 leftRight = "E"
 
-        elif 45 < self.station.robot._angle <= 135:
+        elif 45 < angle <= 135:
             if deltaX >= 0:
                 leftRight = "N"
             if deltaX < 0 :
+                movementX = abs(movementX)
                 leftRight = "S"
-        elif 225 <= self.station.robot._angle < 315:
+        elif 225 <= angle < 315:
             if deltaX >= 0:
                 leftRight = "S"
             if deltaX < 0 :
+                movementX = abs(movementX)
                 leftRight = "N"
 
         if (movementX) < 10:
-            xCommand = ('D' + leftRight + "0" + str(movementX) + "0")
+            xCommand = ('D' + leftRight + "0" + str(movementX))
 
         elif 9 < (movementX) < 100:
-            xCommand = ('D' + leftRight + str(movementX) + "0")
+            xCommand = ('D' + leftRight + str(movementX))
         else:
-            xCommand = ('D' + leftRight + str(movementX) + "0")
+            xCommand = ('D' + leftRight + str(movementX))
 
-        if 0 <= self.station.robot._angle <= 45 or 315 < self.station.robot._angle <= 360:
+        print(xCommand)
+
+        if 0 <= angle <= 45 or 315 < angle <= 360:
             if deltaY >= 0:
                 upDown = "N"
             if deltaX < 0:
+                movementY = abs(movementY)
                 upDown = "S"
 
-        elif 45 < self.station.robot._angle <= 135:
-            if deltaY >= 0:
-                upDown = "O"
-            if deltaY < 0:
-                upDown = "E"
-        elif 225 <= self.station.robot._angle < 315:
+        elif 45 < angle <= 135:
             if deltaY >= 0:
                 upDown = "E"
             if deltaY < 0:
+                movementY = abs(movementY)
                 upDown = "O"
+        elif 225 <= angle < 315:
+            if deltaY >= 0:
+                upDown = "O"
+            if deltaY < 0:
+                movementY = abs(movementY)
+                upDown = "E"
 
         if (movementY) < 10:
-            yCommand = ('D' + upDown + "0" + str(movementY) + "0")
+            yCommand = ('D' + upDown + "0" + str(movementY))
 
         elif 9 < (movementY) < 100:
-            yCommand = ('D' + upDown + str(movementY) + "0")
+            yCommand = ('D' + upDown + str(movementY))
         else:
-            yCommand = ('D' + upDown + str(movementY) + "0")
+            yCommand = ('D' + upDown + str(movementY))
 
-        await self.AddMove(websocket, xCommand)
-        await self.AddMove(websocket, yCommand)
+        print(yCommand)
+        self.path.append(xCommand)
+        await websocket.send(xCommand)
+        self.log_message(xCommand)
+        next = await websocket.recv()
+        if next == "next":
+            self.path.remove(xCommand)
+
+        sleep(2)
+
+        self.path.append(yCommand)
+        await websocket.send(yCommand)
+        self.log_message(yCommand)
+        next = await websocket.recv()
+        if next == "next":
+            self.path.remove(yCommand)
+
+        sleep(2)
 
     async def send_path(self, websocket, destination):
         self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, destination)
@@ -315,9 +361,6 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.path.remove(self.path[0])
 
             sleep(2)
-            datetime.datetime.now()
-            datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
-            time = str(datetime.datetime.now())
 
     def calibration(self):
         self.station.thread_com_state.speak[str].emit("Calibration")
