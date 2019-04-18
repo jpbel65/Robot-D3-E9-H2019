@@ -26,9 +26,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
             print("Path found : ")
             yCell = self.station.world._height / 2 - 100
             self.station.path_finding.getPath(self.station.robot._coordinate,(self.station.world._width-160 + self.station.world._axisX, yCell), isQr=True)
-
-            print(self.station.path_finding.getActualPath())
-            print("Confusion is here")
+            self.station.path_finding.setActualPath([(int(294 / 5.44), int(294 / 5.44)), (int(294 / 5.44), int(109 / 5.44)),(int(610 / 5.44), int(109 / 5.44))])
 
     async def start_communication_web(self):
 
@@ -74,7 +72,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 await self.send_path(websocket, (54*self.station.world._ratioPixelCm, 54*self.station.world._ratioPixelCm))#fonction Charge
                 await self.moveToPixel(websocket,(54 * self.station.world._ratioPixelCm, 54 * self.station.world._ratioPixelCm))
 
-                self.station.path_finding.setActualPath([(294,294), (109, 294), (109, 610)])
+                self.station.path_finding.setActualPath([(int(294 / 5.44), int(294 / 5.44)), (int(294 / 5.44), int(109 / 5.44)),(int(610 / 5.44), int(109 / 5.44))])
                 await self.AddMove(websocket, ["DE340", "DN580"], True)
 
                 await websocket.send("fin")
@@ -92,7 +90,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 courant = await websocket.recv()
                 #self.log_message(courant)git
                 #self.station.thread_com_courant.speak[str].emit(courant)
-
+                self.station.path_finding.setActualPath([(int(294 / 5.44) + 8, int(294 / 5.44) + 8), (int(294 / 5.44) + 8, int(109 / 5.44)),(int(610 / 5.44), int(109 / 5.44))])
                 self.station.path_finding.setActualPath([(109, self.station.world._height), (109, self.station.world._height - 218), (294,  self.station.world._height - 218)])
                 await self.AddMove(websocket, ["DS400", "DO310"], True)
                 await self.moveToPixel(websocket,(54 * self.station.world._ratioPixelCm, 54 * self.station.world._ratioPixelCm))

@@ -76,7 +76,7 @@ class CameraMonde:
                                 cv2.line(self.showedFrame,curPoint,thenPoint,(0,255,0),2)
 
                     if self.station.robot is not None:
-                        if len(self.whereTheRobotHasBeen) > 70:
+                        if len(self.whereTheRobotHasBeen) > 110:
                             self.whereTheRobotHasBeen.pop(0)
                         if len(self.whereTheRobotHasBeen) > 1 :
                             for i in range(1, len(self.whereTheRobotHasBeen) - 1):
