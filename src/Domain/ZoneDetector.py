@@ -39,6 +39,7 @@ class ZoneDetector(WorldEntityDetector):
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         StartZone = self.detectStartZone(image_copy)
         zones.append(StartZone)
+        cv2.line(image,(w1,0),(w1,h1),(0,255,0), 10)
         deposit,center = self.detectTargetZone(image)
         points= deposit._points
         if 0<=center[0]<=60 and 0<=center[1]<=h1:
@@ -174,35 +175,47 @@ class ZoneDetector(WorldEntityDetector):
             raise ShapeZoneNotFoundError
 
     def detectTargetZone(self, big_img):
-          gray = cv2.cvtColor(big_img.copy(), cv2.COLOR_BGR2GRAY)
-          found = False
-          kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
 
-          cimage = cv2.morphologyEx(big_img, cv2.MORPH_OPEN, kernel=kernel, iterations=3)
-          cimage = cv2.Canny(cimage, 100, 150)
-          cimage = cv2.GaussianBlur(cimage, (1, 1), 0)
-          cimage = cv2.dilate(cimage, kernel)
+        gray = cv2.cvtColor(big_img.copy(), cv2.COLOR_BGR2GRAY)
+        found = False
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
 
-          contours, hierarchy = cv2.findContours(cimage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        cimage = cv2.morphologyEx(big_img, cv2.MORPH_OPEN, kernel=kernel, iterations=3)
+        cimage = cv2.Canny(cimage, 100, 150)
+        cimage = cv2.GaussianBlur(cimage, (1, 1), 0)
+        cimage = cv2.dilate(cimage, kernel)
+        #cv2.imshow("cimage",cimage)
+        #cv2.waitKey()
 
-          color_img = cv2.cvtColor(cimage, cv2.COLOR_GRAY2BGR)
-          contours = sorted(contours, key=cv2.contourArea, reverse=True)[:70]
-          for c in contours:
-              contour_length = cv2.arcLength(c, True)
-              polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
-              area = cv2.contourArea(polygon_points)
-              if area >= 4000 and area <= 8000 and len(polygon_points) == 4:
-                  x, y, w, h = cv2.boundingRect(polygon_points)
-                  M = cv2.moments(c)
-                  centerX = int((M["m10"] / M["m00"]))
-                  centerY = int((M["m01"] / M["m00"]))
-                  points = self.detectPointOfTargetZone(gray, (centerX, centerY))
-                  if len(points) == 4:
-                      cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        contours, hierarchy = cv2.findContours(cimage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
-                      return TargetZone((x, y, w, h), points),(centerX,centerY)
+        color_img = cv2.cvtColor(cimage, cv2.COLOR_GRAY2BGR)
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:70]
+        color_img = cv2.drawContours(color_img, contours,9, (0, 255, 0), 2)
+        peri = cv2.arcLength(contours[9], True)
+        approx = cv2.approxPolyDP(contours[9], 0.04 * peri, True)
+        area = cv2.contourArea(approx)
+        print("area",area)
+        #cv2.imshow("POINTS", color_img)
+        #cv2.waitKey()
 
-          if found == False:
+        for c in contours:
+          contour_length = cv2.arcLength(c, True)
+          polygon_points = cv2.approxPolyDP(c, 0.02 * contour_length, True)
+          area = cv2.contourArea(polygon_points)
+          if area >= 3500 and area <= 8000 and len(polygon_points) == 4:
+              x, y, w, h = cv2.boundingRect(polygon_points)
+              M = cv2.moments(c)
+              centerX = int((M["m10"] / M["m00"]))
+              centerY = int((M["m01"] / M["m00"]))
+              points = self.detectPointOfTargetZone(gray, (centerX, centerY))
+              print(len(points))
+              if   len(points)== 4 :
+                  cv2.rectangle(color_img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+                  return TargetZone((x, y, w, h), points),(centerX,centerY)
+
+        if found == False:
               raise TargetZoneNotFoundError
     def detectPointOfTargetZone(self, crop_img, centerOfZone):
         # gray = cv2.cvtColor(crop_img.copy(), cv2.COLOR_BGR2GRAY)
@@ -216,7 +229,14 @@ class ZoneDetector(WorldEntityDetector):
         cimage = cv2.dilate(cimage, kernel)
         contours, hierarchy = cv2.findContours(cimage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         color_img = cv2.cvtColor(cimage, cv2.COLOR_GRAY2BGR)
+
         contours = sorted(contours, key=cv2.contourArea, reverse=True)[:200]
+        color_img = cv2.drawContours(color_img, contours, 20, (0, 255, 0), 2)
+        peri = cv2.arcLength(contours[20], True)
+        approx = cv2.approxPolyDP(contours[20], 0.04 * peri, True)
+        area = cv2.contourArea(approx)
+        print("area of points",area)
+
         points = []
         for c in contours:
             M = cv2.moments(c)
@@ -226,7 +246,8 @@ class ZoneDetector(WorldEntityDetector):
             centerX = int((M["m10"] / M["m00"]))
             centerY = int((M["m01"] / M["m00"]))
             disAvecCentre = math.sqrt((centerOfZone[0] - centerX) ** 2 + (centerOfZone[1] - centerY) ** 2)
-            if area <= 400 and area >= 30 and disAvecCentre <= 60:
+            print("dis avec centre",disAvecCentre)
+            if area <= 400 and area >= 20 and disAvecCentre <= 60:
                 points.append((centerX, centerY))
                 PointInOrder = []
         for i in range(len(points)):

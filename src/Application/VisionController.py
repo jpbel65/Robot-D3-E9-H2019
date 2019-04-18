@@ -78,14 +78,9 @@ class VisionController:
         #self._robotDetector.thread_start_Detector(image)
         x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
         image = image[y1:y1 + h1, x1:x1 + w1]
-        #cv2.imshow("imageBeforeRobotDEtectionb", image)
-        #cv2.waitKey()
         self._robotDetector.detect(image)
         self._robot._coordinate = (self._robotDetector.centerX, self._robotDetector.centerY)
         newImage = image
-        #cv2.circle(newImage, self._robot._coordinate, 5, 125)
-        #cv2.imshow('Showrobot', newImage)
-       # cv2.waitKey()
         self._robot._angle = self._robotDetector.angle
 
     def detectRobotAndGetAngleAruco(self, image, table):
@@ -105,8 +100,8 @@ class VisionController:
             table,wRot = self._zoneDetector_.detectTableAlternative(image)
             x1, y1, w1, h1 = table.getOriginX(), table.getOriginY(), table.getWidth(), table.getHeight()
             crop_img = image[y1:y1 + h1, x1:x1 + w1]
-            #cv2.imshow("crop1",crop_img)
-            #cv2.waitKey()
+            # cv2.imshow("crop1",crop_img)
+            # cv2.waitKey()
 
             #self.detectRobotAndGetAngle(image,table)
 

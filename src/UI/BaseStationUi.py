@@ -53,7 +53,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
         self.textPiece = ControlText('Pièce')
         self.textPlayer = ControlPlayer('Playground')
         self.textImage = ControlImage('Field')
-        self.buttonLog = ControlButton('Log')
+        self.buttonLog = ControlButton('Start')
         self.buttonReset = ControlButton('Reset')
 
         self.formset = ['', '||', 'textArea', '||',
@@ -95,7 +95,7 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
         self.draw_playgroung = DrawPlayground(self.textImage, self.textPos)
 
-        self.draw_playgroung.draw_robot(8, 3)
+        #self.draw_playgroung.draw_robot(8, 3)
         self.world = None
         self.image = None
         self.path_finding = None
@@ -103,8 +103,16 @@ class BaseStation(BaseWidget, QtCore.QObject):
 
     def button_log_action(self):
         self.image = self.camera_monde.frame
+        self.timer_off = False
+        self.thread_com_state.speak[str].emit("Arrete")
         try:
-
+            if self.world is not None:
+                self.world = None
+                self.camera_monde.world_true = False
+                self.image = None
+                self.path_finding = None
+                self.qr_Code = None
+                self.vision._visionController._obstaclesDetector_._obstaclesList = []
             self.world = self.vision.detectWorldElement(self.image)
             self.path_finding = PathFinding(self.world, self.web_socket.path)
             table= self.world._tableZone
@@ -182,13 +190,11 @@ class BaseStation(BaseWidget, QtCore.QObject):
         t5.start()
 
     def start_timer(self):
-        start = np.around(time.time())
         while True:
             if self.thread_off is True or self.timer_off is True:
                 break
-            now = np.around(time.time())
-            self.timer = now-start
-            self.thread_com_timer.speak[str].emit(str(now-start))
+            self.timer += 1
+            self.thread_com_timer.speak[str].emit(str(self.timer))
             sleep(1)
 
     def before_close_event(self):

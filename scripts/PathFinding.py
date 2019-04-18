@@ -231,7 +231,7 @@ class PathFinding:
         self.path_websocket.append(test)
         return self.actual_path
 
-    def getPath(self, robot, destination, extra = [], isQr = False):
+    def getPath(self, robot, destination, isQr = False):
 
         # newRobot = (robot[0]/self.pixelRatio - 4.5, robot[1]/self.pixelRatio - 10)
 
@@ -404,7 +404,7 @@ class PathFinding:
                 accessible = False
 
             self.pathFound = accessible
-            self.getJointPath(self.actual_path, extra)
+            self.getJointPath(self.actual_path)
 
         return accessible
     def getUnsafeLocations(self):
@@ -428,12 +428,12 @@ class PathFinding:
         return self.pixelRatio
 
 
-    def thread_start_pathfinding(self, robot, destination, extra = [], isQr = False):
+    def thread_start_pathfinding(self, robot, destination, isQr = False):
         destinationX = destination[0]
         destinationY = destination[1]
         while True:
             try:
-                t = threading.Thread(target=self.getPath, args=(robot, (destinationX, destinationY), extra, isQr))
+                t = threading.Thread(target=self.getPath, args=(robot, (destinationX, destinationY), isQr))
                 t.start()
 
                 break
@@ -456,7 +456,7 @@ class PathFinding:
                 return_value = return_value + "u"
         return return_value
 
-    def getJointPath(self, path, extra):
+    def getJointPath(self, path):
         bufferPath = []
         for i in range(0, len(path)-1):
             bufferPath.append((path[i+1][0]-path[i][0], path[i+1][1]-path[i][1]))
@@ -524,8 +524,8 @@ class PathFinding:
                     for i in range(0, jointLenght):
                         bufferPath.remove(bufferPath[0])
                     break
-        for h in extra:
-            self.path_websocket.append(h)
+        # for h in extra:
+        #     self.path_websocket.append(h)
 
 
     def smoothPathCompare(self):
