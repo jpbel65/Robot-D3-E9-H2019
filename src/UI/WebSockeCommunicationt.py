@@ -90,8 +90,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 courant = await websocket.recv()
                 #self.log_message(courant)git
                 #self.station.thread_com_courant.speak[str].emit(courant)
-                self.station.path_finding.setActualPath([(int(294 / 5.44) + 8, int(294 / 5.44) + 8), (int(294 / 5.44) + 8, int(109 / 5.44)),(int(610 / 5.44), int(109 / 5.44))])
-                self.station.path_finding.setActualPath([(109, self.station.world._height), (109, self.station.world._height - 218), (294,  self.station.world._height - 218)])
+                self.station.path_finding.setActualPath([(int(294 / 5.44) + 8, int(294 / 5.44) ), (int(294 / 5.44) + 8, int(109 / 5.44)),(int(610 / 5.44)-16, int(109 / 5.44))])
                 await self.AddMove(websocket, ["DS400", "DO310"], True)
                 await self.moveToPixel(websocket,(54 * self.station.world._ratioPixelCm, 54 * self.station.world._ratioPixelCm))
 
@@ -101,7 +100,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
                 yCell = self.station.world._height/2 - 100
 
-                await self.send_path(websocket, (self.station.world._width-160 + self.station.world._axisX, yCell), isQr = True)#fonction QR
+                await self.send_path(websocket, (self.station.world._width-170 + self.station.world._axisX, yCell), isQr = True)#fonction QR
                 await self.AddMove(websocket, ["DN050"], False)
 
 
