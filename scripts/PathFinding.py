@@ -375,6 +375,7 @@ class PathFinding:
 
         if accessible:
             cellMovements = astar(self.tableLayout, (yOrigin, xOrigin), (yTarget, xTarget))
+            print("AStar Is Done!")
             if (yOrigin, xOrigin) == (yTarget, xTarget):
                 self.path_websocket.append("DN000")
             datetime.datetime.now()
@@ -405,6 +406,7 @@ class PathFinding:
 
             self.pathFound = accessible
             self.getJointPath(self.actual_path)
+
 
         return accessible
     def getUnsafeLocations(self):

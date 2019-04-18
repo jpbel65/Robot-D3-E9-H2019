@@ -39,8 +39,9 @@ class ZoneDetector(WorldEntityDetector):
         image_copy = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2HSV)
         StartZone = self.detectStartZone(image_copy)
         zones.append(StartZone)
-        cv2.line(image,(w1,0),(w1,h1),(0,255,0), 10)
-        deposit,center = self.detectTargetZone(image)
+        image1 = image.copy()
+        cv2.line(image1,(w1,0),(w1,h1),(0,255,0), 10)
+        deposit,center = self.detectTargetZone(image1)
         points= deposit._points
         if 0<=center[0]<=60 and 0<=center[1]<=h1:
             points.sort(key=lambda tup: tup[1],reverse=True)
