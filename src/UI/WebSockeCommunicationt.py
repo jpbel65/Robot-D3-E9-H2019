@@ -16,9 +16,11 @@ class WebSocket(websockets.WebSocketCommonProtocol):
 
     def __init__(self, log_window, station):
         super(WebSocket, self).__init__()
+        self.cycle = 0
         self.textArea = log_window
         self.station = station
         self.path = []
+        self.ready = ''
 
     def testOffline(self, bool):
         if bool:
@@ -38,32 +40,20 @@ class WebSocket(websockets.WebSocketCommonProtocol):
         async with websockets.connect(
                 'ws://'+self.adresse+':8765', ping_interval=None, ping_timeout=None) as websocket:#10.240.104.107  192.168.1.38
             print("in websocket")
-            go = "go"
-            await websocket.send(go)
-            self.log_message(go)
+            if self.cycle == 0 :
+                go = "go"
+                await websocket.send(go)
+                self.log_message(go)
             self.station.vision._visionController.detectRobotAndGetAngleAruco(self.station.camera_monde.frame,
                                                                               self.station.world._tableZone)  # redetec robot
 
-            print("Obstacle :")
-            print(self.station.world._obstacles[0]._coordinate)
-            print("Destination :")
-            print(self.station.world._width-300 + self.station.world._axisX)
-            print(self.station.world._height/2 + self.station.world._axisY)
-            print("Position Robot :")
-            print(self.station.robot._coordinate)
-            print("Angle Robot : ")
-            print((self.station.robot._angle))
-            print("TABLE")
-            print(self.station.world._height)
-            print(self.station.world._width)
-
             #self.station.path_finding.thread_start_pathfinding(self.station.robot._coordinate, (
             #        119 + self.station.world._axisX, self.station.world._height - 100 + self.station.world._axisY + 3030))
-            print(self.path)
-            ready = await websocket.recv()
-            print(ready)
-            if ready == "depart":
-                self.log_message(ready)
+            if self.cycle == 0:
+                self.ready = await websocket.recv()
+                print(self.ready)
+            if self.ready == "depart":
+                self.log_message(self.ready)
                 print("< {ready}")
                 print(self.station.world._height-175 + self.station.world._axisY)
 
@@ -172,6 +162,7 @@ class WebSocket(websockets.WebSocketCommonProtocol):
                 self.log_message("roboot")
                 self.station.thread_com_state.speak[str].emit("Arrete")
                 self.station.close_timer()
+                self.cycle += 1
 
                 #self.station.thread_com_volt.speak[str].emit("44")
                 #self.station.thread_com_piece.speak[str].emit("blue triangle")
